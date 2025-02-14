@@ -1,5 +1,6 @@
 @import url("./carousel.css");
 @import url("./movieCard.css");
+@import url("./moviePage.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* Variables */
@@ -12,6 +13,7 @@
     --text-yellow: #f5c518;
     --text-gray: #bebebe;
     --dark-btn: #2c2c2c;
+    --red-btn: #6c3535a6;
     --radius-6: 0.7rem;
 }
 
@@ -26,6 +28,10 @@
 body {
     background-color: var(--primary-bg);
     max-width: 100%;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 /* Utils */

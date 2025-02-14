@@ -1,0 +1,41 @@
+.movie-info {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    background-color: #333; /* dark gray background */
+    color: #fff; /* white text color */
+}
+
+.movie-info img {
+    width: 200px;
+    height: 250px;
+    margin-bottom: 20px;
+    border: 1px solid #666; /* dark gray border around image */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* shadow around image */
+}
+
+.movie-info h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #ff9900; /* orange title color */
+}
+
+.movie-info p {
+    margin-bottom: 10px;
+}
+
+.movie-info ul {
+    list-style: none; /* remove bullet points */
+    padding: 0; /* remove padding */
+    margin: 0; /* remove margin */
+}
+
+.movie-info li {
+    margin-bottom: 10px; /* add margin between list items */
+}
+
+.movie-info strong {
+    color: #cccccc; /* light gray strong text color */
+}
