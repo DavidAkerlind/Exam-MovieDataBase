@@ -1,4 +1,4 @@
-import oData from "../data/data.js";
+import { oData } from "../data/data.js";
 
 async function fetchTopMovies() {
     const response = await fetch(
@@ -8,12 +8,10 @@ async function fetchTopMovies() {
     oData.topMovieList = movies;
 }
 
-const fetchMovieData = async (title) => {
+// sätter oData.searchTitleMovieData till den data om den titel vi skickar in i funktionen och returnerar den också
+async function fetchMovieData(title) {
     const apiKey = "d59607eb";
-    const url = `http://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(
-        title
-    )}`;
-
+    const url = `http://www.omdbapi.com/?apikey=${apiKey}&t=${title}`;
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -26,10 +24,12 @@ const fetchMovieData = async (title) => {
         }
 
         oData.searchTitleMovieData = data;
+        console.log(data);
+        return data;
     } catch (error) {
-        console.error("Error fetching movie data:", error.message);
+        console.log("Error fetching movie data:", error.message);
         return null;
     }
-};
+}
 
 export { fetchTopMovies, fetchMovieData };

@@ -1,5 +1,6 @@
-@import url('./carousel.css');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("./carousel.css");
+@import url("./movieCard.css");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* Variables */
 :root {
@@ -7,8 +8,11 @@
     /* Primary BG bör vara din bakgrundsfärg */
     --primary-bg: #000000;
     --primary-white: #ffffff;
-    --primary-grey: #1A1A1A;
-    --text-yellow: #F5C518;
+    --primary-grey: #1a1a1a;
+    --text-yellow: #f5c518;
+    --text-gray: #bebebe;
+    --dark-btn: #2c2c2c;
+    --radius-6: 0.7rem;
 }
 
 /* Base */
@@ -16,6 +20,7 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    text-decoration: none;
 }
 
 body {
