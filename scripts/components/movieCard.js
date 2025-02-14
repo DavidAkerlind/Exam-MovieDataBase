@@ -1,28 +1,39 @@
-import { fetchMovieData } from "../modules/api.js";
-
 // Skapar och renderar filmkortet
 async function renderMovieCard(movie) {
     console.log("renderMovieCard()");
 
-    let movieDone = await movie;
+    let movieInfo = await movie;
 
-    const movieCard = document.createElement("a");
+    const movieCard = document.createElement("article");
     movieCard.classList.add("movie-card");
 
+    let button = `<button class="movie-card__favorite-btn">  <i class="fa-solid fa-plus"></i> Favorite</button>`;
+    if (window.location.pathname === "/favorites.html") {
+        button = `
+            <button class="movie-card__favorite-btn movie-card__favorite-btn--un">
+                <i class="fa-solid fa-x"></i> 
+            </button>
+        `;
+    }
     movieCard.innerHTML = `
-        <figure class="movie-card__poster">
-            <img src="${movieDone.Poster}" alt="${movieDone.Title}">
+        <figure href="../movie.html?id=${
+            movieInfo.imdbID
+        }" class="movie-card__poster">
+            <img src="${movieInfo.Poster}" alt="${movieInfo.Title}">
         </figure>
         <section class="movie-card__info">
-            <a href="${movieDone}" class="movie-card__title">${
-        movieDone.Title
-    }</a>
+            <a href="../movie.html?id=${
+                movieInfo.imdbID
+            }" class="movie-card__title">
+        ${movieInfo.Title}
+    </a>
             <p class="movie-card__rating"> ${
-                movieDone.imdbRating !== "N/A"
-                    ? `⭐ ${movieDone.imdbRating}`
+                movieInfo.imdbRating !== "N/A"
+                    ? `⭐ ${movieInfo.imdbRating}`
                     : "No reviews"
             }</p>
-            <button class="movie-card__favorite-btn">  <i class="fa-solid fa-plus"></i> Favorite</button>
+            
+            ${button}
         </section>
     `;
 
