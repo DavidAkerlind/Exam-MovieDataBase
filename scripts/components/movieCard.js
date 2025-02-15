@@ -7,13 +7,16 @@ async function renderMovieCard(movie) {
     const movieCard = document.createElement("article");
     movieCard.classList.add("movie-card");
 
-    let button = `<button class="movie-card__favorite-btn">  <i class="fa-solid fa-plus"></i> Favorite</button>`;
+    let button = `<button class="movie-card__favorite-btn" data-title="${movieInfo.Title}">
+    <i class="fa-solid fa-plus"></i> Favorite
+</button>`;
+
     if (window.location.pathname === "/favorites.html") {
         button = `
-            <button class="movie-card__favorite-btn movie-card__favorite-btn--un">
-                <i class="fa-solid fa-x"></i> 
-            </button>
-        `;
+        <button class="movie-card__favorite-btn movie-card__favorite-btn--un" data-title="${movieInfo.Title}">
+            <i class="fa-solid fa-x"></i> 
+        </button>
+    `;
     }
     movieCard.innerHTML = `
         <figure  class="movie-card__poster">

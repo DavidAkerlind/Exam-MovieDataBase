@@ -20,4 +20,26 @@
     .movie-info__poster {
         padding: 1rem; /* Justera padding för bättre utrymme */
     }
+    .header__container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header__logo {
+        margin-bottom: 1rem;
+    }
+
+    .header__nav-list {
+        flex-direction: column;
+        margin-top: 1rem;
+    }
+
+    .header__nav-item {
+        margin-left: 0;
+        margin-bottom: 1rem;
+    }
+
+    .header__input {
+        width: 100%;
+    }
 }

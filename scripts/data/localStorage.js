@@ -1,18 +1,22 @@
-export const saveFavoriteMovie = (movieTitle) => {
-    const favorites = getFavoriteMovies();
+export function getFavoriteMovies() {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+}
+
+export function saveFavoriteMovies(favorites) {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+export function addMovieToFavorites(movieTitle) {
+    let favorites = getFavoriteMovies();
+
     if (!favorites.includes(movieTitle)) {
         favorites.push(movieTitle);
-        localStorage.setItem("favoriteMovies", JSON.stringify(favorites));
+        saveFavoriteMovies(favorites);
     }
-};
+}
 
-export const removeFavoriteMovie = (movieTitle) => {
-    const favorites = getFavoriteMovies();
-    const updatedFavorites = favorites.filter((title) => title !== movieTitle);
-    localStorage.setItem("favoriteMovies", JSON.stringify(updatedFavorites));
-};
-
-export const getFavoriteMovies = () => {
-    const favorites = localStorage.getItem("favoriteMovies");
-    return favorites ? JSON.parse(favorites) : [];
-};
+export function removeMovieFromFavorites(movieTitle) {
+    let favorites = getFavoriteMovies();
+    favorites = favorites.filter((title) => title !== movieTitle);
+    saveFavoriteMovies(favorites);
+}

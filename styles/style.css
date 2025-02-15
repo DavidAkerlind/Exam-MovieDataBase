@@ -4,7 +4,7 @@
 @import url("./favoritesPage.css");
 @import url("./mediaPhone.css");
 @import url("./mediaTablet.css");
-
+@import url("./uHeader.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* Variables */
@@ -59,51 +59,4 @@ a:hover {
 
 .d-none {
     display: none;
-}
-
-.header {
-    background-color: var(--header-grey);
-    width: 100%;
-    padding: 1.5rem;
-    z-index: 999;
-}
-
-.header__flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header__logo {
-    width: 150px;
-    background-color: yellow;
-}
-
-.header__form {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.header__input {
-    width: 50%;
-    padding: 1rem;
-    border-radius: 2rem 0 0 2rem;
-    border: none;
-}
-
-.header__form-btn {
-    border-radius: 0 2rem 2rem 0;
-    width: 5rem;
-    border: none;
-    cursor: pointer;
-}
-
-.header__fav-btn {
-    text-decoration: none;
-    font-size: 1.5rem;
-    color: var(--text-yellow);
-    background: none;
-    border: none;
-    cursor: pointer;
 }

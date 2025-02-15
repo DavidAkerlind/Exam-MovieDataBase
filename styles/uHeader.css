@@ -1,0 +1,126 @@
+/* Header Styling */
+.header {
+    background-color: var(--header-grey);
+    width: 100%;
+    padding: 1rem 2rem;
+    z-index: 999;
+    box-shadow: var(--box-shadow-light);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header__logo-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header__logo {
+    width: 150px;
+    height: auto;
+}
+
+.header__nav {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header__nav-list {
+    width: 100%;
+    gap: 4rem;
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.header__nav-item {
+    width: 100%;
+    text-align: center;
+}
+
+.header__nav-link {
+    color: var(--primary-white);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.7rem 1.1rem;
+    border-radius: 5rem;
+    transition: all 0.35s ease-in-out;
+}
+
+.header__nav-link:hover {
+    text-decoration: none;
+    background-color: var(--dark-btn);
+}
+
+.header__nav-link:focus {
+    border: 2px solid var(--text-yellow);
+}
+
+.header__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+.header__form-label {
+    position: absolute;
+    left: -9999px; /* Hides the label but makes it accessible for screen readers */
+}
+
+.header__input {
+    margin-left: 2rem;
+    padding: 0.6rem 1.4rem;
+    outline: none;
+    border: 2px solid var(--primary-grey);
+    border-radius: var(--radius-7);
+    background-color: var(--primary-white);
+    color: var(--primary-bg);
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.header__input:focus {
+    border: 2px solid var(--text-yellow);
+    box-shadow: 0 0 4px 1px var(--text-yellow);
+    outline: none;
+}
+
+.header__form-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border-radius: var(--radius-7);
+}
+
+.header__form-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.header__form-btn:hover {
+    opacity: 0.7;
+}
+
+.header__nav-link--fav {
+    position: relative;
+}
