@@ -1,9 +1,8 @@
 .card-container {
     margin: 2rem;
     display: grid;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
     padding: 3rem;
 }
 
@@ -19,7 +18,7 @@
 }
 
 .movie-card__poster {
-    height: 300px;
+    height: 295px;
 }
 
 .movie-card__poster img {
@@ -30,22 +29,22 @@
 }
 
 .movie-card__info {
-    padding: 0.625rem;
+    padding: 0.6rem;
+
     background-color: var(--primary-grey);
 }
 
 .movie-card__title {
     font-size: 1.2rem;
-
     color: var(--primary-white);
-    margin: 0.3rem 0;
 }
 
 .movie-card__rating {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     color: var(--text-gray);
     display: flex;
     gap: 0.25rem;
+    margin-top: 0.8rem;
 }
 
 .movie-card__favorite-btn {

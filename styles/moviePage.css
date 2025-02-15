@@ -1,27 +1,50 @@
 .movie-info {
     display: flex;
-    margin: 1rem;
+    margin: 5rem 1rem;
     gap: 2rem;
-}
-
-.movie-info__poster {
-    text-align: center;
 }
 
 .movie-info__details {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-.movie-info__top {
+.movie-info__top,
+.movie-info__people,
+.movie-info__plot,
+.movie-info__poster {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin: 1rem 0;
     padding: 1rem 0.5rem;
     border-top: 3px solid #ccc; /* Adds a top border */
     border-bottom: 3px solid #ccc; /* Adds a bottom border */
     border-radius: var(--radius-7);
     background-color: var(--primary-grey);
     box-shadow: 0 4px 16px rgba(180, 180, 180, 0.485);
+    letter-spacing: 0.09ch;
+    word-spacing: 0.2ch;
+    line-height: 2.5ch;
+}
+
+.movie-info__poster {
+    text-align: center;
+
+    justify-content: center;
+    padding: 0rem;
+    margin-bottom: 0rem;
+}
+
+.movie-info__title {
+    padding-top: 1rem;
+    align-self: center;
+    font-size: 1.5rem;
+    letter-spacing: 0.1ch;
+}
+
+.movie-info__poster > img {
+    border-bottom-right-radius: var(--radius-7);
+    border-bottom-left-radius: var(--radius-7);
 }
