@@ -1,6 +1,10 @@
 @import url("./carousel.css");
 @import url("./movieCard.css");
 @import url("./moviePage.css");
+@import url("./favoritesPage.css");
+@import url("./mediaPhone.css");
+@import url("./mediaTablet.css");
+
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* Variables */
@@ -15,6 +19,7 @@
     --dark-btn: #2c2c2c;
     --red-btn: #6c3535a6;
     --radius-7: 0.7rem;
+    --box-shadow-light: 0 0 20px 0.5rem rgba(255, 255, 255, 0.1);
 }
 
 /* Base */
@@ -45,6 +50,8 @@ a:hover {
 .content-wrapper {
     max-width: 1180px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 .center {
     margin: 0 auto;

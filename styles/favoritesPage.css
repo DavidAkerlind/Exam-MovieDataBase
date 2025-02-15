@@ -1,0 +1,7 @@
+.favorites-title {
+    justify-self: center;
+    align-self: center;
+    padding: 2rem;
+    color: var(--text-yellow);
+    font-size: 2rem;
+}

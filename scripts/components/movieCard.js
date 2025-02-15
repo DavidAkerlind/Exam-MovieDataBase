@@ -16,10 +16,10 @@ async function renderMovieCard(movie) {
         `;
     }
     movieCard.innerHTML = `
-        <figure href="../movie.html?id=${
-            movieInfo.imdbID
-        }" class="movie-card__poster">
-            <img src="${movieInfo.Poster}" alt="${movieInfo.Title}">
+        <figure  class="movie-card__poster">
+            <img href="../movie.html?id=${movieInfo.imdbID}" src="${
+        movieInfo.Poster
+    }" alt="${movieInfo.Title}">
         </figure>
         <section class="movie-card__info">
             <a href="../movie.html?id=${
