@@ -25,8 +25,8 @@
 .movie-card__poster img {
     width: 100%;
     height: auto;
-    border-top-left-radius: var(--radius-6);
-    border-top-right-radius: var(--radius-6);
+    border-top-left-radius: var(--radius-7);
+    border-top-right-radius: var(--radius-7);
 }
 
 .movie-card__info {

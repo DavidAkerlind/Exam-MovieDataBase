@@ -14,7 +14,7 @@
     --text-gray: #bebebe;
     --dark-btn: #2c2c2c;
     --red-btn: #6c3535a6;
-    --radius-6: 0.7rem;
+    --radius-7: 0.7rem;
 }
 
 /* Base */
@@ -28,6 +28,13 @@
 body {
     background-color: var(--primary-bg);
     max-width: 100%;
+    font-family: "Arial", sans-serif;
+    color: var(--primary-white);
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 a:hover {

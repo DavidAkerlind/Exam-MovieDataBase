@@ -46,7 +46,7 @@ async function fetchMovieByImdbID(imdbID) {
 
     try {
         const response = await fetch(
-            `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbID}`
+            `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbID}&plot=full`
         );
         const movie = await response.json();
 
