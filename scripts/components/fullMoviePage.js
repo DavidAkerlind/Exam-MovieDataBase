@@ -20,9 +20,11 @@ async function renderMoviePage(movie) {
         
 <section class="movie-info__poster">
     <h1 class="movie-info__title">${movieInfo.Title}</h1>
+    <figure class="movie-info__poster-container">
     <img src="${
         poster === "N/A" ? "./res/icons/missing-poster.svg" : poster
     }" alt="${movieInfo.Title} Poster">
+    </figure>
 </section>
 
 <section class="movie-info__details">

@@ -2,17 +2,14 @@
 @import url("./movieCard.css");
 @import url("./moviePage.css");
 @import url("./favoritesPage.css");
-@import url("./mediaPhone.css");
-@import url("./mediaTablet.css");
 @import url("./uHeader.css");
 @import url("./searchbar.css");
 @import url("./searchPage.css");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
 
-/* Variables */
+/* 🎨 Variabler */
 :root {
     --header-grey: #121212;
-    /* Primary BG bör vara din bakgrundsfärg */
     --primary-bg: #000000;
     --primary-white: #ffffff;
     --primary-grey: #1a1a1a;
@@ -24,37 +21,42 @@
     --box-shadow-light: 0 0 20px 0.5rem rgba(255, 255, 255, 0.1);
 }
 
-/* Base */
+/* 🌍 Grundläggande stilar */
 * {
     box-sizing: border-box;
-    padding: 0;
     margin: 0;
+    padding: 0;
     text-decoration: none;
 }
 
 body {
     background-color: var(--primary-bg);
-    max-width: 100%;
-    font-family: "Arial", sans-serif;
     color: var(--primary-white);
+    font-family: "Arial", sans-serif;
+    max-width: 100%;
     margin: 0;
     padding: 0;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 a:hover {
     text-decoration: underline;
 }
 
-/* Utils */
+/* 📌 Utility-klasser */
 .content-wrapper {
     max-width: 1180px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    align-items: center;
 }
+
 .center {
     margin: 0 auto;
 }
@@ -63,52 +65,51 @@ a:hover {
     display: none;
 }
 
+/* 📱 Responsiv design */
 @media (max-width: 769px) {
-    .movie-info {
-        flex-direction: column; /* Gör så att alla delar staplas vertikalt */
-        margin: 2rem 1rem; /* Justera marginalen för små skärmar */
-    }
-
-    .movie-info__details {
-        margin-top: 2rem; /* Lägg till lite utrymme ovanför när den flyttas ner */
-        order: 1; /* Tvinga den att komma efter de andra delarna */
-    }
-
+    .movie-info,
     .movie-info__top,
     .movie-info__people,
     .movie-info__plot,
     .movie-info__poster {
-        flex-direction: column; /* Gör att de ska staplas vertikalt när skärmen är liten */
-        width: 100%; /* Gör så att de tar upp hela bredden */
-    }
-
-    .movie-info__poster {
-        padding: 1rem; /* Justera padding för bättre utrymme */
-    }
-    .header__container {
         flex-direction: column;
-        align-items: flex-start;
+        width: 90%;
+        margin: 2rem 1rem;
     }
 
-    .header__logo {
-        margin-bottom: 1rem;
-    }
-
-    .header__nav-list {
-        flex-direction: column;
-        margin-top: 1rem;
-    }
-
-    .header__nav-item {
-        margin-left: 0;
-        margin-bottom: 1rem;
-    }
-
-    .header__input {
+    .movie-info__poster-container {
+        min-height: auto;
         width: 100%;
     }
+    .movie-info__details,
+    .movie-info {
+        justify-content: center;
+        align-items: center;
+    }
+    .header__logo-link,
+    .header__logo {
+        max-width: 70px;
+    }
+    .header__form {
+        min-width: 15rem;
+    }
+    .header__nav-list {
+        gap: 0;
+    }
+}
+@media (max-width: 440px) {
+    .movie-info__poster-container {
+        width: 100%;
+        height: auto;
+    }
 
-    .content-wrapper {
-        margin: 10rem auto;
+    .movie-info__poster img {
+        object-fit: contain;
+        width: 100%;
+        height: auto;
+    }
+
+    .movie-info__title {
+        font-size: 1.2rem;
     }
 }
