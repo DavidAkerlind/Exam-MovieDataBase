@@ -19,22 +19,29 @@ async function renderMovieCard(movie) {
     `;
     }
     movieCard.innerHTML = `
-        <figure  class="movie-card__poster">
+        <figure class="movie-card__poster">
             <img href="../movie.html?id=${movieInfo.imdbID}" src="${
-        movieInfo.Poster
+        movieInfo.Poster !== "N/A"
+            ? movieInfo.Poster
+            : "./res/icons/missing-poster.svg"
     }" alt="${movieInfo.Title}">
         </figure>
         <section class="movie-card__info">
+        <p class="movie-card__rating"> ${
+            movieInfo.imdbRating === "N/A" || movieInfo.imdbRating === undefined
+                ? ""
+                : `⭐ ${movieInfo.imdbRating}`
+        }</p>
             <a href="../movie.html?id=${
                 movieInfo.imdbID
             }" class="movie-card__title">
         ${movieInfo.Title}
     </a>
-            <p class="movie-card__rating"> ${
-                movieInfo.imdbRating !== "N/A"
-                    ? `⭐ ${movieInfo.imdbRating}`
-                    : "No reviews"
+            
+            <p class="movie-card__year"> ${
+                movieInfo.Year !== "N/A" ? ` ${movieInfo.Year}` : ""
             }</p>
+            
             
             ${button}
         </section>

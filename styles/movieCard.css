@@ -23,14 +23,18 @@
 
 .movie-card__poster img {
     width: 100%;
-    height: auto;
+    height: 100%;
+
     border-top-left-radius: var(--radius-7);
     border-top-right-radius: var(--radius-7);
 }
 
 .movie-card__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 0.6rem;
-
+    min-height: 210px;
     background-color: var(--primary-grey);
 }
 
@@ -44,7 +48,11 @@
     color: var(--text-gray);
     display: flex;
     gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+.movie-card__year {
     margin-top: 0.8rem;
+    color: var(--text-gray);
 }
 
 .movie-card__favorite-btn {
@@ -59,6 +67,10 @@
     margin-top: 3rem;
     transition: 0.2s;
     font-weight: 700;
+}
+
+.movie-card__favorite-btn--added {
+    color: #48ff91;
 }
 
 .movie-card__favorite-btn:hover {
