@@ -1,6 +1,7 @@
 .movie-info {
     display: flex;
-    margin: 5rem 1rem;
+    margin-top: 10rem;
+    margin-inline: 1rem;
     gap: 2rem;
 }
 

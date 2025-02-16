@@ -1,12 +1,14 @@
 import { renderMovieCard } from "./components/movieCard.js";
 import {
     fetchTopMovies,
+    fetchMovieSearch,
     fetchMovieByImdbID,
     fetchMovieByTitle,
 } from "./modules/api.js";
 import { renderMoviePage } from "./components/fullMoviePage.js";
 import { initializeFavoriteButtons } from "./events/favorites.js";
 import { getFavoriteMovies, saveFavoriteMovies } from "./data/localStorage.js";
+import { initSearchFunc, loadSearchResults } from "./events/search.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
@@ -57,7 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMoviePage(fetchMovieByImdbID(imdbID));
     } else if (window.location.pathname === "/search.html") {
         console.log("search.html");
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get("q");
+
+        if (query) {
+            loadSearchResults(query);
+        }
     }
 });
 // Anropa funktionen för att aktivera favoritknappar
 initializeFavoriteButtons();
+initSearchFunc();

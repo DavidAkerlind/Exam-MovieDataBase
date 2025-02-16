@@ -62,4 +62,36 @@ async function fetchMovieByImdbID(imdbID) {
     }
 }
 
-export { fetchTopMovies, fetchMovieByTitle, fetchMovieByImdbID };
+async function fetchMovieSearch(query) {
+    console.log("fetchMovieSearch()");
+    console.log(`Searching for: ${query}`);
+
+    if (!query) return [];
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${query}&type=movie`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! ${response.ok}`);
+        }
+
+        let data = await response.json();
+
+        if (data.Response === "False") {
+            console.log(`No movies found: ${data.Error}`);
+            return [];
+        }
+        // console.log(data);
+        return data.Search.slice(0, 12) || [];
+    } catch (error) {
+        console.log(`Error fetching search results: ${error.message}`);
+        return [];
+    }
+}
+
+export {
+    fetchTopMovies,
+    fetchMovieByTitle,
+    fetchMovieByImdbID,
+    fetchMovieSearch,
+};

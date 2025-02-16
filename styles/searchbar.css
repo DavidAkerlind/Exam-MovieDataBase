@@ -1,0 +1,29 @@
+.search-results {
+    position: absolute;
+    top: 1.9rem;
+    left: 2rem;
+    width: 88%;
+    background-color: var(--primary-grey);
+
+    border-bottom-right-radius: var(--radius-7);
+    border-bottom-left-radius: var(--radius-7);
+
+    margin-top: 5px;
+    list-style: none;
+    padding-top: 1rem;
+    max-height: 20rem;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.search-results__item {
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    color: var(--primary-white);
+}
+
+.search-results__item:hover {
+    background-color: var(--text-yellow);
+    color: var(--primary-bg);
+}

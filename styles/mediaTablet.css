@@ -42,4 +42,8 @@
     .header__input {
         width: 100%;
     }
+
+    .content-wrapper {
+        margin: 10rem auto;
+    }
 }

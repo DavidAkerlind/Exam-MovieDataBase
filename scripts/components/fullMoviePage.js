@@ -18,9 +18,11 @@ async function renderMoviePage(movie) {
     const html = `
        
         
-<section class="movie-info__poster" >
-    <h1 class="movie-info__title" >${movieInfo.Title}</h1>
-    <img src="${poster}" alt="${movieInfo.Title} Poster">
+<section class="movie-info__poster">
+    <h1 class="movie-info__title">${movieInfo.Title}</h1>
+    <img src="${
+        poster === "N/A" ? "./res/icons/missing-poster.svg" : poster
+    }" alt="${movieInfo.Title} Poster">
 </section>
 
 <section class="movie-info__details">
