@@ -9,6 +9,7 @@ import { renderMoviePage } from "./components/fullMoviePage.js";
 import { initializeFavoriteButtons } from "./events/favorites.js";
 import { getFavoriteMovies, saveFavoriteMovies } from "./data/localStorage.js";
 import { initSearchFunc, loadSearchResults } from "./events/search.js";
+import { createHeader } from "./components/header.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
@@ -18,9 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.pathname === "/index.html"
     ) {
         console.log("index.html");
+        createHeader();
     } else if (window.location.pathname === "/favorites.html") {
         console.log("favorites.html");
-
+        createHeader();
         let favoriteMovies = getFavoriteMovies();
         console.log(favoriteMovies);
 
@@ -54,12 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     } else if (window.location.pathname === "/movie.html") {
         console.log("movie.html");
+        createHeader();
         const urlParams = new URLSearchParams(window.location.search);
         const imdbID = urlParams.get("id");
         renderMoviePage(fetchMovieByImdbID(imdbID));
     } else if (window.location.pathname === "/search.html") {
         console.log("search.html");
-
+        createHeader();
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get("q");
 

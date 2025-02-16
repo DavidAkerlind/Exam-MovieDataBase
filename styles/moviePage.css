@@ -1,8 +1,9 @@
+/* Allmän layout för stora skärmar */
 .movie-info {
     display: flex;
-    margin-top: 10rem;
     margin-inline: 1rem;
     gap: 2rem;
+    min-height: 30rem;
 }
 
 .movie-info__details {
@@ -20,8 +21,8 @@
     flex-wrap: wrap;
     gap: 1rem;
     padding: 1rem 0.5rem;
-    border-top: 3px solid #ccc; /* Adds a top border */
-    border-bottom: 3px solid #ccc; /* Adds a bottom border */
+    border-top: 3px solid #ccc;
+    border-bottom: 3px solid #ccc;
     border-radius: var(--radius-7);
     background-color: var(--primary-grey);
     box-shadow: 0 4px 16px rgba(180, 180, 180, 0.485);
@@ -31,21 +32,34 @@
 }
 
 .movie-info__poster {
-    text-align: center;
-
+    min-width: 300px;
+    align-items: center;
     justify-content: center;
-    padding: 0rem;
-    margin-bottom: 0rem;
+}
+
+/* Poster container */
+.movie-info__poster-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    height: 336px;
+    overflow: hidden;
+}
+
+.movie-info__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-bottom-right-radius: var(--radius-7);
+    border-bottom-left-radius: var(--radius-7);
 }
 
 .movie-info__title {
     padding-top: 1rem;
+    text-align: center;
     align-self: center;
     font-size: 1.5rem;
     letter-spacing: 0.1ch;
-}
-
-.movie-info__poster > img {
-    border-bottom-right-radius: var(--radius-7);
-    border-bottom-left-radius: var(--radius-7);
+    line-height: 2.5ch;
 }

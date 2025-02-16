@@ -34,7 +34,7 @@ export function addToFavorites(movieTitle, button) {
     console.log("addToFavorites()", movieTitle);
     addMovieToFavorites(movieTitle);
 
-    button.innerHTML = `<i class="fa-solid fa-check"></i> Favorited`;
+    button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
     button.classList.add("movie-card__favorite-btn--added");
 }
 

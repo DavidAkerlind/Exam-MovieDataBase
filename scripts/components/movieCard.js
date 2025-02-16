@@ -1,3 +1,5 @@
+import { getFavoriteMovies } from "../data/localStorage.js";
+
 // Skapar och renderar filmkortet
 async function renderMovieCard(movie) {
     console.log("renderMovieCard()");
@@ -7,17 +9,30 @@ async function renderMovieCard(movie) {
     const movieCard = document.createElement("article");
     movieCard.classList.add("movie-card");
 
-    let button = `<button class="movie-card__favorite-btn" data-title="${movieInfo.Title}">
+    let buttonHTML = `<button class="movie-card__favorite-btn" data-title="${movieInfo.Title}">
     <i class="fa-solid fa-plus"></i> Favorite
-</button>`;
+    </button>`;
+
+    let favoriteMovies = getFavoriteMovies();
+    console.log(favoriteMovies);
+    console.log();
+
+    const isFavorite = favoriteMovies.some(
+        (faMovie) => faMovie === movieInfo.Title
+    );
 
     if (window.location.pathname === "/favorites.html") {
-        button = `
+        buttonHTML = `
         <button class="movie-card__favorite-btn movie-card__favorite-btn--un" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-x"></i> 
         </button>
     `;
+    } else if (isFavorite) {
+        buttonHTML = `<button class="movie-card__favorite-btn movie-card__favorite-btn--added" data-title="${movieInfo.Title}">
+            <i class="fa-solid fa-check"></i> Added
+        </button>`;
     }
+
     movieCard.innerHTML = `
         <figure class="movie-card__poster">
             <img href="../movie.html?id=${movieInfo.imdbID}" src="${
@@ -43,7 +58,7 @@ async function renderMovieCard(movie) {
             }</p>
             
             
-            ${button}
+            ${buttonHTML}
         </section>
     `;
 
