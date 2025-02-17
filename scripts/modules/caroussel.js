@@ -1,4 +1,3 @@
-
 export function renderTrailers(movie, num) {
     const iFrameRef = document.createElement(`iframe`);
     iFrameRef.classList.add(`trailers__video`, `trailers__video-${num}`);
@@ -7,12 +6,12 @@ export function renderTrailers(movie, num) {
 
     const trailerList = document.querySelectorAll(`.trailers__video`);
     const trailerArray = Array.from(trailerList);
-    
-    document.querySelectorAll(`.trailers__arrow`).forEach(arrow => {
+
+    document.querySelectorAll(`.trailers__arrow`).forEach((arrow) => {
         arrow.addEventListener(`click`, (event) => {
             changeTrailer(event, trailerList, trailerArray);
         });
-    })
+    });
 }
 
 function changeTrailer(event, trailerList, trailerArray) {
@@ -22,7 +21,7 @@ function changeTrailer(event, trailerList, trailerArray) {
         trailerArray.unshift(trailerArray.pop());
     }
 
-    trailerList.forEach(item => {
+    trailerList.forEach((item) => {
         item.classList.remove(
             `trailers__video-1`,
             `trailers__video-2`,
@@ -33,7 +32,6 @@ function changeTrailer(event, trailerList, trailerArray) {
     });
 
     trailerArray.slice(0, 5).forEach((item, i) => {
-        item.classList.add(`trailers__video-${i + 1}`)
+        item.classList.add(`trailers__video-${i + 1}`);
     });
 }
-

@@ -1,21 +1,22 @@
 import { oData } from "../data/data.js";
 
-const apiKey = "d59607eb"; // key for omdb-API
+const TOKEN = "d59607eb"; // key for omdb-API
 
-async function fetchTopMovies() {
-    console.log("fetchTopMovies()");
+async function fetchCarouselMovies() {
+    console.log("fetchCarouselMovies()");
     const response = await fetch(
         "https://santosnr6.github.io/Data/favoritemovies.json"
     );
     let movies = await response.json();
     oData.topMovieList = movies;
+    return movies;
 }
 
 // sätter oData.searchTitleMovieData till den data om den titel vi skickar in i funktionen och returnerar den också
 async function fetchMovieByTitle(title) {
     console.log("fetchMovieByTitle()");
 
-    const url = `http://www.omdbapi.com/?apikey=${apiKey}&t=${title}`;
+    const url = `http://www.omdbapi.com/?apikey=${TOKEN}&t=${title}`;
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -28,7 +29,6 @@ async function fetchMovieByTitle(title) {
         }
 
         oData.searchTitleMovieData = data;
-        console.log(data);
         return data;
     } catch (error) {
         console.log("Error fetching movie data:", error.message);
@@ -46,7 +46,7 @@ async function fetchMovieByImdbID(imdbID) {
 
     try {
         const response = await fetch(
-            `https://www.omdbapi.com/?apikey=${apiKey}&i=${imdbID}&plot=full`
+            `https://www.omdbapi.com/?apikey=${TOKEN}&i=${imdbID}&plot=full`
         );
         const movie = await response.json();
 
@@ -67,7 +67,7 @@ async function fetchMovieSearch(query) {
     console.log(`Searching for: ${query}`);
 
     if (!query) return [];
-    const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${query}&type=movie`;
+    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}&type=movie`;
 
     try {
         const response = await fetch(url);
@@ -90,7 +90,7 @@ async function fetchMovieSearch(query) {
 }
 
 export {
-    fetchTopMovies,
+    fetchCarouselMovies,
     fetchMovieByTitle,
     fetchMovieByImdbID,
     fetchMovieSearch,

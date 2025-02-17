@@ -14,7 +14,7 @@ async function renderMovieCard(movie) {
     </button>`;
 
     let favoriteMovies = getFavoriteMovies();
-    console.log(favoriteMovies);
+
     console.log();
 
     const isFavorite = favoriteMovies.some(

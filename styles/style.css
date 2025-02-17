@@ -50,7 +50,7 @@ a:hover {
 /* 📌 Utility-klasser */
 .content-wrapper {
     max-width: 1180px;
-    margin: 0 auto;
+    margin-top: 5rem;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -65,8 +65,18 @@ a:hover {
     display: none;
 }
 
-/* 📱 Responsiv design */
-@media (max-width: 769px) {
+.content-wrapper--trailers {
+    margin-top: 0;
+    display: block;
+}
+
+@media screen and (max-width: 992px) {
+}
+
+@media screen and (max-width: 768px) {
+    .header__nav {
+        display: none;
+    }
     .movie-info,
     .movie-info__top,
     .movie-info__people,
@@ -90,14 +100,31 @@ a:hover {
     .header__logo {
         max-width: 70px;
     }
-    .header__form {
-        min-width: 15rem;
-    }
+
     .header__nav-list {
         gap: 0;
     }
+
+    .menu__navigation {
+        display: flex;
+    }
+    .menu__button {
+        display: flex;
+    }
 }
-@media (max-width: 440px) {
+@media screen and (max-width: 576px) {
+    .header {
+        background: transparent;
+    }
+    .header__container {
+        display: none;
+    }
+    .menu {
+        position: absolute;
+        right: 1.5rem;
+        margin-right: 2rem;
+    }
+
     .movie-info__poster-container {
         width: 100%;
         height: auto;
@@ -111,5 +138,9 @@ a:hover {
 
     .movie-info__title {
         font-size: 1.2rem;
+    }
+
+    .menu__button {
+        top: 0.4rem;
     }
 }

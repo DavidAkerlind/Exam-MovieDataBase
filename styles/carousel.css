@@ -64,16 +64,16 @@
     aspect-ratio: 16/9;
     pointer-events: none;
     position: absolute;
-    transition: all .3s ease-in-out;
+    transition: all 0.5s ease-in-out;
     z-index: 0;
-    border-radius: .6rem;
+    border-radius: var(--radius-7);
     transform: translateX(-50%);
     border: none;
 }
 
 .trailers__video-1 {
     left: 15%;
-    opacity: .4;
+    opacity: 0.4;
 }
 
 .trailers__video-2,
@@ -102,7 +102,7 @@
 
 .trailers__video-5 {
     left: 85%;
-    opacity: .4;
+    opacity: 0.4;
 }
 
 @media screen and (max-width: 750px) {

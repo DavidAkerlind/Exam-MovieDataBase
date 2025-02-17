@@ -7,7 +7,9 @@ function createHeader() {
                 </a>
                 <form class="header__form" id="searchForm" role="search">
                     <label for="searchInput" class="header__form-label">Search MMDb:</label>
-                    <input class="header__input" id="searchInput" type="text" placeholder="Search MMDb" aria-label="Search movies on IMDb" />
+                    <input autocomplete="off" class="header__input" id="searchInput" type="text" placeholder="Search MMDb" aria-label="Search movies on IMDb" />
+                    <ul id="searchResults" class="search-results d-none"></ul>
+
                     <button class="header__form-btn" id="searchBtn" aria-label="Search">
                         <img src="./res/icons/search-black.svg" alt="Search Icon" />
                     </button>
@@ -23,7 +25,9 @@ function createHeader() {
                     </ul>
                 </nav>
           <!-- Accessible Hamburger Menu -->
-<div class="menu">
+
+
+            </div><div class="menu">
     <input
         type="checkbox"
         class="menu__checkbox"
@@ -66,6 +70,7 @@ function createHeader() {
                 <form class="header__form" id="searchForm" role="search">
                     <label for="searchInput" class="header__form-label">Search MMDb:</label>
                     <input
+                        autocomplete="off"
                         class="header__input"
                         id="searchInput"
                         type="text"
@@ -84,7 +89,7 @@ function createHeader() {
 
             <!-- Navigation Links -->
             <li class="menu__item">
-                <a
+                <a id="searchLink"
                     class="menu__link"
                     href="./search.html"
                     aria-label="Navigate to search page">
@@ -92,7 +97,7 @@ function createHeader() {
                 </a>
             </li>
             <li class="menu__item">
-                <a
+                <a id="favoritesLink"
                     class="menu__link"
                     href="./favorites.html"
                     aria-label="Navigate to favorites page">
@@ -102,8 +107,6 @@ function createHeader() {
         </ul>
     </nav>
 </div>
-
-            </div>
         </header>
     `;
 
@@ -119,12 +122,12 @@ function highlightActiveLink() {
 
     if (path.includes("search.html")) {
         document
-            .getElementById("searchLink")
-            .classList.add("header__nav-link--active");
+            .querySelectorAll("#searchLink")
+            .forEach((el) => el.classList.add("header__nav-link--active"));
     } else if (path.includes("favorites.html")) {
         document
-            .getElementById("favoritesLink")
-            .classList.add("header__nav-link--active");
+            .querySelectorAll("#favoritesLink")
+            .forEach((el) => el.classList.add("header__nav-link--active"));
     }
 }
 
