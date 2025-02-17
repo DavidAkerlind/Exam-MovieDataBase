@@ -68,7 +68,10 @@ export function initSearchFunc() {
                     console.log(query);
 
                     if (query.length > 0) {
-                        window.location.href = `/search.html?q=${query}`; // Skicka användaren till search.html med sökfrågan som URL-parameter
+                        window.location.href = `search.html?q=${encodeURIComponent(
+                            query
+                        )}`;
+                        // Skicka användaren till search.html med sökfrågan som URL-parameter
                     }
                 });
             });

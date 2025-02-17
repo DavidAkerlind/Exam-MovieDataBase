@@ -1,7 +1,7 @@
 import { getFavoriteMovies } from "../data/localStorage.js";
 
 // Skapar och renderar filmkortet
-async function renderMovieCard(movie) {
+async function renderMovieCard(movie, index) {
     console.log("renderMovieCard()");
 
     let movieInfo = await movie;
@@ -21,7 +21,21 @@ async function renderMovieCard(movie) {
         (faMovie) => faMovie === movieInfo.Title
     );
 
-    if (window.location.pathname === "/favorites.html") {
+    const isGitHubPages =
+        window.location.hostname === "davidakerlind.github.io";
+
+    // Basvägen för GitHub Pages
+    const basePath = isGitHubPages ? "/Exam-MovieDataBase" : "";
+
+    // Justera sökvägen baserat på om vi är på GitHub Pages eller ej
+    const path = window.location.pathname.replace(basePath, "");
+
+    let posDiv = ``;
+    if (path === "/index.html") {
+        posDiv = `<p class="movie-rank" ># ${index + 1}</p>`;
+    }
+
+    if (path === "/favorites.html") {
         buttonHTML = `
         <button class="movie-card__favorite-btn movie-card__favorite-btn--un" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-x"></i> 
@@ -50,13 +64,17 @@ async function renderMovieCard(movie) {
             <a href="../movie.html?id=${
                 movieInfo.imdbID
             }" class="movie-card__title">
-        ${movieInfo.Title}
-    </a>
-            
-            <p class="movie-card__year"> ${
-                movieInfo.Year !== "N/A" ? ` ${movieInfo.Year}` : ""
-            }</p>
-            
+    ${
+        movieInfo.Title.length > 60
+            ? movieInfo.Title.substring(0, 57) + "..."
+            : movieInfo.Title
+    }
+</a>
+
+         <p class="movie-card__year"> 
+    ${movieInfo.Year && movieInfo.Year !== "N/A" ? movieInfo.Year : posDiv}
+</p>
+
             
             ${buttonHTML}
         </section>

@@ -11,7 +11,8 @@ import { getFavoriteMovies, saveFavoriteMovies } from "./data/localStorage.js";
 import { initSearchFunc, loadSearchResults } from "./events/search.js";
 import { createHeader } from "./components/header.js";
 import { renderTrailers } from "./modules/caroussel.js";
-import { randomize, getLimitedCount } from "./utils/utils.js";
+import { randomize, getLimitedCount, shuffleArray } from "./utils/utils.js";
+import { renderRecommendations } from "./components/recomendations.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isGitHubPages =
         window.location.hostname === "davidakerlind.github.io";
 
-    // Basvägen för GitHub Pages
+    // Detta är basvägen för GitHub Pages
     const basePath = isGitHubPages ? "/Exam-MovieDataBase" : "";
 
     // Justera sökvägen baserat på om vi är på GitHub Pages eller ej
@@ -29,7 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (path === "/" || path === "/index.html") {
         console.log("index.html");
         createHeader();
-        setupLandingPage();
+        setupCarousel();
+        renderRecommendations();
     } else if (path === "/favorites.html") {
         console.log("favorites.html");
         createHeader();
@@ -55,40 +57,24 @@ document.addEventListener("DOMContentLoaded", () => {
 initializeFavoriteButtons();
 initSearchFunc();
 
-function setupLandingPage() {
-    fetchCarouselMovies()
-        .then((topMovies) => {
-            const selectedIndexes = [];
+function setupCarousel() {
+    console.log("setupCarousel()");
 
-            const uniqueMovieCount = getLimitedCount(5, topMovies.length);
-            const moviesToRender = [];
-            for (let i = 0; i < uniqueMovieCount; i++) {
-                let randomIndex;
-
-                do {
-                    randomIndex = randomize(1, topMovies.length);
-                } while (selectedIndexes.includes(randomIndex));
-
-                selectedIndexes.push(randomIndex);
-
-                moviesToRender.push(topMovies[randomIndex]);
-            }
-
-            while (moviesToRender.length < 5) {
-                const randomIndex = randomize(0, moviesToRender.length - 1);
-                moviesToRender.push(moviesToRender[randomIndex]);
-            }
-
-            moviesToRender.forEach((movie, index) => {
-                renderTrailers(movie, index + 1);
-            });
-        })
-        .catch((error) => {
-            console.log("Error fetching topMovies", error);
-        });
+    fetchCarouselMovies().then((topMovies) => {
+        if (topMovies.length < 5) {
+            console.log("Not enough movies to display (trailer)");
+            return;
+        }
+        let shuffledMovies = shuffleArray(topMovies);
+        for (let i = 1; i <= 5; i++) {
+            renderTrailers(shuffledMovies[i], i);
+        }
+    });
 }
 
 function setupFavoritesPage() {
+    console.log("setupFavoritesPage()");
+
     let favoriteMovies = getFavoriteMovies();
 
     if (favoriteMovies.length > 0) {
