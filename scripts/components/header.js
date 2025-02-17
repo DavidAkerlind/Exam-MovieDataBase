@@ -1,4 +1,6 @@
 function createHeader() {
+    console.log("createHeader()");
+
     const headerHTML = `
         <header class="header header--flex">
             <div class="header__container">
@@ -118,6 +120,8 @@ function createHeader() {
 }
 
 function highlightActiveLink() {
+    console.log("highlightActiveLink()");
+
     const path = window.location.pathname; // Hämtar nuvarande sidans URL-path
 
     if (path.includes("search.html")) {

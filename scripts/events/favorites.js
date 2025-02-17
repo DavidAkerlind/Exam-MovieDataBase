@@ -53,7 +53,7 @@ export function updateFavoriteButtons() {
         const movieTitle = button.getAttribute("data-title");
 
         if (favorites.includes(movieTitle)) {
-            button.innerHTML = `<i class="fa-solid fa-check"></i> Favorited`;
+            button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
             button.classList.add("movie-card__favorite-btn--added");
         }
     });

@@ -5,6 +5,7 @@
 @import url("./uHeader.css");
 @import url("./searchbar.css");
 @import url("./searchPage.css");
+@import url("./podium.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
 
 /* 🎨 Variabler */
@@ -18,7 +19,9 @@
     --dark-btn: #2c2c2c;
     --red-btn: #6c3535a6;
     --radius-7: 0.7rem;
-    --box-shadow-light: 0 0 20px 0.5rem rgba(255, 255, 255, 0.1);
+    --blue-text: #4891ff;
+    --green-text: #48ff91;
+    --box-shadow-light: 0 1rem 3rem 0.75rem rgba(255, 255, 255, 0.2);
 }
 
 /* 🌍 Grundläggande stilar */
@@ -68,6 +71,10 @@ a:hover {
 .content-wrapper--trailers {
     margin-top: 0;
     display: block;
+}
+
+.popular-title {
+    color: var(--text-yellow);
 }
 
 @media screen and (max-width: 992px) {

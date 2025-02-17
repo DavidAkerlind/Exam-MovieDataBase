@@ -5,9 +5,11 @@
     gap: 1rem;
     padding: 3rem;
     width: 100%;
+    justify-items: center;
 }
 
 .movie-card {
+    align-self: center;
     display: block;
     background-color: var(--primary-bg);
     color: var(--primary-white);
@@ -16,6 +18,13 @@
     overflow: hidden;
     font-family: Arial, sans-serif;
     position: relative;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.movie-card:hover {
+    box-shadow: var(--box-shadow-light);
+
+    transform: scale(1.01);
 }
 
 .movie-card__poster {
@@ -59,7 +68,7 @@
 
 .movie-card__favorite-btn {
     background-color: var(--dark-btn);
-    color: #4891ff;
+    color: var(--blue-text);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 3rem;
@@ -72,7 +81,7 @@
 }
 
 .movie-card__favorite-btn--added {
-    color: #48ff91;
+    color: var(--green-text);
 }
 
 .movie-card__favorite-btn:hover {
@@ -84,5 +93,4 @@
     background-color: var(--red-btn);
     color: var(--primary-white);
     padding: 0.4rem;
-    width: 16%;
 }

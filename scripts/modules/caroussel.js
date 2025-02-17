@@ -1,4 +1,6 @@
 export function renderTrailers(movie, num) {
+    console.log("renderTrailers()");
+    ("renderTrailers()");
     const iFrameRef = document.createElement(`iframe`);
     iFrameRef.classList.add(`trailers__video`, `trailers__video-${num}`);
     iFrameRef.src = movie.Trailer_link;
@@ -15,6 +17,8 @@ export function renderTrailers(movie, num) {
 }
 
 function changeTrailer(event, trailerList, trailerArray) {
+    console.log("changeTrailer()");
+
     if (event.target.dataset.direction === `right`) {
         trailerArray.push(trailerArray.shift());
     } else if (event.target.dataset.direction === `left`) {
