@@ -1,6 +1,6 @@
 import { renderMovieCard } from "./components/movieCard.js";
 import {
-    fetchTopMovies,
+    fetchCarouselMovies,
     fetchMovieSearch,
     fetchMovieByImdbID,
     fetchMovieByTitle,
@@ -10,6 +10,8 @@ import { initializeFavoriteButtons } from "./events/favorites.js";
 import { getFavoriteMovies, saveFavoriteMovies } from "./data/localStorage.js";
 import { initSearchFunc, loadSearchResults } from "./events/search.js";
 import { createHeader } from "./components/header.js";
+import { renderTrailers } from "./modules/caroussel.js";
+import { randomize, getLimitedCount } from "./utils/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
@@ -20,40 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
         console.log("index.html");
         createHeader();
+        setupLandingPage();
     } else if (window.location.pathname === "/favorites.html") {
         console.log("favorites.html");
         createHeader();
-        let favoriteMovies = getFavoriteMovies();
-        console.log(favoriteMovies);
-
-        if (favoriteMovies.length > 0) {
-            favoriteMovies.forEach((movieTitle) => {
-                fetchMovieByTitle(movieTitle).then((movieData) => {
-                    if (movieData) {
-                        renderMovieCard(movieData);
-                    }
-                });
-            });
-        } else {
-            // Om det inte finns några favoriter, visa standardfilmer
-
-            const defaultMovies = [
-                "Inception",
-                "The Dark Knight",
-                "Interstellar",
-                "The Matrix",
-                "Pulp Fiction",
-                "The Simpsons",
-            ];
-            saveFavoriteMovies(defaultMovies); // spara dem så de aldrig försvinner förutom om man tar bort alla dårå
-            defaultMovies.forEach((movieTitle) => {
-                fetchMovieByTitle(movieTitle).then((movieData) => {
-                    if (movieData) {
-                        renderMovieCard(movieData);
-                    }
-                });
-            });
-        }
+        setupFavoritesPage();
     } else if (window.location.pathname === "/movie.html") {
         console.log("movie.html");
         createHeader();
@@ -74,3 +47,69 @@ document.addEventListener("DOMContentLoaded", () => {
 // Anropa funktionen för att aktivera favoritknappar
 initializeFavoriteButtons();
 initSearchFunc();
+
+function setupLandingPage() {
+    fetchCarouselMovies()
+        .then((topMovies) => {
+            const selectedIndexes = [];
+
+            const uniqueMovieCount = getLimitedCount(5, topMovies.length);
+            const moviesToRender = [];
+            for (let i = 0; i < uniqueMovieCount; i++) {
+                let randomIndex;
+
+                do {
+                    randomIndex = randomize(1, topMovies.length);
+                } while (selectedIndexes.includes(randomIndex));
+
+                selectedIndexes.push(randomIndex);
+
+                moviesToRender.push(topMovies[randomIndex]);
+            }
+
+            while (moviesToRender.length < 5) {
+                const randomIndex = randomize(0, moviesToRender.length - 1);
+                moviesToRender.push(moviesToRender[randomIndex]);
+            }
+
+            moviesToRender.forEach((movie, index) => {
+                renderTrailers(movie, index + 1);
+            });
+        })
+        .catch((error) => {
+            console.log("Error fetching topMovies", error);
+        });
+}
+
+function setupFavoritesPage() {
+    let favoriteMovies = getFavoriteMovies();
+
+    if (favoriteMovies.length > 0) {
+        favoriteMovies.forEach((movieTitle) => {
+            fetchMovieByTitle(movieTitle).then((movieData) => {
+                if (movieData) {
+                    renderMovieCard(movieData);
+                }
+            });
+        });
+    } else {
+        // Om det inte finns några favoriter, visa standardfilmer
+
+        const defaultMovies = [
+            "Inception",
+            "The Dark Knight",
+            "Interstellar",
+            "The Matrix",
+            "Pulp Fiction",
+            "The Simpsons",
+        ];
+        saveFavoriteMovies(defaultMovies); // spara dem så de aldrig försvinner förutom om man tar bort alla dårå
+        defaultMovies.forEach((movieTitle) => {
+            fetchMovieByTitle(movieTitle).then((movieData) => {
+                if (movieData) {
+                    renderMovieCard(movieData);
+                }
+            });
+        });
+    }
+}

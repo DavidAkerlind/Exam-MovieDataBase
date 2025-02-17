@@ -4,61 +4,74 @@ import { renderMovieCard } from "../components/movieCard.js";
 export function initSearchFunc() {
     document.addEventListener("DOMContentLoaded", () => {
         console.log("initSearchFunc()");
-        const searchInput = document.getElementById("searchInput");
-        const searchResults = document.createElement("ul");
-        searchResults.classList.add("search-results");
-        searchInput.parentNode.appendChild(searchResults);
 
-        searchInput.addEventListener("focus", () => {
-            if (searchResults.innerHTML.trim() !== "") {
-                searchResults.classList.remove("d-none");
-            }
-        });
+        const searchInputs = document.querySelectorAll("#searchInput");
 
-        searchInput.addEventListener("input", async () => {
-            const query = searchInput.value.trim();
-            searchResults.innerHTML = "";
+        searchInputs.forEach((searchInput) => {
+            const searchResults = document.createElement("ul");
+            searchResults.classList.add("search-results");
+            searchInput.parentNode.appendChild(searchResults);
 
-            if (query.length < 1) {
-                searchResults.classList.remove("d-none");
-                return;
-            }
+            searchResults.classList.add("d-none");
 
-            const movies = await fetchMovieSearch(query);
-            if (movies.length === 0) {
-                console.log("in search.js no movies found");
-                return;
-            }
-            console.log(movies);
-            movies.forEach((movie) => {
-                const li = document.createElement("li");
-                li.classList.add("search-results__item");
-                li.textContent = `${movie.Title} (${movie.Year})`;
-                li.addEventListener("click", () => {
-                    searchInput.value = movie.Title;
-                    searchResults.innerHTML = "";
-                });
-                searchResults.appendChild(li);
+            searchInput.addEventListener("focus", () => {
+                if (searchResults.innerHTML.trim() !== "") {
+                    searchResults.classList.remove("d-none");
+                }
             });
-        });
 
-        searchForm.addEventListener("submit", (event) => {
-            event.preventDefault();
+            searchInput.addEventListener("input", async () => {
+                const query = searchInput.value.trim();
+                searchResults.innerHTML = "";
 
-            const query = searchInput.value.trim();
-            if (query.length > 0) {
-                window.location.href = `/search.html?q=${query}`;
-            }
-        });
+                if (query.length < 1) {
+                    searchResults.classList.add("d-none");
+                    return;
+                }
 
-        // Döljer sökresultaten när man klickar utanför
-        document.addEventListener("click", (event) => {
-            if (
-                !searchInput.contains(event.target) &&
-                !searchResults.contains(event.target)
-            ) {
-                searchResults.classList.add("d-none");
-            }
+                const movies = await fetchMovieSearch(query);
+                if (movies.length === 0) {
+                    console.log("No movies found");
+                    return;
+                }
+
+                movies.forEach((movie) => {
+                    const li = document.createElement("li");
+                    li.classList.add("search-results__item");
+                    li.textContent = `${movie.Title} (${movie.Year})`;
+                    li.addEventListener("click", () => {
+                        searchInput.value = movie.Title;
+                        searchResults.innerHTML = "";
+                        searchResults.classList.add("d-none");
+                    });
+                    searchResults.appendChild(li);
+                });
+
+                searchResults.classList.remove("d-none");
+            });
+
+            document.addEventListener("click", (event) => {
+                if (
+                    !searchInput.contains(event.target) &&
+                    !searchResults.contains(event.target)
+                ) {
+                    searchResults.classList.add("d-none");
+                }
+            });
+
+            const searchForm = document.querySelectorAll("#searchForm");
+
+            searchForm.forEach((elem) => {
+                elem.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    let query = elem.querySelector("#searchInput").value;
+                    console.log(query);
+
+                    if (query.length > 0) {
+                        window.location.href = `/search.html?q=${query}`; // Skicka användaren till search.html med sökfrågan som URL-parameter
+                    }
+                });
+            });
         });
     });
 }
@@ -71,27 +84,21 @@ export async function loadSearchResults(query) {
     ).textContent = `Search results for: ${query}`;
 
     try {
-        // Hämta sökresultaten från OMDB API
         const movies = await fetchMovieSearch(query);
-        console.log(movies); // För felsökning, kan ta bort senare
 
-        // Hämta referensen till container där vi ska visa filmerna
         const cardContainerRef = document.querySelector("#cardContainer");
 
-        // Rensa tidigare sökresultat
         cardContainerRef.innerHTML = "";
 
-        // Om inga filmer hittades
         if (movies.length === 0) {
             document.querySelector("#searchHeader").textContent =
                 "No results found.";
         } else {
-            // För varje film i resultatet, anropa renderMovie
             movies.forEach((movie) => {
-                renderMovieCard(movie); // Rendera film
+                renderMovieCard(movie);
             });
         }
     } catch (error) {
-        console.error("Error fetching search results:", error); // Hantera fel
+        console.error("Error fetching search results:", error);
     }
 }
