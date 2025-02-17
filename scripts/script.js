@@ -16,24 +16,31 @@ import { randomize, getLimitedCount } from "./utils/utils.js";
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
 
-    if (
-        window.location.pathname === "/" ||
-        window.location.pathname === "/index.html"
-    ) {
+    // Kontrollera om vi är på GitHub Pages (bas-URL innehåller "/Exam-MovieDataBase/")
+    const isGitHubPages =
+        window.location.hostname === "davidakerlind.github.io";
+
+    // Basvägen för GitHub Pages
+    const basePath = isGitHubPages ? "/Exam-MovieDataBase" : "";
+
+    // Justera sökvägen baserat på om vi är på GitHub Pages eller ej
+    const path = window.location.pathname.replace(basePath, "");
+
+    if (path === "/" || path === "/index.html") {
         console.log("index.html");
         createHeader();
         setupLandingPage();
-    } else if (window.location.pathname === "/favorites.html") {
+    } else if (path === "/favorites.html") {
         console.log("favorites.html");
         createHeader();
         setupFavoritesPage();
-    } else if (window.location.pathname === "/movie.html") {
+    } else if (path === "/movie.html") {
         console.log("movie.html");
         createHeader();
         const urlParams = new URLSearchParams(window.location.search);
         const imdbID = urlParams.get("id");
         renderMoviePage(fetchMovieByImdbID(imdbID));
-    } else if (window.location.pathname === "/search.html") {
+    } else if (path === "/search.html") {
         console.log("search.html");
         createHeader();
         const urlParams = new URLSearchParams(window.location.search);
