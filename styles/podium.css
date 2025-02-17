@@ -67,6 +67,42 @@
     padding: 3px 6px;
     border-radius: 5px;
 }
+.movie-list {
+    width: 100%;
+    padding: 3rem;
+}
+.movie-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--primary-grey);
+    color: var(--text-gray);
+}
+
+.movie-title {
+    flex-grow: 1;
+}
+
+.trailer-link {
+    text-decoration: none;
+    color: var(--text-yellow);
+}
+
+.imdb-id {
+    color: var(--text-gray);
+    font-size: 0.9em;
+}
+
+.favorite-btn {
+    background: none;
+    border: 1px solid blue;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 16px;
+    color: blue;
+    cursor: pointer;
+}
 
 @media (max-width: 768px) {
     .podium-section {
