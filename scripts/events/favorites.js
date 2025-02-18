@@ -19,7 +19,11 @@ export function initializeFavoriteButtons() {
 
             if (!imdbID) return;
 
-            if (window.location.pathname === "/favorites.html") {
+            if (
+                window.location.pathname === "/favorites.html" ||
+                window.location.pathname ===
+                    "/Exam-MovieDataBase/favorites.html"
+            ) {
                 removeFromFavorites(imdbID, button);
             } else {
                 addToFavorites(imdbID, button);

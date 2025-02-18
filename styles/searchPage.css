@@ -1,5 +1,11 @@
 .search-title {
-    margin: 4rem;
+    margin: 4rem 0 2rem 0;
+    text-align: center;
+}
+
+.search-result {
+    margin-top: 0.5rem;
+    color: var(--text-yellow);
 }
 
 .search-container {
