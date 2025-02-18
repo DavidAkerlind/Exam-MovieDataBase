@@ -1,5 +1,6 @@
 import { renderMovieCard } from "./components/movieCard.js";
 import {
+    fetchActorInfo,
     fetchCarouselMovies,
     fetchMovieSearch,
     fetchMovieByImdbID,
@@ -13,6 +14,7 @@ import { createHeader } from "./components/header.js";
 import { renderTrailers } from "./modules/caroussel.js";
 import { randomize, getLimitedCount, shuffleArray } from "./utils/utils.js";
 import { renderRecommendations } from "./components/recommendations.js";
+import { renderActorPage } from "./components/actorPage.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
@@ -46,6 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("search.html");
         createHeader();
         setupSearchPage();
+    } else if (path === "/actor.html") {
+        createHeader();
+        setupActorPage();
     }
 });
 // Anropa funktionen för att aktivera favoritknappar
@@ -94,10 +99,22 @@ function setupFavoritesPage() {
 }
 
 function setupSearchPage() {
+    console.log("setupSearchPage");
+
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get("q");
-    let divRef;
+
     if (query) {
         loadSearchResults(query);
+    }
+}
+
+function setupActorPage() {
+    console.log("setupActorPage()");
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get("name");
+
+    if (query) {
+        renderActorPage(fetchActorInfo(query));
     }
 }

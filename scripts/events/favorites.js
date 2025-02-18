@@ -65,8 +65,7 @@ export function updateFavoriteButtons() {
         return;
     setTimeout(() => {
         let favorites = getFavoriteMovies();
-        console.log(favorites);
-        console.log(document.querySelector("#movieCardBtn"));
+
         document.querySelectorAll("#movieCardBtn").forEach((button) => {
             let imdbID = button.getAttribute("data-imdbid");
             if (favorites.includes(imdbID)) {
@@ -82,5 +81,5 @@ export function updateFavoriteButtons() {
                 button.classList.add("movie-card__favorite-btn--added");
             }
         });
-    }, 2000);
+    }, 1500);
 }

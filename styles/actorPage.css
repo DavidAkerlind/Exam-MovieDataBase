@@ -1,0 +1,116 @@
+.actor-info {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.actor-info__header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.actor-info__poster {
+    flex-shrink: 0;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.actor-info__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.actor-info__basic-info {
+    flex-grow: 1;
+}
+
+.actor-info__title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-yellow);
+}
+
+.actor-info__list-item {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.actor-info__biography {
+    margin-top: 20px;
+}
+
+.actor-info__bio-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.actor-info__bio-text {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.actor-info__movies {
+    margin-top: 30px;
+}
+
+.actor-info__movies-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.actor-info__movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.actor-info__movie {
+    background: var(--primary-grey);
+    border-radius: var(--radius-7);
+    overflow: hidden;
+
+    transition: transform 0.2s ease-in-out;
+}
+
+.actor-info__movie:hover {
+    transform: scale(1.02);
+}
+
+.actor-info__movie-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.actor-info__movie-poster-container {
+    width: 100%;
+    height: 225px;
+    overflow: hidden;
+}
+
+.actor-info__movie-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.actor-info__movie-info {
+    padding: 10px;
+}
+
+.actor-info__movie-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.actor-info__movie-character {
+    margin-top: 1rem;
+    font-size: 14px;
+    color: var(--text-gray);
+}

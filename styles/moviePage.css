@@ -1,5 +1,6 @@
 /* Allmän layout för stora skärmar */
 .movie-info {
+    margin-top: 2rem;
     display: flex;
     margin-inline: 1rem;
     gap: 2rem;
@@ -15,6 +16,9 @@
 
 .movie-info__list-item {
     align-self: center;
+}
+.movie-info__actor-link {
+    color: var(--primary-white);
 }
 
 .movie-info__top,

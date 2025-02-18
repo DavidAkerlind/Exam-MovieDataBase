@@ -68,11 +68,20 @@ async function renderMoviePage(movie) {
                 <h3 class="movie-info__actors-title">Actor${
                     movieInfo.Actors.includes(",") ? "s" : ""
                 }:</h3>
-                <p class="movie-info__actors-text">${
-                    movieInfo.Actors !== "N/A" && movieInfo.Actors
-                        ? movieInfo.Actors
-                        : ""
-                }</p>
+                <p class="movie-info__actors-text">
+    ${
+        movieInfo.Actors !== "N/A" && movieInfo.Actors
+            ? movieInfo.Actors.split(", ")
+                  .map(
+                      (actor) =>
+                          `<a href="actor.html?name=${encodeURIComponent(
+                              actor
+                          )}" class="movie-info__actor-link">${actor}</a>`
+                  )
+                  .join(", ")
+            : ""
+    }
+</p>
             </article>
             <article class="movie-info__writer">
                 <h3 class="movie-info__writer-title">Writer${
