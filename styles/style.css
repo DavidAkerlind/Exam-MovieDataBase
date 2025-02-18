@@ -126,11 +126,11 @@ a:hover {
     .header__form-btn {
         padding: 0.44rem;
     }
-    .header__form-btn--padding {
-        padding: 0.48rem 0.9rem;
-    }
 }
 @media screen and (max-width: 576px) {
+    .content-wrapper {
+        margin-top: 2rem;
+    }
     .header {
         background: transparent;
     }
@@ -160,9 +160,16 @@ a:hover {
 
     .menu__button {
         top: 0.4rem;
+        left: -1rem;
+    }
+
+    .card-container {
+        padding: 2rem 0.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.5rem;
     }
 
     .movie-card {
-        width: 90%;
+        width: 100%;
     }
 }

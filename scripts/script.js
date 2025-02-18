@@ -12,7 +12,7 @@ import { initSearchFunc, loadSearchResults } from "./events/search.js";
 import { createHeader } from "./components/header.js";
 import { renderTrailers } from "./modules/caroussel.js";
 import { randomize, getLimitedCount, shuffleArray } from "./utils/utils.js";
-import { renderRecommendations } from "./components/recomendations.js";
+import { renderRecommendations } from "./components/recommendations.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");

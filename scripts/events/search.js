@@ -22,6 +22,7 @@ export function initSearchFunc() {
 
             searchInput.addEventListener("input", async () => {
                 const query = searchInput.value.trim();
+
                 searchResults.innerHTML = "";
 
                 if (query.length < 1) {
@@ -84,7 +85,7 @@ export async function loadSearchResults(query) {
 
     document.querySelector(
         "#searchHeader"
-    ).textContent = `Search results for: ${query}`;
+    ).innerHTML = `Search results for: <p class="search-result">${query}</p>`;
 
     try {
         const movies = await fetchMovieSearch(query);
