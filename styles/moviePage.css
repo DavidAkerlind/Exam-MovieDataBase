@@ -17,7 +17,9 @@
 .movie-info__list-item {
     align-self: center;
 }
-.movie-info__actor-link {
+.movie-info__actor-link,
+.movie-info__director-link,
+.movie-info__writer-link {
     color: var(--primary-white);
 }
 

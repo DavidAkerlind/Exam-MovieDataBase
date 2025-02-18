@@ -72,8 +72,8 @@ async function renderMovieCard(movie, index) {
                     : "../"
             }movie.html?id=${movie.imdbID}" class="movie-card__title">
     ${
-        movieInfo.Title.length > 60
-            ? movieInfo.Title.substring(0, 57) + "..."
+        movieInfo.Title.length > 50
+            ? movieInfo.Title.substring(0, 40) + "..."
             : movieInfo.Title
     }
 </a>

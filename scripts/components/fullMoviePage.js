@@ -58,14 +58,25 @@ async function renderMoviePage(movie) {
         </section>
 
         <section class="movie-info__people">
-            <article class="movie-info__director">
-                <h3 class="movie-info__director-title">Director${
-                    movieInfo.Director.includes(",") ? "s" : ""
-                }:</h3>
-                <p class="movie-info__director-text">${
-                    movieInfo.Director !== "N/A" ? movieInfo.Director : ""
-                }</p>
-            </article>
+            <article class="movie-info__directors">
+    <h3 class="movie-info__directors-title">Director${
+        movieInfo.Director && movieInfo.Director.includes(",") ? "s" : ""
+    }:</h3>
+    <p class="movie-info__directors-text">
+        ${
+            movieInfo.Director !== "N/A" && movieInfo.Director
+                ? movieInfo.Director.split(", ")
+                      .map(
+                          (director) =>
+                              `<a href="actor.html?name=${encodeURIComponent(
+                                  director
+                              )}" class="movie-info__director-link">${director}</a>`
+                      )
+                      .join(", ")
+                : ""
+        }
+    </p>
+</article>
 
             <article class="movie-info__actors">
                 <h3 class="movie-info__actors-title">Actor${
@@ -86,16 +97,25 @@ async function renderMoviePage(movie) {
     }
 </p>
             </article>
-            <article class="movie-info__writer">
-                <h3 class="movie-info__writer-title">Writer${
-                    movieInfo.Writer.includes(",") ? "s" : ""
-                }:</h3>
-                <p class="movie-info__writer-text">${
-                    movieInfo.Writer !== "N/A" && movieInfo.Writer
-                        ? movieInfo.Writer
-                        : ""
-                }</p>
-            </article>
+            <article class="movie-info__writers">
+    <h3 class="movie-info__writers-title">Writer${
+        movieInfo.Writer && movieInfo.Writer.includes(",") ? "s" : ""
+    }:</h3>
+    <p class="movie-info__writers-text">
+        ${
+            movieInfo.Writer !== "N/A" && movieInfo.Writer
+                ? movieInfo.Writer.split(", ")
+                      .map(
+                          (writer) =>
+                              `<a href="actor.html?name=${encodeURIComponent(
+                                  writer
+                              )}" class="movie-info__writer-link">${writer}</a>`
+                      )
+                      .join(", ")
+                : ""
+        }
+    </p>
+</article>
         </section>
 </section>
         `;
