@@ -40,10 +40,10 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
 }
 
 a:hover {
@@ -71,6 +71,11 @@ a:hover {
 .content-wrapper--trailers {
     margin-top: 0;
     display: block;
+}
+
+.content-wrapper--search {
+    margin: 0;
+    gap: 4rem;
 }
 
 .popular-title {
@@ -121,6 +126,9 @@ a:hover {
     .header__form-btn {
         padding: 0.44rem;
     }
+    .header__form-btn--padding {
+        padding: 0.48rem 0.9rem;
+    }
 }
 @media screen and (max-width: 576px) {
     .header {
@@ -152,5 +160,9 @@ a:hover {
 
     .menu__button {
         top: 0.4rem;
+    }
+
+    .movie-card {
+        width: 90%;
     }
 }

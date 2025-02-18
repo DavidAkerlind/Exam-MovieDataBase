@@ -56,7 +56,7 @@ function createHeader() {
             <li class="menu__item">
                 <a
                     aria-label="Back to home link"
-                    class="menu__link"
+                 
                     href="index.html">
                     <img
                         aria-hidden="true"
@@ -79,7 +79,7 @@ function createHeader() {
                         placeholder="Search MMDb"
                         aria-label="Search movies on IMDb" />
                     <button
-                        class="header__form-btn"
+                        class="header__form-btn header__form-btn--padding"
                         id="searchBtn"
                         aria-label="Search">
                         <img

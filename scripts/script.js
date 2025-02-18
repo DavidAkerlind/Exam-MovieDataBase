@@ -45,12 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (path === "/search.html") {
         console.log("search.html");
         createHeader();
-        const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get("q");
-
-        if (query) {
-            loadSearchResults(query);
-        }
+        setupSearchPage();
     }
 });
 // Anropa funktionen för att aktivera favoritknappar
@@ -78,31 +73,52 @@ function setupFavoritesPage() {
     let favoriteMovies = getFavoriteMovies();
 
     if (favoriteMovies.length > 0) {
-        favoriteMovies.forEach((movieTitle) => {
-            fetchMovieByTitle(movieTitle).then((movieData) => {
+        console.log(favoriteMovies);
+        favoriteMovies.forEach((movie) => {
+            fetchMovieByImdbID(movie).then((movieData) => {
                 if (movieData) {
                     renderMovieCard(movieData);
                 }
             });
         });
     } else {
-        // Om det inte finns några favoriter, visa standardfilmer
+        // No favorites?
+        document.querySelector(
+            "#favoritesTitle"
+        ).textContent = `Favorite movies to save them here`;
+        let divRef = document.createElement("div");
+        divRef.innerHTML = `<a href="./search.html" class="search-link" id="searchLink">Go find movies</a>
+`;
+        document.querySelector(".content-wrapper").appendChild(divRef);
+    }
+}
 
-        const defaultMovies = [
-            "Inception",
-            "The Dark Knight",
-            "Interstellar",
-            "The Matrix",
-            "Pulp Fiction",
-            "The Simpsons",
-        ];
-        saveFavoriteMovies(defaultMovies); // spara dem så de aldrig försvinner förutom om man tar bort alla dårå
-        defaultMovies.forEach((movieTitle) => {
-            fetchMovieByTitle(movieTitle).then((movieData) => {
-                if (movieData) {
-                    renderMovieCard(movieData);
-                }
-            });
-        });
+function setupSearchPage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get("q");
+    let divRef;
+    if (query) {
+        loadSearchResults(query);
+    } else {
+        document.querySelector("#searchHeader").textContent = `Search MMDb`;
+        divRef = document.createElement("div");
+        divRef.classList.add("search-container");
+        divRef.innerHTML = `<form class="header__form" id="searchForm" role="search">
+                    <label for="searchInput" class="header__form-label">Search MMDb:</label>
+                    <input autocomplete="off" class="header__input" id="searchInput" type="text" placeholder="Search MMDb" aria-label="Search movies on IMDb" />
+                    <ul id="searchResults" class="search-results d-none"></ul>
+
+                    <button class="header__form-btn header__form-btn--padding" id="searchBtn" aria-label="Search">
+                        <img src="./res/icons/search-black.svg" alt="Search Icon" />
+                    </button>
+                </form>
+`;
+
+        document
+            .querySelector(".content-wrapper")
+            .insertBefore(
+                divRef,
+                document.querySelector(".content-wrapper").children[1]
+            );
     }
 }

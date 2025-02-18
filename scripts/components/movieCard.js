@@ -9,7 +9,7 @@ async function renderMovieCard(movie, index) {
     const movieCard = document.createElement("article");
     movieCard.classList.add("movie-card");
 
-    let buttonHTML = `<button class="movie-card__favorite-btn" data-title="${movieInfo.Title}">
+    let buttonHTML = `<button id="movieCardBtn" class="movie-card__favorite-btn" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
     <i class="fa-solid fa-plus"></i> Favorite
     </button>`;
 
@@ -37,23 +37,24 @@ async function renderMovieCard(movie, index) {
 
     if (path === "/favorites.html") {
         buttonHTML = `
-        <button class="movie-card__favorite-btn movie-card__favorite-btn--un" data-title="${movieInfo.Title}">
+        <button id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--un" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-x"></i> 
         </button>
     `;
     } else if (isFavorite) {
-        buttonHTML = `<button class="movie-card__favorite-btn movie-card__favorite-btn--added" data-title="${movieInfo.Title}">
+        buttonHTML = `<button id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--added" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-check"></i> Added
         </button>`;
     }
 
     movieCard.innerHTML = `
         <figure class="movie-card__poster">
-            <img href="../movie.html?id=${movieInfo.imdbID}" src="${
-        movieInfo.Poster !== "N/A"
-            ? movieInfo.Poster
-            : "./res/icons/missing-poster.svg"
-    }" alt="${movieInfo.Title}">
+        <a  href="../movie.html?id=${movieInfo.imdbID}">
+            <img src="${
+                movieInfo.Poster !== "N/A"
+                    ? movieInfo.Poster
+                    : "./res/icons/missing-poster.svg"
+            }" alt="${movieInfo.Title}"></a>
         </figure>
         <section class="movie-card__info">
         <p class="movie-card__rating"> ${

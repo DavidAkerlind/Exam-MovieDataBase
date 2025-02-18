@@ -1,4 +1,7 @@
 .search-title {
-    margin-top: 8rem;
-    align-self: center;
+    margin: 4rem;
+}
+
+.search-container {
+    width: 80%;
 }
