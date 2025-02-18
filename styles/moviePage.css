@@ -29,8 +29,7 @@
     flex-wrap: wrap;
     gap: 1rem;
     padding: 1rem 0.5rem;
-    border-top: 3px solid #ccc;
-    border-bottom: 3px solid #ccc;
+
     border-radius: var(--radius-7);
     background-color: var(--primary-grey);
     box-shadow: 0 4px 16px rgba(180, 180, 180, 0.485);

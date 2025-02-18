@@ -75,12 +75,12 @@
     background: var(--primary-grey);
     border-radius: var(--radius-7);
     overflow: hidden;
-
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .actor-info__movie:hover {
-    transform: scale(1.02);
+    box-shadow: var(--box-shadow-light);
+    transform: scale(1.01);
 }
 
 .actor-info__movie-link {

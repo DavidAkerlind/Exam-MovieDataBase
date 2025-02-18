@@ -16,7 +16,7 @@ async function fetchCarouselMovies() {
 async function fetchMovieByTitle(title) {
     console.log("fetchMovieByTitle()");
 
-    const url = `http://www.omdbapi.com/?apikey=${TOKEN}&t=${title}`;
+    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&t=${title}`;
     try {
         const response = await fetch(url);
         if (!response.ok) {

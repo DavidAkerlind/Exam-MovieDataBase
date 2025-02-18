@@ -70,7 +70,7 @@ async function renderActorPage(actor) {
 
     // Function to render the first 10 movies and their IMDb links
     async function renderMovies(movies) {
-        const first10Movies = movies.slice(0, 10); // Take only the first 10 movies
+        const first10Movies = movies.slice(0, 20); // Take only the first 10 movies
         const movieHtml = await Promise.all(
             first10Movies.map(async (movie) => {
                 const imdbID = await fetchMovieData(movie.title);

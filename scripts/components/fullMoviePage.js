@@ -2,6 +2,9 @@ async function renderMoviePage(movie) {
     console.log("renderMoviePage()");
 
     let movieInfo = await movie;
+    if (movieInfo === null || movieInfo === undefined) {
+        return;
+    }
     console.log(movieInfo);
     let poster = movieInfo.Poster;
     let movieType = movieInfo.Type; // Antingen "movie" eller "series"
