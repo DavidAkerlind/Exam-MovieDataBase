@@ -49,7 +49,11 @@ async function renderMovieCard(movie, index) {
 
     movieCard.innerHTML = `
         <figure class="movie-card__poster">
-        <a  href="../movie.html?id=${movieInfo.imdbID}">
+        <a  href="${
+            window.location.hostname.includes("github.io")
+                ? "/Exam-MovieDataBase/"
+                : "../"
+        }movie.html?id=${movie.imdbID}">
             <img src="${
                 movieInfo.Poster !== "N/A"
                     ? movieInfo.Poster
@@ -62,9 +66,11 @@ async function renderMovieCard(movie, index) {
                 ? ""
                 : `⭐ ${movieInfo.imdbRating}`
         }</p>
-            <a href="../movie.html?id=${
-                movieInfo.imdbID
-            }" class="movie-card__title">
+            <a href="${
+                window.location.hostname.includes("github.io")
+                    ? "/Exam-MovieDataBase/"
+                    : "../"
+            }movie.html?id=${movie.imdbID}" class="movie-card__title">
     ${
         movieInfo.Title.length > 60
             ? movieInfo.Title.substring(0, 57) + "..."

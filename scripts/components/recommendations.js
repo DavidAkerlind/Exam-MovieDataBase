@@ -21,7 +21,11 @@ export async function renderRecommendations() {
         podiumDiv.classList.add("podium", pos.className);
         podiumDiv.innerHTML = `
             <div class="podium-rank">#${pos.place}</div>
-            <a href="../movie.html?id=${movie.imdbID}">
+             <a href="${
+                 window.location.hostname.includes("github.io")
+                     ? "/Exam-MovieDataBase/"
+                     : "../"
+             }movie.html?id=${movie.imdbID}">
             <img src="${movie.Poster}" alt="${movie.Title}">
             </a>
            <a href="../movie.html?id=${
@@ -49,7 +53,11 @@ export async function renderRecommendations() {
         listItem.classList.add("movie-list-item");
         listItem.innerHTML = `
         <span class="movie-list__rank">#${i + 1}</span>
-        <a href="../movie.html?id=${movie.imdbID}" class="movie-card__title">${
+        <a href="${
+            window.location.hostname.includes("github.io")
+                ? "/Exam-MovieDataBase/"
+                : "../"
+        }movie.html?id=${movie.imdbID}" class="movie-card__title">${
             movie.Title
         }</a>
         <a href="${
