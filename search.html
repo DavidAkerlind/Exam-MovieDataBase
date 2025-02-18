@@ -14,6 +14,31 @@
         <!-- Search movies section -->
         <section class="content-wrapper">
             <h2 class="search-title" id="searchHeader">Search Results</h2>
+            <div class="search-container">
+                <form class="header__form" id="searchForm" role="search">
+                    <label for="searchInput" class="header__form-label"
+                        >Search MMDb:</label
+                    >
+                    <input
+                        autocomplete="off"
+                        class="header__input"
+                        id="searchInput"
+                        type="text"
+                        placeholder="Search MMDb"
+                        aria-label="Search movies on IMDb" />
+                    <ul id="searchResults" class="search-results d-none"></ul>
+
+                    <button
+                        class="header__form-btn header__form-btn--padding"
+                        id="searchBtn"
+                        aria-label="Search">
+                        <img
+                            src="./res/icons/search-black.svg"
+                            alt="Search Icon" />
+                    </button>
+                    <ul class="search-results d-none"></ul>
+                </form>
+            </div>
             <section class="card-container" id="cardContainer"></section>
         </section>
     </body>

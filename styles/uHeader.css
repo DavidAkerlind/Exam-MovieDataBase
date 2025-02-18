@@ -236,19 +236,19 @@
 .menu__list {
     display: flex;
     flex-direction: column;
-
+    margin-bottom: 15rem;
     list-style: none;
     padding: 0;
     gap: 2rem;
 }
-.menu__list .menu__item:nth-child(1) {
-    margin-left: 0.5rem;
-}
 
-.menu__list .menu__item:nth-child(2),
-.menu__list .menu__item:nth-child(3) {
+.menu__item {
     margin-left: 0.5rem;
     border-left: 2px solid var(--primary-bg);
+}
+.menu__list .menu__item:nth-child(1) {
+    margin-left: 0.5rem;
+    border: none;
 }
 .menu__item {
     width: 40%;

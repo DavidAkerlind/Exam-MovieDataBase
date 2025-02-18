@@ -85,7 +85,7 @@ function setupFavoritesPage() {
         // No favorites?
         document.querySelector(
             "#favoritesTitle"
-        ).textContent = `Favorite movies to save them here`;
+        ).textContent = `No movies saved`;
         let divRef = document.createElement("div");
         divRef.innerHTML = `<a href="./search.html" class="search-link" id="searchLink">Go find movies</a>
 `;
@@ -99,26 +99,5 @@ function setupSearchPage() {
     let divRef;
     if (query) {
         loadSearchResults(query);
-    } else {
-        document.querySelector("#searchHeader").textContent = `Search MMDb`;
-        divRef = document.createElement("div");
-        divRef.classList.add("search-container");
-        divRef.innerHTML = `<form class="header__form" id="searchForm" role="search">
-                    <label for="searchInput" class="header__form-label">Search MMDb:</label>
-                    <input autocomplete="off" class="header__input" id="searchInput" type="text" placeholder="Search MMDb" aria-label="Search movies on IMDb" />
-                    <ul id="searchResults" class="search-results d-none"></ul>
-
-                    <button class="header__form-btn header__form-btn--padding" id="searchBtn" aria-label="Search">
-                        <img src="./res/icons/search-black.svg" alt="Search Icon" />
-                    </button>
-                </form>
-`;
-
-        document
-            .querySelector(".content-wrapper")
-            .insertBefore(
-                divRef,
-                document.querySelector(".content-wrapper").children[1]
-            );
     }
 }

@@ -13,6 +13,10 @@
     gap: 1rem;
 }
 
+.movie-info__list-item {
+    align-self: center;
+}
+
 .movie-info__top,
 .movie-info__people,
 .movie-info__plot,

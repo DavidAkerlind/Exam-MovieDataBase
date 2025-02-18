@@ -37,8 +37,14 @@ export function initializeFavoriteButtons() {
 export function addToFavorites(imdbID, button) {
     console.log("addToFavorites()", imdbID);
     addMovieToFavorites(imdbID);
-
-    button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
+    if (
+        button.closest(`.movie-list-item`) ||
+        button.closest(`.movie-info__top`)
+    ) {
+        button.innerHTML = `<i class="fa-solid fa-check"></i>`;
+    } else {
+        button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
+    }
     button.classList.add("movie-card__favorite-btn--added");
 }
 
@@ -64,7 +70,15 @@ export function updateFavoriteButtons() {
         document.querySelectorAll("#movieCardBtn").forEach((button) => {
             let imdbID = button.getAttribute("data-imdbid");
             if (favorites.includes(imdbID)) {
-                button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
+                if (
+                    button.closest(`.movie-list-item`) ||
+                    button.closest(`.movie-info__top`)
+                ) {
+                    button.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                } else {
+                    button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
+                }
+
                 button.classList.add("movie-card__favorite-btn--added");
             }
         });

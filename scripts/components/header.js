@@ -71,6 +71,14 @@ function createHeader() {
 
             <!-- Navigation Links -->
             <li class="menu__item">
+                <a id="homeLink"
+                    class="menu__link"
+                    href="./index.html"
+                    aria-label="Navigate to home page">
+                    Home
+                </a>
+            </li>
+            <li class="menu__item">
                 <a id="searchLink"
                     class="menu__link"
                     href="./search.html"
@@ -111,6 +119,15 @@ function highlightActiveLink() {
     } else if (path.includes("favorites.html")) {
         document
             .querySelectorAll("#favoritesLink")
+            .forEach((el) => el.classList.add("header__nav-link--active"));
+    } else if (
+        path === "/index.html" ||
+        path === "/" ||
+        path === "/Exam-MovieDataBase/" ||
+        path === "/Exam-MovieDataBase/index.html"
+    ) {
+        document
+            .querySelectorAll("#homeLink")
             .forEach((el) => el.classList.add("header__nav-link--active"));
     }
 }

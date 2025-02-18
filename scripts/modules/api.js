@@ -41,7 +41,7 @@ async function fetchMovieByImdbID(imdbID) {
     console.log(imdbID);
 
     if (!imdbID) {
-        console.error("No IMDb-ID found!");
+        console.log("No IMDb-ID found!");
         return null;
     }
 
@@ -54,11 +54,11 @@ async function fetchMovieByImdbID(imdbID) {
         if (movie.Response === "True") {
             return movie; // Returnera filmobjektet till den som kallar på funktionen
         } else {
-            console.error("Could not fetch movie:", movie.Error);
+            console.log("Could not fetch movie:", movie.Error);
             return null;
         }
     } catch (error) {
-        console.error("Error when when fetching movie data:", error);
+        console.log("Error when when fetching movie data:", error);
         return null;
     }
 }

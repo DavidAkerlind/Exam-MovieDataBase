@@ -6,6 +6,7 @@
 @import url("./searchbar.css");
 @import url("./searchPage.css");
 @import url("./podium.css");
+@import url("./footer.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
 
 /* 🎨 Variabler */
@@ -40,10 +41,9 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    /* display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; */
 }
 
 a:hover {
@@ -80,6 +80,10 @@ a:hover {
 
 .popular-title {
     color: var(--text-yellow);
+}
+
+.movie-card__favorite-btn--added {
+    color: var(--green-text);
 }
 
 @media screen and (max-width: 992px) {

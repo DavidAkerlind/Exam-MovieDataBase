@@ -38,26 +38,29 @@ export async function renderRecommendations() {
         podiumContainer.appendChild(podiumDiv);
     });
     // Rendera resterande filmer som kort
-    for (let i = 3; i < 11; i++) {
+    for (let i = 3; i < 15; i++) {
         let movie = topMovieList[i];
         renderMovieCard(movie, i);
     }
-    for (let i = 11; i < topMovieList.length; i++) {
+    for (let i = 15; i < topMovieList.length; i++) {
         let movie = topMovieList[i];
 
-        let listItem = document.createElement("div");
+        let listItem = document.createElement("li");
         listItem.classList.add("movie-list-item");
         listItem.innerHTML = `
-            <span class="movie-list__rank">#${i + 1}</span>
-            <span class="movie-title">${movie.Title}</span>
-            <a href="${
-                movie.Trailer_link
-            }" target="_blank" class="trailer-link"> Trailer</a>
-            <span class="imdb-id">IMDb: ${movie.imdbID}</span>
-            <button class="favorite-btn " data-imdbid="${
-                movie.imdbID
-            }"></button>
-        `;
-        document.querySelector("#movieList").appendChild(listItem);
+        <span class="movie-list__rank">#${i + 1}</span>
+        <a href="../movie.html?id=${movie.imdbID}" class="movie-card__title">${
+            movie.Title
+        }</a>
+        <a href="${
+            movie.Trailer_link
+        }" target="_blank" class="trailer-link">Watch Trailer</a>
+        <button id="movieCardBtn" class="favorite-btn movie-card__favorite-btn" data-imdbid="${
+            movie.imdbID
+        }">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+    `;
+        document.querySelector(".movie-list").appendChild(listItem);
     }
 }

@@ -67,41 +67,84 @@
     padding: 3px 6px;
     border-radius: 5px;
 }
+
+/*  ======================= movie list styling ========================= */
 .movie-list {
-    width: 100%;
-    padding: 3rem;
-}
-.movie-list-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid var(--primary-grey);
-    color: var(--text-gray);
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 90%;
 }
 
-.movie-title {
+.movie-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem;
+    border-bottom: 0.1rem solid var(--primary-grey);
+    font-size: 0.9rem;
+}
+
+.movie-list-item:last-child {
+    border-bottom: none;
+}
+
+.movie-list__rank {
+    font-weight: bold;
+    background: var(--text-yellow);
+    color: var(--header-grey);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.movie-card__title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
     flex-grow: 1;
 }
 
-.trailer-link {
-    text-decoration: none;
-    color: var(--text-yellow);
+.movie-card__title:hover {
+    text-decoration: underline;
 }
 
-.imdb-id {
-    color: var(--text-gray);
-    font-size: 0.9em;
+.trailer-link {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.trailer-link:hover {
+    text-decoration: underline;
 }
 
 .favorite-btn {
-    background: none;
-    border: 1px solid blue;
-    border-radius: 50%;
-    padding: 5px 10px;
-    font-size: 16px;
-    color: blue;
+    background-color: var(--primary-grey);
+    border: none;
+    padding: 0.5rem 0.8rem;
+    width: 7%;
+    margin: 0;
+    border-radius: 2.5rem;
+    color: var(--blue-text);
     cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.favorite-btn:hover {
+    background-color: #8ba4ca28;
+}
+
+.favorite-btn i {
+    font-size: 1.2rem;
+    margin: 0;
 }
 
 @media (max-width: 768px) {
@@ -116,6 +159,30 @@
     .podium-rank {
         font-size: 1rem;
         padding: 0.3rem 0.8rem;
+    }
+    .movie-list-item {
+        font-size: 0.8rem;
+    }
+
+    .movie-list__rank {
+        font-size: 0.9rem;
+    }
+
+    .movie-card__title {
+        font-size: 1rem;
+    }
+
+    .trailer-link {
+        font-size: 0.8rem;
+    }
+
+    .favorite-btn {
+        font-size: 0.9rem;
+        width: 10%;
+    }
+
+    .favorite-btn i {
+        font-size: 1rem;
     }
 }
 

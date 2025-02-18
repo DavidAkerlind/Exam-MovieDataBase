@@ -40,6 +40,13 @@ async function renderMoviePage(movie) {
     <p class="movie-info__list-item"><strong>Rated:</strong> ${
         movieInfo.Rated
     }</p>
+     <p class="movie-info__list-item"><strong>Add to favorites:</strong> </p>
+<button id="movieCardBtn" class="favorite-btn movie-card__favorite-btn" data-imdbid="${
+        movieInfo.imdbID
+    }">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        </button>
+    
 </section>
 
         <section class="movie-info__plot">
