@@ -1,6 +1,36 @@
 import { fetchMovieSearch } from "../modules/api.js";
 import { renderMovieCard } from "../components/movieCard.js";
 
+const hamburgerElemRef = `<nav class="menu__navigation d-none" aria-label="Main Navigation on Mobile" aria-expanded="false">
+        <ul class="menu__list">
+            <!-- Logo -->
+            <li class="menu__item">
+                <a aria-label="Back to home link" href="index.html">
+                    <img aria-hidden="true" class="menu__logo" src="./res/logo.png" alt="Website Logo">
+                </a>
+            </li>
+
+            
+
+            <!-- Navigation Links -->
+            <li class="menu__item">
+                <a id="homeLink" class="menu__link" href="./index.html" aria-label="Navigate to home page">
+                    Home
+                </a>
+            </li>
+            <li class="menu__item">
+                <a id="searchLink" class="menu__link" href="./search.html" aria-label="Navigate to search page">
+                    Search
+                </a>
+            </li>
+            <li class="menu__item">
+                <a id="favoritesLink" class="menu__link" href="./favorites.html" aria-label="Navigate to favorites page">
+                    Favorites
+                </a>
+            </li>
+        </ul>
+    </nav>`;
+
 export function initSearchFunc() {
     document.addEventListener("DOMContentLoaded", () => {
         console.log("initSearchFunc()");
@@ -52,11 +82,20 @@ export function initSearchFunc() {
             });
 
             document.addEventListener("click", (event) => {
+                let menuToggle = document.querySelector("#menu-toggle");
+                let menu = document.querySelector(".menu__navigation");
+
                 if (
                     !searchInput.contains(event.target) &&
                     !searchResults.contains(event.target)
                 ) {
                     searchResults.classList.add("d-none");
+                }
+                if (
+                    !menu.contains(event.target) &&
+                    !menuToggle.contains(event.target)
+                ) {
+                    menuToggle.checked = false;
                 }
             });
 

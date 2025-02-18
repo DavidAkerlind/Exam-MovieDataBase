@@ -1,14 +1,15 @@
 import { fetchMovieByTitle } from "../modules/api.js";
-async function renderActorPage(actor) {
-    console.log("renderActorPage()");
 
-    let actorInfo = await actor;
-    console.log(actorInfo);
+async function renderActorPage(person) {
+    console.log("renderPersonPage()");
 
-    const actorContainer = document.getElementById("actorInfo");
+    let personInfo = await person;
+    console.log(personInfo);
+
+    const personContainer = document.getElementById("actorInfo");
     const profilePicture =
-        actorInfo.profilePicture !== "https://image.tmdb.org/t/p/w500null"
-            ? actorInfo.profilePicture
+        personInfo.profilePicture !== "https://image.tmdb.org/t/p/w500null"
+            ? personInfo.profilePicture
             : "./res/icons/missing-profile.svg";
 
     // Function to fetch movie data
@@ -23,22 +24,27 @@ async function renderActorPage(actor) {
             <div class="actor-info__header">
                 <figure class="actor-info__poster">
                     <img src="${profilePicture}" alt="${
-        actorInfo.name
+        personInfo.name
     } Profile Picture">
                 </figure>
                 <div class="actor-info__basic-info">
-                    <h1 class="actor-info__title">${actorInfo.name}</h1>
+                    <h1 class="actor-info__title">${personInfo.name}</h1>
                     <p class="actor-info__list-item"><strong>Born:</strong> ${
-                        actorInfo.birthday || "Unknown"
+                        personInfo.birthday || "Unknown"
                     }</p>
                     ${
-                        actorInfo.deathday
-                            ? `<p class="actor-info__list-item"><strong>Died:</strong> ${actorInfo.deathday}</p>`
+                        personInfo.deathday
+                            ? `<p class="actor-info__list-item"><strong>Died:</strong> ${personInfo.deathday}</p>`
                             : ""
                     }
                     <p class="actor-info__list-item"><strong>Place of Birth:</strong> ${
-                        actorInfo.placeOfBirth || "Unknown"
+                        personInfo.placeOfBirth || "Unknown"
                     }</p>
+                    ${
+                        personInfo.knownForDepartment
+                            ? `<p class="actor-info__list-item"><strong>Profession:</strong> ${personInfo.knownForDepartment}</p>`
+                            : ""
+                    }
                 </div>
             </div>
 
@@ -47,30 +53,36 @@ async function renderActorPage(actor) {
                 <h2 class="actor-info__bio-title">Biography</h2>
                 <p class="actor-info__bio-text">
                     ${
-                        actorInfo.biography
-                            ? actorInfo.biography.length > 500
-                                ? actorInfo.biography.slice(0, 500) + "..."
-                                : actorInfo.biography
+                        personInfo.biography
+                            ? personInfo.biography.length > 500
+                                ? personInfo.biography.slice(0, 500) + "..."
+                                : personInfo.biography
                             : "No biography available."
                     }
                 </p>
             </section>
 
-            <!-- Kända filmer -->
+            <!-- Kända verk -->
             <section class="actor-info__movies">
                 <h2 class="actor-info__movies-title">Known for</h2>
                 <div class="actor-info__movies-grid">
-                    ${await renderMovies(actorInfo.movies)}
+                    ${await renderMovies(personInfo)}
                 </div>
             </section>
         </section>
     `;
 
-    actorContainer.innerHTML = html;
+    personContainer.innerHTML = html;
 
-    // Function to render the first 10 movies and their IMDb links
-    async function renderMovies(movies) {
-        const first10Movies = movies.slice(0, 20); // Take only the first 10 movies
+    // Function to render movies/works
+    async function renderMovies(person) {
+        let movies = person.movies || person.knownFor || []; // Hanterar olika roller (skådespelare, regissör, etc.)
+
+        if (!Array.isArray(movies) || movies.length === 0) {
+            return "<p>No known works found.</p>";
+        }
+
+        const first10Movies = movies.slice(0, 10);
         const movieHtml = await Promise.all(
             first10Movies.map(async (movie) => {
                 const imdbID = await fetchMovieData(movie.title);
@@ -83,9 +95,11 @@ async function renderActorPage(actor) {
                         }movie.html?id=${imdbID}" class="actor-info__movie-link">
                             <figure class="actor-info__movie-poster-container">
                                 <img src="${
-                                    movie.poster !== "N/A"
-                                        ? movie.poster
-                                        : "./res/icons/missing-poster.svg"
+                                    movie.poster === "N/A" ||
+                                    movie.poster ===
+                                        "https://image.tmdb.org/t/p/w500null"
+                                        ? "./res/icons/missing-poster.svg"
+                                        : movie.poster
                                 }" 
                                     alt="${
                                         movie.title

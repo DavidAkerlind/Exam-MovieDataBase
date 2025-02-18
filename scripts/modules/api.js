@@ -1,6 +1,6 @@
 import { oData } from "../data/data.js";
 
-const TOKEN = "d59607eb"; // key for omdb-API
+const TOKEN = "378ca18a"; // key for omdb-API
 
 async function fetchCarouselMovies() {
     console.log("fetchCarouselMovies()");
@@ -16,9 +16,13 @@ async function fetchCarouselMovies() {
 async function fetchMovieByTitle(title) {
     console.log("fetchMovieByTitle()");
 
-    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&t=${title}`;
+    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&t=${encodeURIComponent(
+        title
+    )}`;
     try {
         const response = await fetch(url);
+        console.log("Response status:", response.status);
+        console.log("Response URL:", response.url);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -89,45 +93,46 @@ async function fetchMovieSearch(query) {
 }
 
 const TOKEN2 = "8ad0776a7a2b05bdcbba8ff0880953d1";
-
-async function fetchActorInfo(actorName) {
-    console.log("fetchActorInfo()");
+async function fetchPersonInfo(personName, type = "actor") {
+    console.log("fetchPersonInfo()");
     try {
-        // Sök efter skådespelaren
+        // Justera sökningen baserat på typ (actor, director, writer, etc.)
         const searchUrl = `https://api.themoviedb.org/3/search/person?api_key=${TOKEN2}&query=${encodeURIComponent(
-            actorName
+            personName
         )}`;
         const searchResponse = await fetch(searchUrl);
         const searchData = await searchResponse.json();
 
         if (searchData.results.length === 0) {
-            console.log("Skådespelaren hittades inte.");
+            console.log("Personen hittades inte.");
             return;
         }
 
-        const actor = searchData.results[0]; // Ta den första träffen
-        const actorId = actor.id;
+        const person = searchData.results[0]; // Ta den första träffen
+        const personId = person.id;
 
-        // 2. Hämta detaljerad info om skådespelaren
-        const detailsUrl = `https://api.themoviedb.org/3/person/${actorId}?api_key=${TOKEN2}`;
+        // Hämta detaljer om personen
+        const detailsUrl = `https://api.themoviedb.org/3/person/${personId}?api_key=${TOKEN2}`;
         const detailsResponse = await fetch(detailsUrl);
         const detailsData = await detailsResponse.json();
 
-        // 3. Hämta skådespelarens filmer
-        const moviesUrl = `https://api.themoviedb.org/3/person/${actorId}/movie_credits?api_key=${TOKEN2}`;
-        const moviesResponse = await fetch(moviesUrl);
-        const moviesData = await moviesResponse.json();
+        // Hämta filmer eller projekt beroende på personens roll
+        const creditsUrl = `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${TOKEN2}`;
+        const creditsResponse = await fetch(creditsUrl);
+        const creditsData = await creditsResponse.json();
 
-        // Skapa ett objekt med skådespelarinformation
-        const actorInfo = {
+        // Skapa ett objekt med personens information
+        const personInfo = {
             name: detailsData.name,
             biography: detailsData.biography,
             birthday: detailsData.birthday,
             deathday: detailsData.deathday,
             placeOfBirth: detailsData.place_of_birth,
             profilePicture: `https://image.tmdb.org/t/p/w500${detailsData.profile_path}`,
-            knownFor: actor.known_for.map((movie) => movie.title || movie.name),
-            movies: moviesData.cast.map((movie) => ({
+            knownFor: person.known_for.map(
+                (movie) => movie.title || movie.name
+            ),
+            credits: creditsData.cast.map((movie) => ({
                 title: movie.title,
                 releaseDate: movie.release_date,
                 character: movie.character,
@@ -135,15 +140,15 @@ async function fetchActorInfo(actorName) {
             })),
         };
 
-        console.log(actorInfo);
-        return actorInfo;
+        console.log(personInfo);
+        return personInfo;
     } catch (error) {
-        console.error("Fel vid hämtning av skådespelardata:", error);
+        console.error("Fel vid hämtning av persondata:", error);
     }
 }
 
 export {
-    fetchActorInfo,
+    fetchPersonInfo,
     fetchCarouselMovies,
     fetchMovieByTitle,
     fetchMovieByImdbID,

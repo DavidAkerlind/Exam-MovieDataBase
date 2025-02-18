@@ -1,6 +1,6 @@
 import { renderMovieCard } from "./components/movieCard.js";
 import {
-    fetchActorInfo,
+    fetchPersonInfo,
     fetchCarouselMovies,
     fetchMovieSearch,
     fetchMovieByImdbID,
@@ -115,6 +115,6 @@ function setupActorPage() {
     const query = urlParams.get("name");
 
     if (query) {
-        renderActorPage(fetchActorInfo(query));
+        renderActorPage(fetchPersonInfo(query));
     }
 }

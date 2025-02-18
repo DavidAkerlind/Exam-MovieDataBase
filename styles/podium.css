@@ -6,10 +6,12 @@
     align-items: flex-end;
     gap: 3rem;
     padding: 2rem 1rem;
+    width: 100%;
 }
 
 .podium {
     min-width: 30%;
+    max-width: 300px;
     text-align: center;
     position: relative;
     display: flex;
@@ -18,7 +20,7 @@
     gap: 1rem;
     padding-bottom: 1rem;
     background-color: var(--primary-grey);
-
+    justify-self: center;
     border-radius: var(--radius-7);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
@@ -154,7 +156,7 @@
     }
 
     .podium img {
-        max-width: 100px;
+        max-width: 200px;
     }
 
     .podium-rank {
@@ -185,6 +187,9 @@
     .favorite-btn i {
         font-size: 1rem;
     }
+    .podium {
+        max-width: 200px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -193,11 +198,12 @@
         font-weight: 600;
     }
     .podium-section {
+        padding-inline: 0.5rem;
         flex-direction: column;
         gap: 0.2rem;
     }
 
     .podium {
-        max-width: 150px;
+        max-width: 100px;
     }
 }
