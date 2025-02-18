@@ -32,8 +32,12 @@
 .header__logo {
     width: 125px;
     height: auto;
+    border-radius: 3px;
+    transition: transform 0.3s ease-in-out;
 }
-
+.header__logo:hover {
+    transform: scale(1.02);
+}
 .header__nav {
     display: flex;
 
@@ -80,6 +84,7 @@
     align-items: center;
     position: relative;
     transition: all 0.3s ease-in-out;
+    z-index: 11;
 }
 
 .header__form-label {
@@ -88,11 +93,9 @@
 }
 
 .header__input {
+    z-index: 10;
     width: 100%;
-    z-index: 1001;
-
     padding: 0.6rem 0.5rem;
-
     outline: none;
     border: 2px solid var(--primary-grey);
     border-right: none;
@@ -112,11 +115,11 @@
     outline: none;
 }
 .header__form-btn {
+    z-index: 1000;
     position: relative;
     border-radius: var(--radius-7);
     align-self: flex-end;
     justify-self: center;
-    z-index: 1002;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     background: var(--primary-white);
@@ -126,6 +129,10 @@
     border-left: none;
     overflow: hidden;
     transition: all 0.2s ease-in-out;
+}
+
+.header__form-btn--padding {
+    padding: 0.48rem 0.9rem;
 }
 
 .header__form-btn:hover {

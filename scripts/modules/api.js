@@ -38,6 +38,7 @@ async function fetchMovieByTitle(title) {
 
 async function fetchMovieByImdbID(imdbID) {
     console.log("fetchMovieByImdbID()");
+    console.log(imdbID);
 
     if (!imdbID) {
         console.error("No IMDb-ID found!");
