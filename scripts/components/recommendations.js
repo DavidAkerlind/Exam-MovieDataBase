@@ -42,4 +42,22 @@ export async function renderRecommendations() {
         let movie = topMovieList[i];
         renderMovieCard(movie, i);
     }
+    for (let i = 11; i < topMovieList.length; i++) {
+        let movie = topMovieList[i];
+
+        let listItem = document.createElement("div");
+        listItem.classList.add("movie-list-item");
+        listItem.innerHTML = `
+            <span class="movie-list__rank">#${i + 1}</span>
+            <span class="movie-title">${movie.Title}</span>
+            <a href="${
+                movie.Trailer_link
+            }" target="_blank" class="trailer-link"> Trailer</a>
+            <span class="imdb-id">IMDb: ${movie.imdbID}</span>
+            <button class="favorite-btn " data-imdbid="${
+                movie.imdbID
+            }"></button>
+        `;
+        document.querySelector("#movieList").appendChild(listItem);
+    }
 }
