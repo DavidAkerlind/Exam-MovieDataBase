@@ -110,7 +110,7 @@
 
 .header__input:focus {
     border: 2px solid var(--text-yellow);
-    border-right: none;
+
     box-shadow: 0 0 4px 1px var(--text-yellow);
     outline: none;
 }

@@ -102,6 +102,7 @@ a:hover {
 .selected {
     color: #000000;
     background-color: var(--text-yellow);
+    border: 1px solid var(--primary-white);
 }
 
 @media screen and (max-width: 992px) {
