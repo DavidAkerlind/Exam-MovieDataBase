@@ -69,6 +69,8 @@ async function fetchMovieSearch(query) {
     console.log("fetchMovieSearch()");
     console.log(`Searching for: ${query}`);
 
+    let searchHeader = document.querySelector("#searchHeader");
+
     if (!query) return [];
     const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}&type=movie`;
 
@@ -82,9 +84,15 @@ async function fetchMovieSearch(query) {
 
         if (data.Response === "False") {
             console.log(`No movies found: ${data.Error}`);
+
+            if (data.Error == "Too many results." && searchHeader) {
+                searchHeader.textContent = data.Error;
+            }
             return [];
         }
-        // console.log(data);
+        if (searchHeader && !searchHeader.textContent.includes("results")) {
+            searchHeader.textContent = "Search MMDb";
+        }
         return data.Search.slice(0, 12) || [];
     } catch (error) {
         console.log(`Error fetching search results: ${error.message}`);

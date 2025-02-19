@@ -21,16 +21,14 @@ export async function renderRecommendations() {
         podiumDiv.classList.add("podium", pos.className);
         podiumDiv.innerHTML = `
             <div class="podium-rank">#${pos.place}</div>
-             <a href="${
-                 window.location.hostname.includes("github.io")
-                     ? "/Exam-MovieDataBase/"
-                     : "../"
-             }movie.html?id=${movie.imdbID}">
+             <a alt="Go to ${movie.Title} full page" href="${
+            window.location.hostname.includes("github.io")
+                ? "/Exam-MovieDataBase/"
+                : "../"
+        }movie.html?id=${movie.imdbID}">
             <img src="${movie.Poster}" alt="${movie.Title}">
             </a>
-           <a href="../movie.html?id=${
-               movie.imdbID
-           }" class="movie-card__title movie-card__title--podium">
+           <a  class="movie-card__title movie-card__title--podium">
     ${
         movie.Title.length > 60
             ? movie.Title.substring(0, 57) + "…"
@@ -53,17 +51,19 @@ export async function renderRecommendations() {
         listItem.classList.add("movie-list-item");
         listItem.innerHTML = `
         <span class="movie-list__rank">#${i + 1}</span>
-        <a href="${
+        <a alt="Go to ${movie.Title} full page" href="${
             window.location.hostname.includes("github.io")
                 ? "/Exam-MovieDataBase/"
                 : "../"
         }movie.html?id=${movie.imdbID}" class="movie-card__title">${
             movie.Title
         }</a>
-        <a href="${
+        <a alt="Go to ${movie.Title} full page" href="${
             movie.Trailer_link
         }" target="_blank" class="trailer-link">Watch Trailer</a>
-        <button id="movieCardBtn" class="favorite-btn movie-card__favorite-btn" data-imdbid="${
+        <button aria-label="Add ${
+            movie.Title
+        } to favorites" id="movieCardBtn" class="favorite-btn movie-card__favorite-btn" data-imdbid="${
             movie.imdbID
         }">
             <i class="fa-solid fa-plus" aria-hidden="true"></i>

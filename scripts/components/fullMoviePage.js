@@ -28,6 +28,13 @@ async function renderMoviePage(movie) {
         poster === "N/A" ? "./res/icons/missing-poster.svg" : poster
     }" alt="${movieInfo.Title} Poster">
     </figure>
+    <button aria-label="Add ${
+        movieInfo.Title
+    } to favorites" id="movieCardBtn" class="movie-card__favorite-btn" data-imdbID="${
+        movieInfo.imdbID
+    }" data-title="${movieInfo.Title}">
+    <i class="fa-solid fa-plus"></i> Favorite
+    </button>
 </section>
 
 <section class="movie-info__details">
@@ -43,12 +50,8 @@ async function renderMoviePage(movie) {
     <p class="movie-info__list-item"><strong>Rated:</strong> ${
         movieInfo.Rated
     }</p>
-     <p class="movie-info__list-item"><strong>Add to favorites:</strong> </p>
-<button id="movieCardBtn" class="favorite-btn movie-card__favorite-btn" data-imdbid="${
-        movieInfo.imdbID
-    }">
-            <i class="fa-solid fa-plus" aria-hidden="true"></i>
-        </button>
+    
+
     
 </section>
 

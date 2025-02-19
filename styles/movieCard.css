@@ -64,6 +64,7 @@
 .movie-card__year {
     margin-top: 0.8rem;
     color: var(--text-gray);
+    margin-bottom: 3rem;
 }
 
 .movie-card__favorite-btn {
@@ -74,8 +75,8 @@
     border-radius: 3rem;
     cursor: pointer;
     font-size: 0.9rem;
-    width: 100%;
-    margin-top: 2rem;
+    width: 90%;
+    align-self: center;
     transition: 0.2s;
     font-weight: 700;
 }

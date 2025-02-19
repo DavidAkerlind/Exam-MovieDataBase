@@ -9,7 +9,7 @@ async function renderMovieCard(movie, index) {
     const movieCard = document.createElement("article");
     movieCard.classList.add("movie-card");
 
-    let buttonHTML = `<button id="movieCardBtn" class="movie-card__favorite-btn" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
+    let buttonHTML = `<button aria-label="Add ${movieInfo.Title} to favorites" id="movieCardBtn" class="movie-card__favorite-btn" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
     <i class="fa-solid fa-plus"></i> Favorite
     </button>`;
 
@@ -37,23 +37,25 @@ async function renderMovieCard(movie, index) {
 
     if (path === "/favorites.html") {
         buttonHTML = `
-        <button id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--un" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
+        <button aria-label="Add ${movieInfo.Title} to favorites" id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--un" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-x"></i> 
         </button>
     `;
     } else if (isFavorite) {
-        buttonHTML = `<button id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--added" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
+        buttonHTML = `<button aria-label="Add ${movieInfo.Title} to favorites" id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--added" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-check"></i> Added
         </button>`;
     }
 
     movieCard.innerHTML = `
         <figure class="movie-card__poster">
-        <a  href="${
-            window.location.hostname.includes("github.io")
-                ? "/Exam-MovieDataBase/"
-                : "../"
-        }movie.html?id=${movie.imdbID}">
+        <a alt="Go to ${movie.Title} full page" aria-label="Go to ${
+        movie.Title
+    } full page" href="${
+        window.location.hostname.includes("github.io")
+            ? "/Exam-MovieDataBase/"
+            : "../"
+    }movie.html?id=${movie.imdbID}">
             <img src="${
                 movieInfo.Poster !== "N/A"
                     ? movieInfo.Poster
@@ -66,11 +68,11 @@ async function renderMovieCard(movie, index) {
                 ? ""
                 : `⭐ ${movieInfo.imdbRating}`
         }</p>
-            <a href="${
-                window.location.hostname.includes("github.io")
-                    ? "/Exam-MovieDataBase/"
-                    : "../"
-            }movie.html?id=${movie.imdbID}" class="movie-card__title">
+            <a alt="Go to ${movie.Title} full page" href="${
+        window.location.hostname.includes("github.io")
+            ? "/Exam-MovieDataBase/"
+            : "../"
+    }movie.html?id=${movie.imdbID}" class="movie-card__title">
     ${
         movieInfo.Title.length > 50
             ? movieInfo.Title.substring(0, 40) + "..."
