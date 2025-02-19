@@ -10,7 +10,7 @@ function createHeader() {
                 <form class="header__form" id="searchForm" role="search">
                     <label for="searchInput" class="header__form-label">Search MMDb:</label>
                     <input autocomplete="off" class="header__input" id="searchInput" type="text" placeholder="Search MMDb" aria-label="Search movies on MMDb" />
-                    <ul id="searchResults" class="search-results d-none"></ul>
+                    
 
                     <button class="header__form-btn" id="searchBtn" aria-label="Search">
                         <img src="./res/icons/search-black.svg" alt="Search Icon" />

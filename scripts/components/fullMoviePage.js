@@ -1,3 +1,5 @@
+import { checkImageExists } from "../utils/utils.js";
+
 async function renderMoviePage(movie) {
     console.log("renderMoviePage()");
 
@@ -5,8 +7,7 @@ async function renderMoviePage(movie) {
     if (movieInfo === null || movieInfo === undefined) {
         return;
     }
-    console.log(movieInfo);
-    let poster = movieInfo.Poster;
+
     let movieType = movieInfo.Type; // Antingen "movie" eller "series"
     let movieTypeDisplay = "";
 
@@ -18,15 +19,16 @@ async function renderMoviePage(movie) {
         movieTypeDisplay = `<p class="movie-info__list-item"><strong>Type:</strong> ${movieType}</p>`;
     }
     const movieContainer = document.getElementById("movieInfo");
+
+    let moviePosterUlr = await checkImageExists(movieInfo.Poster);
+
     const html = `
        
         
 <section class="movie-info__poster">
     <h1 class="movie-info__title">${movieInfo.Title}</h1>
     <figure class="movie-info__poster-container">
-    <img src="${
-        poster === "N/A" ? "./res/icons/missing-poster.svg" : poster
-    }" alt="${movieInfo.Title} Poster">
+    <img src="${moviePosterUlr}" alt="${movieInfo.Title} Poster">
     </figure>
     <button aria-label="Add ${
         movieInfo.Title
@@ -62,7 +64,7 @@ async function renderMoviePage(movie) {
 
         <section class="movie-info__people">
             <article class="movie-info__directors">
-    <h3 class="movie-info__directors-title">Director${
+    <h3 class="movie-info__persons-title">Director${
         movieInfo.Director && movieInfo.Director.includes(",") ? "s" : ""
     }:</h3>
     <p class="movie-info__directors-text">
@@ -71,18 +73,18 @@ async function renderMoviePage(movie) {
                 ? movieInfo.Director.split(", ")
                       .map(
                           (director) =>
-                              `<a href="actor.html?name=${encodeURIComponent(
+                              `<a arial-label="go to ${director}s page" href="person.html?name=${encodeURIComponent(
                                   director
-                              )}" class="movie-info__director-link">${director}</a>`
+                              )}" class="movie-info__director-link movie-info__link">${director}</a>`
                       )
-                      .join(", ")
+                      .join(" ")
                 : ""
         }
     </p>
 </article>
 
             <article class="movie-info__actors">
-                <h3 class="movie-info__actors-title">Actor${
+                <h3 class="movie-info__persons-title">Actor${
                     movieInfo.Actors.includes(",") ? "s" : ""
                 }:</h3>
                 <p class="movie-info__actors-text">
@@ -91,17 +93,17 @@ async function renderMoviePage(movie) {
             ? movieInfo.Actors.split(", ")
                   .map(
                       (actor) =>
-                          `<a href="actor.html?name=${encodeURIComponent(
+                          `<a arial-label="go to ${actor}s page" href="person.html?name=${encodeURIComponent(
                               actor
-                          )}" class="movie-info__actor-link">${actor}</a>`
+                          )}" class="movie-info__actor-link movie-info__link">${actor}</a>`
                   )
-                  .join(", ")
+                  .join(" ")
             : ""
     }
 </p>
             </article>
             <article class="movie-info__writers">
-    <h3 class="movie-info__writers-title">Writer${
+    <h3 class="movie-info__persons-title">Writer${
         movieInfo.Writer && movieInfo.Writer.includes(",") ? "s" : ""
     }:</h3>
     <p class="movie-info__writers-text">
@@ -110,11 +112,11 @@ async function renderMoviePage(movie) {
                 ? movieInfo.Writer.split(", ")
                       .map(
                           (writer) =>
-                              `<a href="actor.html?name=${encodeURIComponent(
+                              `<a arial-label="go to ${writer}s page" href="person.html?name=${encodeURIComponent(
                                   writer
-                              )}" class="movie-info__writer-link">${writer}</a>`
+                              )}" class="movie-info__writer-link movie-info__link">${writer}</a>`
                       )
-                      .join(", ")
+                      .join(" ")
                 : ""
         }
     </p>

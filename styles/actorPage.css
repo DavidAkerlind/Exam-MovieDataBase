@@ -1,6 +1,7 @@
 .person-info {
     max-width: 900px;
     margin: auto;
+    margin-top: 3rem;
     padding: 20px;
     font-family: Arial, sans-serif;
 }

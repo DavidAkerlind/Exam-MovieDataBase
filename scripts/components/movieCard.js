@@ -1,4 +1,5 @@
 import { getFavoriteMovies } from "../data/localStorage.js";
+import { checkImageExists } from "../utils/utils.js";
 
 // Skapar och renderar filmkortet
 async function renderMovieCard(movie, index) {
@@ -15,7 +16,7 @@ async function renderMovieCard(movie, index) {
 
     let favoriteMovies = getFavoriteMovies();
 
-    console.log();
+    let moviePosterUlr = await checkImageExists(movieInfo.Poster);
 
     const isFavorite = favoriteMovies.some(
         (faMovie) => faMovie === movieInfo.Title
@@ -37,12 +38,12 @@ async function renderMovieCard(movie, index) {
 
     if (path === "/favorites.html") {
         buttonHTML = `
-        <button aria-label="Add ${movieInfo.Title} to favorites" id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--un" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
+        <button aria-label="Remove ${movieInfo.Title} from favorites" id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--un" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-x"></i> 
         </button>
     `;
     } else if (isFavorite) {
-        buttonHTML = `<button aria-label="Add ${movieInfo.Title} to favorites" id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--added" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
+        buttonHTML = `<button aria-label="Already added${movieInfo.Title} to favorites" id="movieCardBtn" class="movie-card__favorite-btn movie-card__favorite-btn--added" data-imdbID="${movieInfo.imdbID}" data-title="${movieInfo.Title}">
             <i class="fa-solid fa-check"></i> Added
         </button>`;
     }
@@ -56,11 +57,7 @@ async function renderMovieCard(movie, index) {
             ? "/Exam-MovieDataBase/"
             : "../"
     }movie.html?id=${movie.imdbID}">
-            <img src="${
-                movieInfo.Poster !== "N/A"
-                    ? movieInfo.Poster
-                    : "./res/icons/missing-poster.svg"
-            }" alt="${movieInfo.Title}"></a>
+            <img src="${moviePosterUlr}" alt="${movieInfo.Title}"></a>
         </figure>
         <section class="movie-card__info">
         <p class="movie-card__rating"> ${
@@ -74,7 +71,7 @@ async function renderMovieCard(movie, index) {
             : "../"
     }movie.html?id=${movie.imdbID}" class="movie-card__title">
     ${
-        movieInfo.Title.length > 50
+        movieInfo.Title.length > 47
             ? movieInfo.Title.substring(0, 40) + "..."
             : movieInfo.Title
     }

@@ -1,109 +1,146 @@
 import { fetchMovieSearch } from "../modules/api.js";
+import { extractTitle } from "../utils/utils.js";
 import { renderMovieCard } from "../components/movieCard.js";
+
+let selectedIndex = -1;
 
 export function initSearchFunc() {
     document.addEventListener("DOMContentLoaded", () => {
         console.log("initSearchFunc()");
 
-        const searchInputHeader = document.querySelector("#searchInput");
+        const searchInputs = getSearchInputs();
+        searchInputs.forEach(setupSearchInput);
+    });
+}
 
-        const searchInputPage = document.querySelector("#searchInputOnPage");
+function getSearchInputs() {
+    const searchInputHeader = document.querySelector("#searchInput");
+    const searchInputPage = document.querySelector("#searchInputOnPage");
+    return searchInputPage
+        ? [searchInputHeader, searchInputPage]
+        : [searchInputHeader];
+}
 
-        let searchInputs = [searchInputHeader];
+function setupSearchInput(searchInput) {
+    const searchResults = createSearchResultsElement();
+    searchInput.parentNode.appendChild(searchResults);
 
-        if (searchInputPage) {
-            searchInputs.push(searchInputPage);
-        }
+    searchInput.addEventListener("focus", () =>
+        toggleSearchResults(searchResults)
+    );
+    searchInput.addEventListener("input", async () =>
+        handleSearchInput(searchInput, searchResults)
+    );
+    searchInput.addEventListener("keydown", (event) =>
+        handleKeyboardNavigation(event, searchInput, searchResults)
+    );
+    document.addEventListener("click", (event) =>
+        closeSearchOnClickOutside(event, searchInput, searchResults)
+    );
+    setupFormSubmission();
+}
 
-        console.log(searchInputs);
+function createSearchResultsElement() {
+    const searchResults = document.createElement("ul");
+    searchResults.classList.add("search-results", "d-none");
+    searchResults.setAttribute("role", "listbox");
+    return searchResults;
+}
 
-        searchInputs.forEach((searchInput) => {
-            const searchResults = document.createElement("ul");
-            searchResults.classList.add("search-results");
-            console.log(searchInput);
+async function handleSearchInput(searchInput, searchResults) {
+    const query = searchInput.value.trim();
+    searchResults.innerHTML = "";
+    if (query.length < 1) return searchResults.classList.add("d-none");
 
-            searchInput.parentNode.appendChild(searchResults);
+    const movies = await fetchMovieSearch(query);
+    if (movies.length === 0) return console.log("No movies found");
 
-            searchResults.classList.add("d-none");
+    movies.forEach((movie) => {
+        const li = document.createElement("li");
+        li.classList.add("search-results__item");
+        li.setAttribute("role", "option");
+        li.textContent = `${movie.Title} - (${movie.Year})`;
 
-            searchInput.addEventListener("focus", () => {
-                if (searchResults.innerHTML.trim() !== "") {
-                    searchResults.classList.remove("d-none");
-                }
-            });
+        li.addEventListener("click", () => {
+            searchInput.value = movie.Title;
+            clearSearchResults(searchResults);
+        });
 
-            searchInput.addEventListener("input", async () => {
-                const query = searchInput.value.trim();
+        searchResults.appendChild(li);
+    });
 
-                searchResults.innerHTML = "";
+    searchResults.classList.remove("d-none");
+}
 
-                if (query.length < 1) {
-                    searchResults.classList.add("d-none");
-                    return;
-                }
+function handleKeyboardNavigation(event, searchInput, searchResults) {
+    const results = Array.from(
+        searchResults.querySelectorAll(".search-results__item")
+    );
+    if (results.length === 0) return;
 
-                const movies = await fetchMovieSearch(query);
-                if (movies.length === 0) {
-                    console.log("No movies found");
-                    return;
-                }
+    switch (event.key) {
+        case "Tab":
+            event.preventDefault();
+            updateSelection(
+                results,
+                event.shiftKey ? selectedIndex - 1 : selectedIndex + 1
+            );
+            break;
+        case "Enter":
+            event.preventDefault();
+            if (selectedIndex >= 0 && selectedIndex < results.length) {
+                searchInput.value = extractTitle(
+                    results[selectedIndex].textContent.trim()
+                );
+                clearSearchResults(searchResults);
+            }
+            break;
+    }
+}
 
-                movies.forEach((movie) => {
-                    const li = document.createElement("li");
-                    li.classList.add("search-results__item");
-                    li.textContent = `${movie.Title} (${movie.Year})`;
-                    li.addEventListener("click", () => {
-                        searchInput.value = movie.Title;
-                        searchResults.innerHTML = "";
-                        searchResults.classList.add("d-none");
-                    });
-                    searchResults.appendChild(li);
-                });
+function updateSelection(items, newIndex) {
+    if (selectedIndex >= 0) items[selectedIndex].classList.remove("selected");
+    selectedIndex = Math.max(0, Math.min(newIndex, items.length - 1));
+    if (selectedIndex >= 0) items[selectedIndex].classList.add("selected");
+}
 
-                searchResults.classList.remove("d-none");
-            });
+function closeSearchOnClickOutside(event, searchInput, searchResults) {
+    if (
+        !searchInput.contains(event.target) &&
+        !searchResults.contains(event.target)
+    ) {
+        searchResults.classList.add("d-none");
+    }
+}
 
-            document.addEventListener("click", (event) => {
-                if (
-                    !searchInput.contains(event.target) &&
-                    !searchResults.contains(event.target)
-                ) {
-                    searchResults.classList.add("d-none");
-                }
-            });
-            const searchForm = document.querySelectorAll("#searchForm");
+function clearSearchResults(searchResults) {
+    searchResults.innerHTML = "";
+    searchResults.classList.add("d-none");
+}
 
-            searchForm.forEach((elem) => {
-                elem.addEventListener("submit", (event) => {
-                    event.preventDefault();
+function toggleSearchResults(searchResults) {
+    if (searchResults.innerHTML.trim() !== "") {
+        searchResults.classList.remove("d-none");
+    }
+}
 
-                    let query = "";
-
-                    // Hämta input-fält och kontrollera om de existerar innan de används
-                    let searchInput = document.querySelector("#searchInput");
-                    let searchInputOnPage =
-                        document.querySelector("#searchInputOnPage");
-
-                    if (searchInput && searchInput.value.trim().length > 0) {
-                        query = searchInput.value.trim();
-                    } else if (
-                        searchInputOnPage &&
-                        searchInputOnPage.value.trim().length > 0
-                    ) {
-                        query = searchInputOnPage.value.trim();
-                    }
-
-                    if (query.length > 0) {
-                        window.location.href = `search.html?q=${encodeURIComponent(
-                            query
-                        )}`;
-                    } else {
-                        console.log("Inget giltigt sökord angivet.");
-                    }
-                });
-            });
+function setupFormSubmission() {
+    document.querySelectorAll("#searchForm").forEach((form) => {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const query = getSearchQuery();
+            if (query)
+                window.location.href = `search.html?q=${encodeURIComponent(
+                    query
+                )}`;
         });
     });
+}
+
+function getSearchQuery() {
+    const searchInput = document.querySelector("#searchInput");
+    const searchInputOnPage = document.querySelector("#searchInputOnPage");
+    return searchInput?.value.trim() || searchInputOnPage?.value.trim() || "";
 }
 
 export async function loadSearchResults(query) {

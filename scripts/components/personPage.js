@@ -1,11 +1,11 @@
 import { fetchMovieByTitle } from "../modules/api.js";
 
-async function renderActorPage(person) {
-    console.log("renderActorPage()");
+async function renderPersonPage(person) {
+    console.log("renderPersonPage()");
 
     let personInfo = await person;
 
-    const personContainer = document.getElementById("actorInfo");
+    const personContainer = document.querySelector(".content-wrapper");
     const profilePicture =
         personInfo.profilePicture &&
         personInfo.profilePicture !== "https://image.tmdb.org/t/p/w500null"
@@ -126,4 +126,4 @@ async function renderActorPage(person) {
     }
 }
 
-export { renderActorPage };
+export { renderPersonPage };

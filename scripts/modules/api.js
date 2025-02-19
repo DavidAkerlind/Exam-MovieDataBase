@@ -40,7 +40,6 @@ async function fetchMovieByTitle(title) {
 
 async function fetchMovieByImdbID(imdbID) {
     console.log("fetchMovieByImdbID()");
-    console.log(imdbID);
 
     if (!imdbID) {
         console.log("No IMDb-ID found!");
@@ -72,7 +71,7 @@ async function fetchMovieSearch(query) {
     let searchHeader = document.querySelector("#searchHeader");
 
     if (!query) return [];
-    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}&type=movie`;
+    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}`;
 
     try {
         const response = await fetch(url);
