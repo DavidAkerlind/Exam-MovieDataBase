@@ -27,5 +27,16 @@ export function initCloseBurgerMenu() {
                 menuToggle.ariaLabel = "closed";
             }
         });
+
+        document
+            .getElementById("burgerLabel")
+            .addEventListener("keydown", function (event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    // Kollar om Enter eller Space trycks
+                    event.preventDefault(); // Förhindrar scroll vid Space-tryck
+                    document.getElementById("menu-toggle").checked =
+                        !document.getElementById("menu-toggle").checked;
+                }
+            });
     });
 }
