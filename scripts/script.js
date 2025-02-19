@@ -15,6 +15,7 @@ import { renderTrailers } from "./modules/caroussel.js";
 import { randomize, getLimitedCount, shuffleArray } from "./utils/utils.js";
 import { renderRecommendations } from "./components/recommendations.js";
 import { renderActorPage } from "./components/actorPage.js";
+import { initCloseBurgerMenu } from "./events/burgerMenu.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
@@ -56,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Anropa funktionen för att aktivera favoritknappar
 initializeFavoriteButtons();
 initSearchFunc();
+initCloseBurgerMenu();
 
 function setupCarousel() {
     console.log("setupCarousel()");

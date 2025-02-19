@@ -1,45 +1,27 @@
 import { fetchMovieSearch } from "../modules/api.js";
 import { renderMovieCard } from "../components/movieCard.js";
 
-const hamburgerElemRef = `<nav class="menu__navigation d-none" aria-label="Main Navigation on Mobile" aria-expanded="false">
-        <ul class="menu__list">
-            <!-- Logo -->
-            <li class="menu__item">
-                <a aria-label="Back to home link" href="index.html">
-                    <img aria-hidden="true" class="menu__logo" src="./res/logo.png" alt="Website Logo">
-                </a>
-            </li>
-
-            
-
-            <!-- Navigation Links -->
-            <li class="menu__item">
-                <a id="homeLink" class="menu__link" href="./index.html" aria-label="Navigate to home page">
-                    Home
-                </a>
-            </li>
-            <li class="menu__item">
-                <a id="searchLink" class="menu__link" href="./search.html" aria-label="Navigate to search page">
-                    Search
-                </a>
-            </li>
-            <li class="menu__item">
-                <a id="favoritesLink" class="menu__link" href="./favorites.html" aria-label="Navigate to favorites page">
-                    Favorites
-                </a>
-            </li>
-        </ul>
-    </nav>`;
-
 export function initSearchFunc() {
     document.addEventListener("DOMContentLoaded", () => {
         console.log("initSearchFunc()");
 
-        const searchInputs = document.querySelectorAll("#searchInput");
+        const searchInputHeader = document.querySelector("#searchInput");
+
+        const searchInputPage = document.querySelector("#searchInputOnPage");
+
+        let searchInputs = [searchInputHeader];
+
+        if (searchInputPage) {
+            searchInputs.push(searchInputPage);
+        }
+
+        console.log(searchInputs);
 
         searchInputs.forEach((searchInput) => {
             const searchResults = document.createElement("ul");
             searchResults.classList.add("search-results");
+            console.log(searchInput);
+
             searchInput.parentNode.appendChild(searchResults);
 
             searchResults.classList.add("d-none");
@@ -82,36 +64,41 @@ export function initSearchFunc() {
             });
 
             document.addEventListener("click", (event) => {
-                let menuToggle = document.querySelector("#menu-toggle");
-                let menu = document.querySelector(".menu__navigation");
-
                 if (
                     !searchInput.contains(event.target) &&
                     !searchResults.contains(event.target)
                 ) {
                     searchResults.classList.add("d-none");
                 }
-                if (
-                    !menu.contains(event.target) &&
-                    !menuToggle.contains(event.target)
-                ) {
-                    menuToggle.checked = false;
-                }
             });
-
             const searchForm = document.querySelectorAll("#searchForm");
 
             searchForm.forEach((elem) => {
                 elem.addEventListener("submit", (event) => {
                     event.preventDefault();
-                    let query = elem.querySelector("#searchInput").value;
-                    console.log(query);
+
+                    let query = "";
+
+                    // Hämta input-fält och kontrollera om de existerar innan de används
+                    let searchInput = document.querySelector("#searchInput");
+                    let searchInputOnPage =
+                        document.querySelector("#searchInputOnPage");
+
+                    if (searchInput && searchInput.value.trim().length > 0) {
+                        query = searchInput.value.trim();
+                    } else if (
+                        searchInputOnPage &&
+                        searchInputOnPage.value.trim().length > 0
+                    ) {
+                        query = searchInputOnPage.value.trim();
+                    }
 
                     if (query.length > 0) {
                         window.location.href = `search.html?q=${encodeURIComponent(
                             query
                         )}`;
-                        // Skicka användaren till search.html med sökfrågan som URL-parameter
+                    } else {
+                        console.log("Inget giltigt sökord angivet.");
                     }
                 });
             });

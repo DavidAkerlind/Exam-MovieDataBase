@@ -44,21 +44,20 @@ async function renderActorPage(person) {
                 </div>
             </div>
 
-            <!-- Biografi -->
+            <!-- Biography
+ -->
             <section class="person-info__biography">
                 <h2 class="person-info__bio-title">Biography</h2>
                 <p class="person-info__bio-text">
                     ${
                         personInfo.biography
-                            ? personInfo.biography.length > 500
-                                ? personInfo.biography.slice(0, 500) + "..."
-                                : personInfo.biography
+                            ? personInfo.biography
                             : "No biography available."
                     }
                 </p>
             </section>
 
-            <!-- Alla filmer personen har varit med i -->
+            <!-- 20 movies known for -->
             ${
                 personInfo.credits && personInfo.credits.length > 0
                     ? `<section class="person-info__all-movies">
@@ -76,7 +75,7 @@ async function renderActorPage(person) {
 
     // Funktion för att rendera filmer
     async function renderMovies(movies) {
-        const first10Movies = movies.slice(0, 10); // Begränsa till 10 filmer
+        const first10Movies = movies.slice(0, 20); // Begränsa till 20 filmer
         const movieHtml = await Promise.all(
             first10Movies.map(async (movie) => {
                 console.log(movie);

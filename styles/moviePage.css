@@ -14,9 +14,6 @@
     gap: 1rem;
 }
 
-.movie-info__list-item {
-    align-self: center;
-}
 .movie-info__actor-link,
 .movie-info__director-link,
 .movie-info__writer-link {
@@ -44,6 +41,7 @@
     min-width: 300px;
     align-items: center;
     justify-content: center;
+    padding: 0 0 1rem 0;
 }
 
 /* Poster container */
@@ -60,8 +58,6 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-bottom-right-radius: var(--radius-7);
-    border-bottom-left-radius: var(--radius-7);
 }
 
 .movie-info__title {

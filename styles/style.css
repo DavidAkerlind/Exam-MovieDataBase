@@ -54,7 +54,7 @@ a:hover {
 /* 📌 Utility-klasser */
 .content-wrapper {
     max-width: 1180px;
-    margin-top: 5rem;
+    margin-top: 2.5rem;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -83,8 +83,17 @@ a:hover {
     color: var(--text-yellow);
 }
 
+.landing-page-title {
+    color: var(--text-yellow);
+}
+
 .movie-card__favorite-btn--added {
     color: var(--green-text);
+}
+
+.favorite-btn--black-bg {
+    background-color: var(--primary-bg);
+    width: 17%;
 }
 
 @media screen and (max-width: 992px) {
@@ -101,7 +110,19 @@ a:hover {
     .movie-info__poster {
         flex-direction: column;
         width: 90%;
-        margin: 2rem 1rem;
+        margin: 2rem 0.5rem;
+    }
+
+    .movie-info__top {
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .movie-info__list-item {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        gap: 2rem;
     }
 
     .movie-info__poster-container {
