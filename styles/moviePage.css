@@ -1,6 +1,6 @@
 /* Allmän layout för stora skärmar */
 .movie-info {
-    margin-top: 2rem;
+    margin-top: 4rem;
     display: flex;
     margin-inline: 1rem;
     gap: 2rem;
@@ -14,12 +14,28 @@
     gap: 1rem;
 }
 
-.movie-info__actor-link,
-.movie-info__director-link,
-.movie-info__writer-link {
+.movie-info__link {
     color: var(--primary-white);
+    padding: 0.5rem 1rem;
+    background-color: var(--dark-btn);
+    border-radius: 3rem;
+    transition: 0.2s;
 }
 
+.movie-info__link:hover {
+    background-color: #8ba4ca28;
+}
+
+.movie-info__persons-title {
+    margin-bottom: 0.5rem;
+}
+.movie-info__actors-text,
+.movie-info__directors-text,
+.movie-info__writers-text {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
 .movie-info__top,
 .movie-info__people,
 .movie-info__plot,

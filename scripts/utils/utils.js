@@ -26,3 +26,27 @@ export function shuffleArray(array) {
     }
     return shuffledArray;
 }
+
+export async function checkImageExists(url) {
+    console.log("checkImageExists()");
+
+    if (!url || url === "N/A") {
+        console.log("Invalid URL:", url);
+        return "./res/icons/missing-poster.svg";
+    }
+
+    try {
+        const response = await fetch(url, { method: "HEAD" });
+        if (!response.ok) {
+            throw new Error("Image does not exist");
+        }
+        return url; // Bilden finns
+    } catch (error) {
+        console.log(error.message);
+        return "./res/icons/missing-poster.svg"; // Bilden finns inte eller ett fel uppstod
+    }
+}
+
+export function extractTitle(text) {
+    return text.replace(/\s-\s\([^)]*\)$/, "");
+}

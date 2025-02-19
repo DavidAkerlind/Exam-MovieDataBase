@@ -14,7 +14,7 @@ import { createHeader } from "./components/header.js";
 import { renderTrailers } from "./modules/caroussel.js";
 import { randomize, getLimitedCount, shuffleArray } from "./utils/utils.js";
 import { renderRecommendations } from "./components/recommendations.js";
-import { renderActorPage } from "./components/actorPage.js";
+import { renderPersonPage } from "./components/personPage.js";
 import { initCloseBurgerMenu } from "./events/burgerMenu.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -49,9 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("search.html");
         createHeader();
         setupSearchPage();
-    } else if (path === "/actor.html") {
+    } else if (path === "/person.html") {
         createHeader();
-        setupActorPage();
+        setupPersonPage();
     }
 });
 // Anropa funktionen för att aktivera favoritknappar
@@ -111,12 +111,12 @@ function setupSearchPage() {
     }
 }
 
-function setupActorPage() {
-    console.log("setupActorPage()");
+function setupPersonPage() {
+    console.log("setupPersonPage()");
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get("name");
 
     if (query) {
-        renderActorPage(fetchPersonInfo(query));
+        renderPersonPage(fetchPersonInfo(query));
     }
 }

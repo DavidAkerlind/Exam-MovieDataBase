@@ -62,9 +62,9 @@
     margin-bottom: 0.5rem;
 }
 .movie-card__year {
-    margin-top: 0.8rem;
+    margin-top: 0.5rem;
     color: var(--text-gray);
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 }
 
 .movie-card__favorite-btn {
