@@ -15,6 +15,7 @@ import { renderRecommendations } from "./components/recommendations.js";
 import { renderPersonPage } from "./components/personPage.js";
 import { initBurgerMenu } from "./events/burgerMenu.js";
 import { getCurrentPath } from "./utils/utils.js";
+import { initEmailForm } from "./events/newletter.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 initializeFavoriteButtons();
 initSearchFunc();
 initBurgerMenu();
+initEmailForm();
 
 function setupCarousel() {
     console.log("setupCarousel()");

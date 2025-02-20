@@ -80,13 +80,12 @@
     transition: 0.2s;
     font-weight: 700;
 }
+.movie-card__favorite-btn:hover {
+    background-color: #8ba4ca28;
+}
 
 .movie-card__favorite-btn--added {
     color: var(--green-text);
-}
-
-.movie-card__favorite-btn:hover {
-    background-color: #8ba4ca28;
 }
 
 .movie-card__favorite-btn--un {
