@@ -1,18 +1,29 @@
-import { oData } from "../data/data.js";
-
 const TOKEN = "378ca18a"; // key for omdb-API
 
 async function fetchCarouselMovies() {
     console.log("fetchCarouselMovies()");
-    const response = await fetch(
-        "https://santosnr6.github.io/Data/favoritemovies.json"
-    );
-    let movies = await response.json();
-    oData.topMovieList = movies;
-    return movies;
+
+    try {
+        const response = await fetch(
+            "https://santosnr6.github.io/Data/favoritemovies.json"
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        let movies = await response.json();
+        if (movies.length < 1) {
+            throw new Error(`Error, no movie found: ${movies} , ${response}`);
+        }
+        return movies;
+    } catch (error) {
+        document.querySelector(".content-wrapper").innerHTML = `
+            <p class="error-msg">An error occurred while fetching movies data: ${error.message}</p>`;
+        console.log("Error fetching movie data:", error.message);
+        return [];
+    }
 }
 
-// sätter oData.searchTitleMovieData till den data om den titel vi skickar in i funktionen och returnerar den också
 async function fetchMovieByTitle(title) {
     console.log("fetchMovieByTitle()");
 
@@ -23,6 +34,7 @@ async function fetchMovieByTitle(title) {
         const response = await fetch(url);
         console.log("Response status:", response.status);
         console.log("Response URL:", response.url);
+
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -34,6 +46,8 @@ async function fetchMovieByTitle(title) {
         return data;
     } catch (error) {
         console.log("Error fetching movie data:", error.message);
+        document.querySelector(".content-wrapper").innerHTML = `
+            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
         return null;
     }
 }
@@ -53,13 +67,20 @@ async function fetchMovieByImdbID(imdbID) {
         const movie = await response.json();
 
         if (movie.Response === "True") {
-            return movie; // Returnera filmobjektet till den som kallar på funktionen
+            return movie;
         } else {
             console.log("Could not fetch movie:", movie.Error);
+            if (movie.Error === "Request limit reached!") {
+                document.querySelector(
+                    ".content-wrapper"
+                ).innerHTML = `<p class="error-msg">${movie.Error}</p>`;
+            }
             return null;
         }
     } catch (error) {
         console.log("Error when when fetching movie data:", error);
+        document.querySelector(".content-wrapper").innerHTML = `
+            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
         return null;
     }
 }
@@ -71,7 +92,7 @@ async function fetchMovieSearch(query) {
     let searchHeader = document.querySelector("#searchHeader");
 
     if (!query) return [];
-    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}`;
+    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}*`;
 
     try {
         const response = await fetch(url);
@@ -89,18 +110,27 @@ async function fetchMovieSearch(query) {
             }
             return [];
         }
+
         if (searchHeader && !searchHeader.textContent.includes("results")) {
             searchHeader.textContent = "Search MMDb";
+        } else if (
+            data.Search.length > 0 &&
+            !searchHeader.textContent.includes("for")
+        ) {
+            searchHeader.textContent = `Search MMDb `;
         }
         return data.Search.slice(0, 12) || [];
     } catch (error) {
         console.log(`Error fetching search results: ${error.message}`);
+        document.querySelector(".content-wrapper").innerHTML = `
+            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
         return [];
     }
 }
 
-const TOKEN2 = "8ad0776a7a2b05bdcbba8ff0880953d1";
-async function fetchPersonInfo(personName, type = "actor") {
+const TOKEN2 = "8ad0776a7a2b05bdcbba8ff0880953d1"; // key for TMBd
+
+async function fetchPersonInfo(personName) {
     console.log("fetchPersonInfo()");
     try {
         // Justera sökningen baserat på typ (actor, director, writer, etc.)
@@ -111,19 +141,17 @@ async function fetchPersonInfo(personName, type = "actor") {
         const searchData = await searchResponse.json();
 
         if (searchData.results.length === 0) {
-            console.log("Personen hittades inte.");
+            console.log("Person was not found.");
             return;
         }
 
-        const person = searchData.results[0]; // Ta den första träffen
+        const person = searchData.results[0];
         const personId = person.id;
 
-        // Hämta detaljer om personen
         const detailsUrl = `https://api.themoviedb.org/3/person/${personId}?api_key=${TOKEN2}`;
         const detailsResponse = await fetch(detailsUrl);
         const detailsData = await detailsResponse.json();
 
-        // Hämta filmer eller projekt beroende på personens roll
         const creditsUrl = `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${TOKEN2}`;
         const creditsResponse = await fetch(creditsUrl);
         const creditsData = await creditsResponse.json();
@@ -147,10 +175,11 @@ async function fetchPersonInfo(personName, type = "actor") {
             })),
         };
 
-        console.log(personInfo);
         return personInfo;
     } catch (error) {
-        console.error("Fel vid hämtning av persondata:", error);
+        console.error("Error when fetching persondata:", error);
+        document.querySelector(".content-wrapper").innerHTML = `
+            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
     }
 }
 

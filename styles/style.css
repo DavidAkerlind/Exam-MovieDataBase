@@ -23,6 +23,7 @@
     --blue-text: #4891ff;
     --green-text: #48ff91;
     --box-shadow-light: 0 1rem 3rem 0.75rem rgba(255, 255, 255, 0.2);
+    --error-txt: rgb(212, 19, 19);
 }
 
 * {
@@ -57,6 +58,18 @@ a:hover {
     flex-direction: column;
     width: 100%;
     align-items: center;
+}
+
+.error-msg {
+    margin-top: 8rem;
+    color: var(--error-txt);
+    font-size: 1rem;
+    justify-self: end;
+
+    padding: 0.5rem 1rem;
+    width: 90%;
+    background-color: var(--dark-btn);
+    border-radius: 3rem;
 }
 
 .center {

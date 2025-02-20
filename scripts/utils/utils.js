@@ -40,13 +40,26 @@ export async function checkImageExists(url) {
         if (!response.ok) {
             throw new Error("Image does not exist");
         }
-        return url; // Bilden finns
+        return url;
     } catch (error) {
         console.log(error.message);
-        return "./res/icons/missing-poster.svg"; // Bilden finns inte eller ett fel uppstod
+        return "./res/icons/missing-poster.svg";
     }
 }
 
 export function extractTitle(text) {
     return text.replace(/\s-\s\([^)]*\)$/, "");
+}
+
+export function getBasePath() {
+    return window.location.hostname === "davidakerlind.github.io"
+        ? "/Exam-MovieDataBase"
+        : "";
+}
+
+export function getCurrentPath() {
+    return window.location.pathname.replace(getBasePath(), "");
+}
+export function adjustPath(basePath) {
+    return window.location.pathname.replace(basePath, "");
 }

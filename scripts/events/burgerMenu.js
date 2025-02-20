@@ -1,42 +1,42 @@
-export function initCloseBurgerMenu() {
-    console.log("initCloseBurgerMenu()");
-    document.addEventListener("DOMContentLoaded", () => {
-        let menuToggle = document.querySelector("#menu-toggle");
-        let menu = document.querySelector(".menu__navigation");
-        let burgerLabel = document.querySelector("#burgerLabel");
+import { toggleAriaLabel } from "../utils/domUtils.js";
 
-        document
-            .querySelector("#menu-toggle")
-            .addEventListener("click", (event) => {
-                if (menuToggle.ariaLabel === "closed") {
-                    menuToggle.ariaLabel = "open";
-                } else {
-                    menuToggle.ariaLabel = "closed";
-                }
-            });
+export function initBurgerMenu() {
+    console.log("initBurgerMenu()");
+    document.addEventListener("DOMContentLoaded", setupBurgerMenu);
+}
 
-        document.addEventListener("click", (event) => {
-            if (
-                !burgerLabel.contains(event.target) &&
-                !menu.contains(event.target) &&
-                !menuToggle.contains(event.target) &&
-                menuToggle.ariaLabel === "open"
-            ) {
-                menuToggle.checked = false;
+function setupBurgerMenu() {
+    const menuToggle = document.querySelector("#menu-toggle");
+    const menu = document.querySelector(".menu__navigation");
+    const burgerLabel = document.querySelector("#burgerLabel");
 
-                menuToggle.ariaLabel = "closed";
-            }
-        });
+    if (!menuToggle || !menu || !burgerLabel) return;
 
-        document
-            .getElementById("burgerLabel")
-            .addEventListener("keydown", function (event) {
-                if (event.key === "Enter" || event.key === " ") {
-                    // Kollar om Enter eller Space trycks
-                    event.preventDefault(); // Förhindrar scroll vid Space-tryck
-                    document.getElementById("menu-toggle").checked =
-                        !document.getElementById("menu-toggle").checked;
-                }
-            });
-    });
+    menuToggle.addEventListener("click", toggleAriaLabel);
+    document.addEventListener("click", (event) =>
+        closeMenuOnClickOutside(event, menuToggle, menu, burgerLabel)
+    );
+    burgerLabel.addEventListener("keydown", handleKeyboardToggle);
+}
+
+function closeMenuOnClickOutside(event, menuToggle, menu, burgerLabel) {
+    if (
+        !burgerLabel.contains(event.target) &&
+        !menu.contains(event.target) &&
+        !menuToggle.contains(event.target) &&
+        menuToggle.ariaLabel === "open"
+    ) {
+        menuToggle.checked = false;
+        menuToggle.ariaLabel = "closed";
+    }
+}
+
+function handleKeyboardToggle(event) {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        const menuToggle = document.getElementById("menu-toggle");
+        if (menuToggle) {
+            menuToggle.checked = !menuToggle.checked;
+        }
+    }
 }

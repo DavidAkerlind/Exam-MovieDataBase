@@ -2,33 +2,24 @@ import { renderMovieCard } from "./components/movieCard.js";
 import {
     fetchPersonInfo,
     fetchCarouselMovies,
-    fetchMovieSearch,
     fetchMovieByImdbID,
-    fetchMovieByTitle,
 } from "./modules/api.js";
 import { renderMoviePage } from "./components/fullMoviePage.js";
 import { initializeFavoriteButtons } from "./events/favorites.js";
-import { getFavoriteMovies, saveFavoriteMovies } from "./data/localStorage.js";
+import { getFavoriteMovies } from "./data/localStorage.js";
 import { initSearchFunc, loadSearchResults } from "./events/search.js";
 import { createHeader } from "./components/header.js";
 import { renderTrailers } from "./modules/caroussel.js";
 import { randomize, getLimitedCount, shuffleArray } from "./utils/utils.js";
 import { renderRecommendations } from "./components/recommendations.js";
 import { renderPersonPage } from "./components/personPage.js";
-import { initCloseBurgerMenu } from "./events/burgerMenu.js";
+import { initBurgerMenu } from "./events/burgerMenu.js";
+import { getCurrentPath } from "./utils/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script.js loaded");
 
-    // Kontrollera om vi är på GitHub Pages (bas-URL innehåller "/Exam-MovieDataBase/")
-    const isGitHubPages =
-        window.location.hostname === "davidakerlind.github.io";
-
-    // Detta är basvägen för GitHub Pages
-    const basePath = isGitHubPages ? "/Exam-MovieDataBase" : "";
-
-    // Justera sökvägen baserat på om vi är på GitHub Pages eller ej
-    const path = window.location.pathname.replace(basePath, "");
+    const path = getCurrentPath();
 
     if (path === "/" || path === "/index.html") {
         console.log("index.html");
@@ -54,10 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
         setupPersonPage();
     }
 });
-// Anropa funktionen för att aktivera favoritknappar
+
 initializeFavoriteButtons();
 initSearchFunc();
-initCloseBurgerMenu();
+initBurgerMenu();
 
 function setupCarousel() {
     console.log("setupCarousel()");
@@ -89,7 +80,6 @@ function setupFavoritesPage() {
             });
         });
     } else {
-        // No favorites?
         document.querySelector(
             "#favoritesTitle"
         ).textContent = `No movies saved`;
