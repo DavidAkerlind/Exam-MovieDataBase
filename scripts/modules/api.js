@@ -80,7 +80,7 @@ async function fetchMovieSearch(query) {
     console.log("fetchMovieSearch()");
     console.log(`Searching for: ${query}`);
 
-    let searchHeader = document.querySelector("#searchHeader");
+    // let searchHeader = document.querySelector("#searchHeader");
 
     if (!query) return [];
     const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}*`;
@@ -96,20 +96,21 @@ async function fetchMovieSearch(query) {
         if (data.Response === "False") {
             console.log(`No movies found: ${data.Error}`);
 
-            if (data.Error == "Too many results." && searchHeader) {
-                searchHeader.textContent = data.Error;
-            }
+            // if (data.Error == "Too many results." && searchHeader) {
+            //     searchHeader.textContent = data.Error;
+            // }
             return [];
         }
 
-        if (searchHeader && !searchHeader.textContent.includes("results")) {
-            searchHeader.textContent = "Search MMDb";
-        } else if (
-            data.Search.length > 0 &&
-            !searchHeader.textContent.includes("for")
-        ) {
-            searchHeader.textContent = `Search MMDb `;
-        }
+        // if (searchHeader && !searchHeader.textContent.includes("results")) {
+        //     searchHeader.textContent = "Search MMDb";
+        // } else if (
+        //     data.Search.length > 0 &&
+        //     !searchHeader.textContent.includes("for") &&
+        //     searchHeader
+        // ) {
+        //     searchHeader.textContent = `Search MMDb `;
+        // }
         return data.Search.slice(0, 12) || [];
     } catch (error) {
         console.log(`Error fetching search results: ${error.message}`);

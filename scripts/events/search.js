@@ -23,6 +23,7 @@ function getSearchInputs() {
 
 function setupSearchInput(searchInput) {
     const searchResults = createSearchResultsElement();
+
     searchInput.parentNode.appendChild(searchResults);
 
     searchInput.addEventListener("focus", () =>
@@ -53,6 +54,7 @@ async function handleSearchInput(searchInput, searchResults) {
     if (query.length < 1) return searchResults.classList.add("d-none");
 
     const movies = await fetchMovieSearch(query);
+    console.log(movies);
     if (movies.length === 0) return console.log("No movies found");
 
     movies.forEach((movie) => {
