@@ -173,11 +173,11 @@ a:hover {
     .menu__button {
         display: flex;
     }
-    .header__form-btn {
-        padding: 0.44rem;
-    }
 }
 @media screen and (max-width: 576px) {
+    .header__form-btn {
+        padding: 0.5rem;
+    }
     .search-container {
         display: block;
     }

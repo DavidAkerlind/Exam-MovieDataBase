@@ -67,11 +67,6 @@ async function fetchMovieByImdbID(imdbID) {
             return movie;
         } else {
             console.log("Could not fetch movie:", movie.Error);
-            if (movie.Error === "Request limit reached!") {
-                document.querySelector(
-                    ".content-wrapper"
-                ).innerHTML = `<p class="error-msg">${movie.Error}</p>`;
-            }
             return null;
         }
     } catch (error) {
