@@ -17,8 +17,6 @@ async function fetchCarouselMovies() {
         }
         return movies;
     } catch (error) {
-        document.querySelector(".content-wrapper").innerHTML = `
-            <p class="error-msg">An error occurred while fetching movies data: ${error.message}</p>`;
         console.log("Error fetching movie data:", error.message);
         return [];
     }
@@ -46,8 +44,7 @@ async function fetchMovieByTitle(title) {
         return data;
     } catch (error) {
         console.log("Error fetching movie data:", error.message);
-        document.querySelector(".content-wrapper").innerHTML = `
-            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
+
         return null;
     }
 }
@@ -70,17 +67,11 @@ async function fetchMovieByImdbID(imdbID) {
             return movie;
         } else {
             console.log("Could not fetch movie:", movie.Error);
-            if (movie.Error === "Request limit reached!") {
-                document.querySelector(
-                    ".content-wrapper"
-                ).innerHTML = `<p class="error-msg">${movie.Error}</p>`;
-            }
             return null;
         }
     } catch (error) {
         console.log("Error when when fetching movie data:", error);
-        document.querySelector(".content-wrapper").innerHTML = `
-            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
+
         return null;
     }
 }
@@ -122,8 +113,6 @@ async function fetchMovieSearch(query) {
         return data.Search.slice(0, 12) || [];
     } catch (error) {
         console.log(`Error fetching search results: ${error.message}`);
-        document.querySelector(".content-wrapper").innerHTML = `
-            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
         return [];
     }
 }
@@ -178,8 +167,6 @@ async function fetchPersonInfo(personName) {
         return personInfo;
     } catch (error) {
         console.error("Error when fetching persondata:", error);
-        document.querySelector(".content-wrapper").innerHTML = `
-            <p class="error-msg">An error occurred while fetching movie data: ${error.message}</p>`;
     }
 }
 

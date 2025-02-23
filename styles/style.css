@@ -58,6 +58,7 @@ a:hover {
     flex-direction: column;
     width: 100%;
     align-items: center;
+    min-height: 50rem;
 }
 
 .error-msg {
@@ -81,6 +82,7 @@ a:hover {
 }
 
 .content-wrapper--trailers {
+    min-height: 0;
     margin-top: 0;
     display: block;
 }
@@ -171,11 +173,15 @@ a:hover {
     .menu__button {
         display: flex;
     }
-    .header__form-btn {
-        padding: 0.44rem;
-    }
 }
 @media screen and (max-width: 576px) {
+    .header__form-btn {
+        padding: 0.5rem;
+    }
+    .search-container {
+        display: block;
+    }
+
     .landing-page-title {
         display: block;
     }
