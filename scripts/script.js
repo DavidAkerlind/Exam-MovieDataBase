@@ -1,114 +1,54 @@
-import { renderMovieCard } from "./components/movieCard.js";
-import {
-    fetchPersonInfo,
-    fetchCarouselMovies,
-    fetchMovieByImdbID,
-} from "./modules/api.js";
-import { renderMoviePage } from "./components/fullMoviePage.js";
-import { initializeFavoriteButtons } from "./events/favorites.js";
-import { getFavoriteMovies } from "./data/localStorage.js";
-import { initSearchFunc, loadSearchResults } from "./events/search.js";
-import { createHeader } from "./components/header.js";
-import { renderTrailers } from "./modules/caroussel.js";
-import { randomize, getLimitedCount, shuffleArray } from "./utils/utils.js";
-import { renderRecommendations } from "./components/recommendations.js";
-import { renderPersonPage } from "./components/personPage.js";
+// Entry point for every page. <body data-page="..."> decides which page module runs.
+import { renderLayout } from "./components/layout.js";
+import { initSearch } from "./events/search.js";
 import { initBurgerMenu } from "./events/burgerMenu.js";
-import { getCurrentPath } from "./utils/utils.js";
-import { initEmailForm } from "./events/newletter.js";
+import { initFavorites } from "./events/favorites.js";
+import { initNewsletter } from "./events/newsletter.js";
+import { initPointerGlow, initImageLoading, initScrollState } from "./utils/motion.js";
+import { fetchMovies } from "./modules/api.js";
+import { legacyFavoriteIds, migrateFavorites } from "./data/favorites.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Script.js loaded");
+const PAGES = {
+    home: () => import("./pages/home.js"),
+    movie: () => import("./pages/movie.js"),
+    person: () => import("./pages/person.js"),
+    search: () => import("./pages/search.js"),
+    favorites: () => import("./pages/favorites.js"),
+};
 
-    const path = getCurrentPath();
-
-    if (path === "/" || path === "/index.html") {
-        console.log("index.html");
-        createHeader();
-        setupCarousel();
-        renderRecommendations();
-    } else if (path === "/favorites.html") {
-        console.log("favorites.html");
-        createHeader();
-        setupFavoritesPage();
-    } else if (path === "/movie.html") {
-        console.log("movie.html");
-        createHeader();
-        const urlParams = new URLSearchParams(window.location.search);
-        const imdbID = urlParams.get("id");
-        renderMoviePage(fetchMovieByImdbID(imdbID));
-    } else if (path === "/search.html") {
-        console.log("search.html");
-        createHeader();
-        setupSearchPage();
-    } else if (path === "/person.html") {
-        createHeader();
-        setupPersonPage();
+/** Older versions saved IMDb ids; swap them for TMDb ids in the background. */
+async function migrateLegacyFavorites() {
+    const legacy = legacyFavoriteIds();
+    if (!legacy.length) return;
+    try {
+        const movies = await fetchMovies(legacy);
+        migrateFavorites(new Map(movies.map((movie) => [movie.requestedId, movie.id])));
+    } catch {
+        /* try again on the next page load */
     }
-});
+}
 
-initializeFavoriteButtons();
-initSearchFunc();
+function registerServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    const secure = window.isSecureContext || window.location.hostname === "localhost";
+    if (secure) navigator.serviceWorker.register("./sw.js").catch(() => {});
+}
+
+const page = document.body.dataset.page;
+
+document.documentElement.classList.add("js");
+initImageLoading();
+renderLayout(page);
+initSearch();
 initBurgerMenu();
-initEmailForm();
+initFavorites();
+initNewsletter();
+initPointerGlow();
+initScrollState();
 
-function setupCarousel() {
-    console.log("setupCarousel()");
+PAGES[page]?.()
+    .then((module) => module.init())
+    .catch((error) => console.error(`Could not start the "${page}" page:`, error));
 
-    fetchCarouselMovies().then((topMovies) => {
-        if (topMovies.length < 5) {
-            console.log("Not enough movies to display (trailer)");
-            return;
-        }
-        let shuffledMovies = shuffleArray(topMovies);
-        for (let i = 1; i <= 5; i++) {
-            renderTrailers(shuffledMovies[i], i);
-        }
-    });
-}
-
-function setupFavoritesPage() {
-    console.log("setupFavoritesPage()");
-
-    let favoriteMovies = getFavoriteMovies();
-
-    if (favoriteMovies.length > 0) {
-        console.log(favoriteMovies);
-        favoriteMovies.forEach((movie) => {
-            fetchMovieByImdbID(movie).then((movieData) => {
-                if (movieData) {
-                    renderMovieCard(movieData);
-                }
-            });
-        });
-    } else {
-        document.querySelector(
-            "#favoritesTitle"
-        ).textContent = `No movies saved`;
-        let divRef = document.createElement("div");
-        divRef.innerHTML = `<a href="./search.html" class="search-link" id="searchLink">Go find movies</a>
-`;
-        document.querySelector(".content-wrapper").appendChild(divRef);
-    }
-}
-
-function setupSearchPage() {
-    console.log("setupSearchPage");
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get("q");
-
-    if (query) {
-        loadSearchResults(query);
-    }
-}
-
-function setupPersonPage() {
-    console.log("setupPersonPage()");
-    const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get("name");
-
-    if (query) {
-        renderPersonPage(fetchPersonInfo(query));
-    }
-}
+migrateLegacyFavorites();
+registerServiceWorker();

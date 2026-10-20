@@ -1,190 +1,129 @@
-import { getCurrentPath } from "../utils/utils.js";
+// The only module that talks to the network. Everything goes through the
+// Cloudflare Worker, which holds the TMDb / OMDb keys; no secret ever ships here.
+import { API_BASE_URL } from "../config.js";
 
-const TOKEN = "378ca18a"; // key for omdb-API
+export class ApiError extends Error {
+    constructor(message, { status = 0, code = "network_error" } = {}) {
+        super(message);
+        this.name = "ApiError";
+        this.status = status;
+        this.code = code;
+    }
+}
 
-async function fetchCarouselMovies() {
-    console.log("fetchCarouselMovies()");
+const LOCAL_HOSTS = ["localhost", "127.0.0.1", "[::1]"];
+const OVERRIDE_KEY = "mmdb:api";
+const CACHE_TTL = 5 * 60 * 1000;
+const REQUEST_TIMEOUT = 15000;
 
+/** On localhost only, `?api=http://localhost:8787` points the app at a local Worker. */
+function readLocalOverride() {
+    if (!LOCAL_HOSTS.includes(window.location.hostname)) return null;
     try {
-        const response = await fetch(
-            "https://santosnr6.github.io/Data/favoritemovies.json"
+        const param = new URLSearchParams(window.location.search).get("api");
+        if (param === "reset") localStorage.removeItem(OVERRIDE_KEY);
+        else if (param) localStorage.setItem(OVERRIDE_KEY, param);
+        return localStorage.getItem(OVERRIDE_KEY);
+    } catch {
+        return null;
+    }
+}
+
+const baseUrl = (readLocalOverride() || API_BASE_URL).replace(/\/+$/, "");
+
+export const isApiConfigured = () => !baseUrl.includes("YOUR-SUBDOMAIN");
+
+const memo = new Map();
+
+function buildUrl(path, params) {
+    const search = new URLSearchParams();
+    for (const [name, value] of Object.entries(params)) {
+        if (value !== undefined && value !== null && value !== "") {
+            search.set(name, value);
+        }
+    }
+    const query = search.toString();
+    return `${baseUrl}${path}${query ? `?${query}` : ""}`;
+}
+
+async function request(path, params = {}, { signal } = {}) {
+    if (!isApiConfigured()) {
+        throw new ApiError(
+            "The API URL has not been set up yet. Deploy the Worker and add its URL to scripts/config.js.",
+            { code: "not_configured" }
         );
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        let movies = await response.json();
-        if (movies.length < 1) {
-            throw new Error(`Error, no movie found: ${movies} , ${response}`);
-        }
-        return movies;
-    } catch (error) {
-        console.log("Error fetching movie data:", error.message);
-        return [];
     }
-}
 
-async function fetchMovieByTitle(title) {
-    console.log("fetchMovieByTitle()");
+    const url = buildUrl(path, params);
+    const cached = memo.get(url);
+    if (cached && Date.now() - cached.time < CACHE_TTL) return cached.data;
 
-    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&t=${encodeURIComponent(
-        title
-    )}`;
+    const timeout = AbortSignal.timeout(REQUEST_TIMEOUT);
+    const combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
+
+    let response;
     try {
-        const response = await fetch(url);
-        console.log("Response status:", response.status);
-        console.log("Response URL:", response.url);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.Response === "False") {
-            throw new Error(data.Error);
-        }
-        return data;
+        response = await fetch(url, {
+            signal: combined,
+            headers: { Accept: "application/json" },
+        });
     } catch (error) {
-        console.log("Error fetching movie data:", error.message);
-
-        return null;
-    }
-}
-
-async function fetchMovieByImdbID(imdbID) {
-    console.log("fetchMovieByImdbID()");
-
-    if (!imdbID) {
-        console.log("No IMDb-ID found!");
-        return null;
+        if (signal?.aborted) throw error; // caller cancelled: let it through untouched
+        throw new ApiError("Couldn't reach the movie service. Check your connection.", {
+            code: "network_error",
+        });
     }
 
+    let body = null;
     try {
-        const response = await fetch(
-            `https://www.omdbapi.com/?apikey=${TOKEN}&i=${imdbID}&plot=full`
+        body = await response.json();
+    } catch {
+        /* handled below */
+    }
+
+    if (!response.ok) {
+        throw new ApiError(
+            body?.error?.message || `The movie service answered with ${response.status}.`,
+            { status: response.status, code: body?.error?.code || "http_error" }
         );
-        const movie = await response.json();
-
-        if (movie.Response === "True") {
-            return movie;
-        } else {
-            console.log("Could not fetch movie:", movie.Error);
-            return null;
-        }
-    } catch (error) {
-        console.log("Error when when fetching movie data:", error);
-
-        return null;
     }
+    if (body === null) {
+        throw new ApiError("The movie service sent an unreadable answer.", {
+            status: response.status,
+            code: "bad_response",
+        });
+    }
+
+    memo.set(url, { time: Date.now(), data: body });
+    return body;
 }
 
-async function fetchMovieSearch(query) {
-    console.log("fetchMovieSearch()");
-    console.log(`Searching for: ${query}`);
+/** Trailer slides, the top 20 list and this week's trending movies. */
+export const fetchHome = () => request("/api/home");
 
-    const isSearchPage = getCurrentPath() === "/search.html";
-    let searchHeader;
-    if (isSearchPage) {
-        searchHeader = document.querySelector("#searchHeader");
-    }
-    if (!query) return [];
-    const url = `https://www.omdbapi.com/?apikey=${TOKEN}&s=${query}*`;
+/** Movies (+ people on page 1) matching a text query. */
+export const searchAll = (query, { page = 1, signal } = {}) =>
+    request("/api/search", { q: query, page }, { signal });
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! ${response.ok}`);
-        }
+/** Lightweight results for the search-as-you-type dropdown. */
+export const suggest = (query, { signal } = {}) =>
+    request("/api/search", { q: query, mode: "suggest" }, { signal });
 
-        let data = await response.json();
+/** Full detail for one movie. Accepts a TMDb id or a legacy IMDb id. */
+export const fetchMovie = (id) => request(`/api/movie/${encodeURIComponent(id)}`);
 
-        if (data.Response === "False") {
-            console.log(`No movies found: ${data.Error}`);
+/** Summaries for a list of ids (used by favorites). Sent in chunks of 24. */
+export async function fetchMovies(ids) {
+    const chunks = [];
+    for (let i = 0; i < ids.length; i += 24) chunks.push(ids.slice(i, i + 24));
 
-            if (
-                isSearchPage &&
-                data.Error == "Too many results." &&
-                searchHeader
-            ) {
-                searchHeader.textContent = data.Error;
-            }
-            return [];
-        }
-
-        if (isSearchPage && !searchHeader.textContent.includes("results")) {
-            searchHeader.textContent = "Search MMDb";
-        } else if (
-            isSearchPage &&
-            data.Search.length > 0 &&
-            !searchHeader.textContent.includes("for") &&
-            searchHeader
-        ) {
-            searchHeader.textContent = `Search MMDb `;
-        }
-        return data.Search.slice(0, 12) || [];
-    } catch (error) {
-        console.log(`Error fetching search results: ${error.message}`);
-        return [];
-    }
+    const results = await Promise.all(
+        chunks.map((chunk) => request("/api/movies", { ids: chunk.join(",") }))
+    );
+    return results.flatMap((result) => result.movies);
 }
 
-const TOKEN2 = "8ad0776a7a2b05bdcbba8ff0880953d1"; // key for TMBd
+export const fetchPerson = (id) => request(`/api/person/${encodeURIComponent(id)}`);
 
-async function fetchPersonInfo(personName) {
-    console.log("fetchPersonInfo()");
-    try {
-        // Justera sökningen baserat på typ (actor, director, writer, etc.)
-        const searchUrl = `https://api.themoviedb.org/3/search/person?api_key=${TOKEN2}&query=${encodeURIComponent(
-            personName
-        )}`;
-        const searchResponse = await fetch(searchUrl);
-        const searchData = await searchResponse.json();
-
-        if (searchData.results.length === 0) {
-            console.log("Person was not found.");
-            return;
-        }
-
-        const person = searchData.results[0];
-        const personId = person.id;
-
-        const detailsUrl = `https://api.themoviedb.org/3/person/${personId}?api_key=${TOKEN2}`;
-        const detailsResponse = await fetch(detailsUrl);
-        const detailsData = await detailsResponse.json();
-
-        const creditsUrl = `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${TOKEN2}`;
-        const creditsResponse = await fetch(creditsUrl);
-        const creditsData = await creditsResponse.json();
-
-        // Skapa ett objekt med personens information
-        const personInfo = {
-            name: detailsData.name,
-            biography: detailsData.biography,
-            birthday: detailsData.birthday,
-            deathday: detailsData.deathday,
-            placeOfBirth: detailsData.place_of_birth,
-            profilePicture: `https://image.tmdb.org/t/p/w500${detailsData.profile_path}`,
-            knownFor: person.known_for.map(
-                (movie) => movie.title || movie.name
-            ),
-            credits: creditsData.cast.map((movie) => ({
-                title: movie.title,
-                releaseDate: movie.release_date,
-                character: movie.character,
-                poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-            })),
-        };
-
-        return personInfo;
-    } catch (error) {
-        console.error("Error when fetching persondata:", error);
-    }
-}
-
-export {
-    fetchPersonInfo,
-    fetchCarouselMovies,
-    fetchMovieByTitle,
-    fetchMovieByImdbID,
-    fetchMovieSearch,
-};
+/** Legacy links used ?name=; the Worker resolves the name to a person. */
+export const fetchPersonByName = (name) => request("/api/person", { name });

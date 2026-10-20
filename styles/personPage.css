@@ -1,0 +1,209 @@
+/* ==========================================================================
+   Person page
+   ========================================================================== */
+
+.person-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-7);
+}
+
+.person-info__header {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.4rem, 4vw, 3rem);
+}
+
+.person-info__poster {
+    --glass-radius: var(--r-xl);
+    flex: none;
+    width: clamp(150px, 24vw, 260px);
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    padding: 0.5rem;
+}
+
+.person-info__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: calc(var(--r-xl) - 0.5rem);
+}
+
+.person-info__poster.skeleton {
+    border-radius: var(--r-xl);
+}
+
+.person-info__basic-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    min-width: 0;
+    flex: 1;
+}
+
+.person-info__title {
+    font-size: var(--fs-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    background: linear-gradient(120deg, #fff 30%, #ffd98a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.person-info__facts {
+    display: grid;
+    gap: 0.5rem 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+}
+
+.person-info__list-item dt {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.person-info__list-item dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+.person-info__known {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.person-info__known > span:first-child {
+    margin-right: 0.3rem;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.person-info__biography {
+    --glass-radius: var(--r-lg);
+    padding: 1.6rem 1.8rem;
+}
+
+.person-info__bio-title {
+    margin-bottom: 0.8rem;
+    font-size: var(--fs-xs);
+    font-weight: 750;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.person-info__bio-text {
+    max-width: 68ch;
+    font-size: var(--fs-md);
+    line-height: 1.8;
+    color: var(--ink-1);
+}
+
+.person-info__bio-text p + p {
+    margin-top: 1em;
+}
+
+.person-info__bio-text.is-clamped {
+    max-height: 10.5em;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+    mask-image: linear-gradient(180deg, #000 55%, transparent);
+    transition: max-height 0.9s var(--ease-out);
+}
+
+.person-info__bio-text.is-clamped.is-expanded {
+    max-height: 120em;
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+.person-info__biography .btn {
+    margin-top: var(--s-4);
+}
+
+.person-info__movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 185px), 1fr));
+    gap: clamp(0.8rem, 2vw, 1.3rem);
+}
+
+.person-info__movie-link {
+    display: block;
+}
+
+.person-info__movie {
+    --glass-radius: var(--r-md);
+    height: 100%;
+    overflow: hidden;
+    transition: transform var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+
+.person-info__movie-link:hover .person-info__movie {
+    transform: translateY(-6px);
+    box-shadow: inset 0 1px 0 var(--glass-highlight), inset 0 0 0 1px rgb(255 255 255 / 0.24),
+        0 26px 50px -20px rgb(0 0 0 / 0.85), 0 0 40px -16px rgb(139 123 255 / 0.5);
+}
+
+.person-info__movie-poster-container {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.06);
+}
+
+.person-info__movie-poster-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.person-info__movie-link:hover .person-info__movie-poster-container img {
+    transform: scale(1.07);
+}
+
+.person-info__movie-info {
+    padding: 0.75rem 0.9rem 0.95rem;
+}
+
+.person-info__movie-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.person-info__movie-character {
+    margin-top: 0.2rem;
+    font-size: var(--fs-xs);
+    color: var(--ink-3);
+}
+
+@media (max-width: 720px) {
+    .person-info__header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .person-info__facts,
+    .person-info__known {
+        justify-content: center;
+        justify-items: center;
+    }
+
+    .person-info__biography {
+        padding: 1.2rem 1.25rem;
+    }
+}

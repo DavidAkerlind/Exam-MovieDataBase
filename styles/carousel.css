@@ -1,149 +1,250 @@
-/* trailer Section Styling */
+/* ==========================================================================
+   Trailer carousel: a 3D coverflow. Geometry comes from the variables below;
+   carousel.js only sets --o (signed offset) and --abs per slide.
+   ========================================================================== */
 
 .trailers {
-    overflow: hidden;
+    --stage-h: clamp(220px, 38vw, 440px);
+    --slide-w: min(60%, 740px);
+    --shift: 66%;
+    --tilt: 24deg;
+    --depth: 150px;
     position: relative;
+    margin-top: var(--s-6);
+}
+
+.trailers__skeleton {
+    height: var(--stage-h);
+    border-radius: var(--r-xl);
+}
+
+.trailers__stage {
+    position: relative;
+    height: var(--stage-h);
+    border-radius: var(--r-xl);
+}
+
+.trailers__stage:focus-visible {
+    outline-offset: 8px;
+}
+
+.trailers__container {
+    position: absolute;
+    inset: 0;
+    overflow: clip; /* slides far from the centre must not widen the page */
+    perspective: 1700px;
+    touch-action: pan-y;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+.trailers__slide {
+    --o: 0;
+    --abs: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--slide-w);
+    aspect-ratio: 16 / 9;
+    z-index: calc(10 - var(--abs) * 2);
+    opacity: calc(1 - var(--abs) * 0.32);
+    transform: translate(-50%, -50%) translateX(calc(var(--o) * var(--shift)))
+        translateZ(calc(var(--abs) * var(--depth) * -1)) rotateY(calc(var(--o) * var(--tilt) * -1))
+        scale(calc(1 - var(--abs) * 0.05));
+    filter: brightness(calc(1 - var(--abs) * 0.3)) saturate(calc(1 - var(--abs) * 0.1));
+    transition: transform 0.95s var(--ease-out), opacity 0.95s var(--ease-out), filter 0.95s var(--ease-out);
+    will-change: transform;
+}
+
+/* Slides that wrap from one end to the other jump instead of flying across */
+.trailers__slide.is-wrapping {
+    transition: none;
+}
+
+.trailers__video {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: var(--r-lg);
+    background: var(--bg-1);
+    box-shadow: 0 30px 60px -28px rgb(0 0 0 / 0.9), inset 0 0 0 1px rgb(255 255 255 / 0.18);
+    cursor: pointer;
+    transition: box-shadow var(--dur-4) var(--ease-out);
+}
+
+.trailers__video img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.trailers__video::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgb(5 6 13 / 0) 45%, rgb(5 6 13 / 0.7) 100%),
+        linear-gradient(135deg, rgb(255 255 255 / 0.12), transparent 40%);
+}
+
+.trailers__slide[data-position="center"] .trailers__video {
+    box-shadow: 0 40px 90px -30px rgb(124 92 255 / 0.65), 0 30px 60px -28px rgb(0 0 0 / 0.9),
+        inset 0 0 0 1px rgb(255 255 255 / 0.3);
+}
+
+.trailers__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: clamp(3.4rem, 8vw, 5rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    font-size: clamp(1.4rem, 3.4vw, 2rem);
+    color: #fff;
+    background: linear-gradient(145deg, rgb(255 255 255 / 0.32), rgb(255 255 255 / 0.1));
+    -webkit-backdrop-filter: blur(14px) saturate(170%);
+    backdrop-filter: blur(14px) saturate(170%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), inset 0 0 0 1px rgb(255 255 255 / 0.28),
+        0 16px 40px -10px rgb(0 0 0 / 0.7);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+    transition: opacity var(--dur-3) var(--ease-out), transform 0.6s var(--ease-spring);
+}
+
+.trailers__play .icon {
+    margin-left: 0.12em;
+}
+
+.trailers__slide[data-position="center"] .trailers__play {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.trailers__slide[data-position="center"] .trailers__video:hover .trailers__play {
+    transform: translate(-50%, -50%) scale(1.12);
 }
 
 .trailers__arrow {
     position: absolute;
-    vertical-align: middle;
-    height: 40px;
-    width: 40px;
-    z-index: 4;
     top: 50%;
+    z-index: 30;
     transform: translateY(-50%);
-    cursor: pointer;
 }
 
-.trailers__arrow:hover,
+.trailers__arrow:hover {
+    transform: translateY(-50%) scale(1.08);
+}
+
 .trailers__arrow:active {
-    filter: invert(25%);
-}
-
-.trailers__arrow--right {
-    right: 2rem;
+    transform: translateY(-50%) scale(0.92);
 }
 
 .trailers__arrow--left {
-    left: 2rem;
+    left: 0.25rem;
 }
 
-.trailers::before,
-.trailers::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 25%;
-    z-index: 3;
+.trailers__arrow--right {
+    right: 0.25rem;
 }
 
-.trailers::before {
-    background: linear-gradient(to right, var(--primary-bg) 20%, transparent);
-    left: 0px;
+/* ------------------------------------------------------------------ caption */
+
+.trailers__caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin: var(--s-5) auto 0;
+    max-width: 780px;
 }
 
-.trailers::after {
-    background: linear-gradient(to left, var(--primary-bg) 20%, transparent);
-    right: 0px;
+.trailers__caption.is-swapping .trailers__caption-text {
+    animation: caption-in 0.7s var(--ease-out);
 }
 
-.trailers__container {
-    position: relative;
+@keyframes caption-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(4px);
+    }
+}
+
+.trailers__title {
+    font-size: var(--fs-xl);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.trailers__title a:hover {
+    color: var(--accent-soft);
+}
+
+.trailers__meta {
+    margin-top: 0.15rem;
+    color: var(--ink-2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+}
+
+.trailers__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.trailers__dots {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-    height: 450px;
-    border-bottom: 1px solid white;
+    gap: 0.55rem;
+    margin-top: var(--s-5);
 }
 
-.trailers__video {
-    height: 250px;
-    aspect-ratio: 16/9;
-    pointer-events: none;
+.trailers__dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / 0.28);
+    transition: width var(--dur-3) var(--ease-spring), background var(--dur-2);
+}
+
+.trailers__dot::after {
+    content: "";
     position: absolute;
-    transition: all 0.5s ease-in-out;
-    z-index: 0;
-    border-radius: var(--radius-7);
-    transform: translateX(-50%);
-    border: none;
+    inset: -12px -5px;
 }
 
-.trailers__video-1 {
-    left: 15%;
-    opacity: 0.4;
+.trailers__dot[aria-current="true"] {
+    width: 30px;
+    background: var(--accent);
+    box-shadow: 0 0 14px rgb(255 196 61 / 0.6);
 }
 
-.trailers__video-2,
-.trailers__video-4 {
-    height: 300px;
-    left: 15%;
-    opacity: 1;
-    z-index: 1;
-}
-
-.trailers__video-2 {
-    left: 30%;
-}
-
-.trailers__video-3 {
-    height: 350px;
-    opacity: 1;
-    left: 50%;
-    z-index: 2;
-    pointer-events: all;
-}
-
-.trailers__video-4 {
-    left: 70%;
-}
-
-.trailers__video-5 {
-    left: 85%;
-    opacity: 0.4;
-}
-
-@media screen and (max-width: 750px) {
-    .trailers__container {
-        height: 350px;
+@media (max-width: 768px) {
+    .trailers {
+        --slide-w: 74%;
+        --shift: 56%;
+        --tilt: 14deg;
+        --depth: 90px;
     }
 
-    .trailers__video {
-        height: 150px;
-    }
-
-    .trailers__video-2,
-    .trailers__video-4 {
-        height: 200px;
-    }
-
-    .trailers__video-3 {
-        height: 250px;
-    }
-}
-
-@media screen and (max-width: 550px) {
     .trailers__arrow {
-        height: 30px;
-        width: 30px;
+        display: none;
     }
 
-    .trailers__container {
-        height: 300px;
+    .trailers__caption {
+        justify-content: center;
+        text-align: center;
     }
+}
 
-    .trailers__video {
-        height: 100px;
-    }
-
-    .trailers__video-2,
-    .trailers__video-4 {
-        height: 150px;
-    }
-
-    .trailers__video-3 {
-        height: 200px;
+@media (max-width: 480px) {
+    .trailers__actions .btn--glass {
+        display: none;
     }
 }

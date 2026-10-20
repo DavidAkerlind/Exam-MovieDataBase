@@ -1,14 +1,125 @@
-.search-title {
-    margin: 4rem 0 2rem 0;
-    text-align: center;
+/* ==========================================================================
+   Search page + favorites page extras
+   ========================================================================== */
+
+.search-title,
+.favorites-title {
+    font-size: var(--fs-2xl);
+    font-weight: 800;
+    letter-spacing: -0.04em;
 }
 
 .search-result {
-    margin-top: 0.5rem;
-    color: var(--text-yellow);
+    display: inline-block;
+    background: linear-gradient(120deg, var(--accent-soft), var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
+/* The on-page search only shows where the header search lives in the menu */
 .search-container {
     display: none;
-    width: 80%;
+    margin-bottom: var(--s-6);
+}
+
+.search-container .search {
+    max-width: none;
+}
+
+.people {
+    margin-bottom: var(--s-7);
+}
+
+.people .section__head {
+    margin-bottom: var(--s-3);
+}
+
+.people-strip {
+    display: flex;
+    gap: 0.8rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0.4rem var(--gutter) 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - var(--gutter)), transparent 100%);
+}
+
+.people-strip__item {
+    flex: none;
+    scroll-snap-align: start;
+}
+
+.person-chip {
+    --glass-radius: var(--r-pill);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    max-width: 19rem;
+    padding: 0.5rem 1.4rem 0.5rem 0.5rem;
+    transition: transform var(--dur-3) var(--ease-out);
+}
+
+.person-chip:hover {
+    transform: translateY(-4px);
+}
+
+.person-chip__photo {
+    flex: none;
+    width: 3.3rem;
+    height: 3.3rem;
+    object-fit: cover;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.08);
+}
+
+.person-chip__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.person-chip__name {
+    font-weight: 700;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.person-chip__meta {
+    font-size: var(--fs-xs);
+    color: var(--ink-3);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.load-more {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--s-6);
+}
+
+/* ---------------------------------------------------------------- favorites */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-bottom: var(--s-5);
+}
+
+.toolbar__label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink-3);
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        display: block;
+    }
 }

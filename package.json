@@ -1,0 +1,13 @@
+{
+    "name": "mmdb",
+    "version": "2.0.0",
+    "private": true,
+    "description": "MMDb: a liquid-glass movie database (static site + Cloudflare Worker API).",
+    "scripts": {
+        "start": "npx --yes http-server . -p 5502 -c-1",
+        "test": "npm --prefix worker test",
+        "worker:dev": "npm --prefix worker run dev",
+        "worker:dev:mock": "npm --prefix worker run dev:mock",
+        "worker:deploy": "npm --prefix worker run deploy"
+    }
+}

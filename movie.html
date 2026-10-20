@@ -2,131 +2,36 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Movie</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://image.tmdb.org; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
+        <title>Movie · MMDb</title>
+        <meta name="description" content="Ratings, plot, cast and trailer for a movie on MMDb." />
+        <meta name="theme-color" content="#05060d" />
+        <meta name="color-scheme" content="dark" />
+        <meta property="og:title" content="Movie · MMDb" />
+        <meta property="og:description" content="Ratings, plot, cast and trailer for a movie on MMDb." />
+        <meta property="og:type" content="website" />
 
-        <link rel="stylesheet" href="./styles/style.css" />
-        <script
-            src="https://kit.fontawesome.com/f300007e95.js"
-            crossorigin="anonymous"></script>
-        <script type="module" src="./scripts/script.js"></script>
+        <link rel="icon" href="./res/icons/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="./res/icons/apple-touch-icon.png" />
+        <link rel="manifest" href="./manifest.webmanifest" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://image.tmdb.org" />
         <link
-            rel="icon"
-            href="./res/icons/4e4d1510-13ea-4b26-8438-928b063febd0.jpg" />
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap" />
+        <link rel="stylesheet" href="./styles/style.css" />
+        <script type="module" src="./scripts/script.js" blocking="render"></script>
     </head>
-    <body>
-        <!-- Movie Detailed Information -->
-
-        <div class="content-wrapper">
+    <body data-page="movie">
+        <main id="main" class="page page--movie" tabindex="-1">
+            <div class="movie-backdrop" id="movieBackdrop" aria-hidden="true"></div>
+            <noscript><p class="noscript glass">MMDb needs JavaScript to load movies. Please enable it and reload the page.</p></noscript>
+            <!-- Movie detailed information -->
             <section class="movie-info" id="movieInfo"></section>
-        </div>
+            <div id="movieExtras"></div>
+        </main>
     </body>
-    <footer class="footer">
-        <!-- Contact Info Section -->
-        <section class="footer__contact-info">
-            <h2 class="footer__title">Get in touch</h2>
-            <ul class="footer__contact-list">
-                <li class="footer__contact-item">MMDb Inc</li>
-                <li class="footer__contact-item">Lorem, ipsum.</li>
-                <li class="footer__contact-item">654 60 Karlstad</li>
-                <li class="footer__contact-item">Org.nr 123412-1232</li>
-                <li class="footer__contact-item">
-                    Phone:
-                    <a href="tel:+1234567890" class="footer__contact-link"
-                        >+1234567890</a
-                    >
-                </li>
-                <li class="footer__contact-item">
-                    Email:
-                    <a
-                        href="mailto:contact@yourcompany.com"
-                        class="footer__contact-link"
-                        >contact@mmdb.com</a
-                    >
-                </li>
-                <li class="footer__contact-item">
-                    <ul class="footer__contact-list footer__contact-list--row">
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our Facebook page">
-                                <i
-                                    class="fab fa-facebook footer__social-icon"></i>
-                            </a>
-                        </li>
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our X (previous Twitter) page">
-                                <i
-                                    class="fab fa-twitter footer__social-icon"></i>
-                            </a>
-                        </li>
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our Instagram page">
-                                <i
-                                    class="fab fa-instagram footer__social-icon"></i>
-                            </a>
-                        </li>
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our Pinterest page">
-                                <i
-                                    class="fab fa-pinterest footer__social-icon"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-
-        <!-- Newsletter Section -->
-        <section class="footer__newsletter">
-            <h2 class="footer__title">Stay updated</h2>
-            <p class="footer__newsletter-description">
-                Sign up to receive the latest movie news and updates.
-            </p>
-
-            <form id="newsletterForm" class="footer__newsletter-form">
-                <label
-                    for="email"
-                    class="d-none booking-widget__label--hidden"
-                    aria-label="Enter your email"
-                    >Enter your email:</label
-                >
-                <input
-                    class="footer__newsletter-input"
-                    aria-label="Enter your email"
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="your.email@example.com" />
-                <button class="footer__button" type="submit">Subscribe</button>
-            </form>
-        </section>
-
-        <!-- Follow Section -->
-        <section class="footer__follow">
-            <h2 class="footer__title footer__title--no-margin">Follow Us</h2>
-            <figure class="footer__follow-img-container">
-                <a
-                    aria-label="Visit our Instagram page"
-                    href="https://instagram.com"
-                    target="_blank">
-                    <img
-                        class="footer__follow-img"
-                        src="./res/icons/2671786c-0d12-40d9-8a2e-22a6940bd268.png"
-                        alt="Instagram Logo" />
-                </a>
-            </figure>
-            <button class="footer__button">FOLLOW US</button>
-        </section>
-    </footer>
 </html>

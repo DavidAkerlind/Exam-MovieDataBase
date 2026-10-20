@@ -1,0 +1,98 @@
+/* ==========================================================================
+   Design tokens: the single source of truth for colour, type, space, radii,
+   glass and motion. Components only ever read these variables.
+   ========================================================================== */
+
+:root {
+    color-scheme: dark;
+
+    /* Surface + ink */
+    --bg-0: #05060d;
+    --bg-1: #0a0c19;
+    --ink-1: rgb(255 255 255 / 0.96);
+    --ink-2: rgb(222 227 255 / 0.74);
+    --ink-3: rgb(222 227 255 / 0.62);
+
+    /* Accents: gold is the brand colour, the rest tint the aurora */
+    --accent: #ffc43d;
+    --accent-soft: #ffe08a;
+    --accent-ink: #1b1204;
+    --violet: #8b7bff;
+    --cyan: #44d9ff;
+    --pink: #ff5fa8;
+    --good: #4ade80;
+    --bad: #ff6b7d;
+
+    /* Liquid glass */
+    --glass-fill: linear-gradient(
+        140deg,
+        rgb(255 255 255 / 0.15) 0%,
+        rgb(255 255 255 / 0.06) 45%,
+        rgb(255 255 255 / 0.09) 100%
+    );
+    --glass-fill-strong: linear-gradient(
+        140deg,
+        rgb(46 50 86 / 0.82) 0%,
+        rgb(24 27 52 / 0.78) 100%
+    );
+    --glass-ring: rgb(255 255 255 / 0.16);
+    --glass-highlight: rgb(255 255 255 / 0.42);
+    --glass-blur: 24px;
+    --glass-saturate: 175%;
+    --glass-shadow: 0 24px 60px -26px rgb(0 0 0 / 0.75), 0 2px 10px rgb(0 0 0 / 0.25);
+
+    /* Radii */
+    --r-xs: 8px;
+    --r-sm: 12px;
+    --r-md: 18px;
+    --r-lg: 26px;
+    --r-xl: 36px;
+    --r-pill: 999px;
+
+    /* Space (4px base) */
+    --s-1: 0.25rem;
+    --s-2: 0.5rem;
+    --s-3: 0.75rem;
+    --s-4: 1rem;
+    --s-5: 1.5rem;
+    --s-6: 2rem;
+    --s-7: 2.5rem;
+    --s-8: 3.5rem;
+    --s-9: 5rem;
+    --s-10: 7rem;
+
+    /* Type */
+    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    --fs-xs: 0.78rem;
+    --fs-sm: 0.9rem;
+    --fs-md: 1rem;
+    --fs-lg: 1.18rem;
+    --fs-xl: clamp(1.45rem, 1.15rem + 1.1vw, 1.95rem);
+    --fs-2xl: clamp(2rem, 1.3rem + 2.8vw, 3.3rem);
+    --fs-hero: clamp(3.4rem, 1.6rem + 8vw, 7.2rem);
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --dur-1: 150ms;
+    --dur-2: 280ms;
+    --dur-3: 500ms;
+    --dur-4: 850ms;
+
+    /* Layout */
+    --page-max: 1240px;
+    --gutter: clamp(1rem, 4vw, 2rem);
+    --header-h: 64px;
+    --header-gap: 14px;
+    --page-top: calc(var(--header-h) + var(--header-gap) * 2 + var(--s-6));
+}
+
+@media (max-width: 768px) {
+    :root {
+        --glass-blur: 18px;
+        --header-h: 58px;
+        --header-gap: 10px;
+    }
+}

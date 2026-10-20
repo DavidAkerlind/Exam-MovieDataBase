@@ -1,136 +1,90 @@
-import { highlightActiveLink } from "../utils/domUtils.js";
+// The floating glass header: logo, search, navigation and the mobile menu.
+import { html } from "../utils/html.js";
+import { icon } from "../utils/icons.js";
+import { countFavorites } from "../data/favorites.js";
 
-// Main function to create the header
-function createHeader() {
-    console.log("createHeader()");
+const NAV = [
+    { page: "home", href: "index.html", label: "Home" },
+    { page: "search", href: "search.html", label: "Search" },
+    { page: "favorites", href: "favorites.html", label: "Favorites" },
+];
 
-    const headerHTML = `
-        <header class="header header--flex">
-            <div class="header__container">
-                ${renderLogo()}
-                ${renderSearchForm()}
-                ${renderDesktopNav()}
-                
-            </div>
-            ${renderHamburgerMenu()}
-        </header>
-    `;
-
-    // Lägg till headern i början av <body>
-    document.body.insertAdjacentHTML("afterbegin", headerHTML);
-
-    // Markera den aktiva länken
-    highlightActiveLink();
-}
-
-// **Renderar logotypen**
-function renderLogo() {
-    return `
-        <a class="header__logo-link" href="index.html">
-            <img class="header__logo" src="./res/logo.png" alt="Website Logo" />
-        </a>
-    `;
-}
-
-// **Renderar sökformuläret**
-function renderSearchForm() {
-    return `
-        <form class="header__form" id="searchForm" role="search">
-            <label for="searchInput" class="header__form-label">Search MMDb:</label>
-            <input autocomplete="off" class="header__input" id="searchInput" type="text" placeholder="Search MMDb" aria-label="Search movies on MMDb" />
-            <button class="header__form-btn" id="searchBtn" aria-label="Search">
-                <img src="./res/icons/search-black.svg" alt="Search Icon" />
+/** The search form used in the header, the mobile menu and on the search page. */
+export function searchFormHTML({ id, className = "", placeholder = "Search movies & people", value = "" }) {
+    return html`
+        <form class="search header__form ${className}" data-search-form role="search" action="search.html" method="get">
+            <label class="sr-only" for="${id}">Search MMDb</label>
+            <span class="search__icon">${icon("search")}</span>
+            <input
+                id="${id}"
+                class="search__input header__input"
+                name="q"
+                type="search"
+                value="${value}"
+                placeholder="${placeholder}"
+                autocomplete="off"
+                enterkeyhint="search"
+                role="combobox"
+                aria-expanded="false"
+                aria-controls="${id}-panel"
+                aria-autocomplete="list" />
+            <button class="search__submit header__form-btn" type="submit" aria-label="Search">
+                ${icon("arrowRight")}
             </button>
+            <div class="search__panel glass glass--strong" id="${id}-panel" role="listbox" aria-label="Search suggestions" hidden></div>
         </form>
     `;
 }
 
-// **Renderar navigering för desktop**
-function renderDesktopNav() {
-    return `
-        <nav class="header__nav" aria-label="Main Navigation">
-            <ul class="header__nav-list">
-                <li class="header__nav-item">
-                    <a href="./search.html" class="header__nav-link" id="searchLink">Search</a>
-                </li>
-                <li class="header__nav-item">
-                    <a href="./favorites.html" class="header__nav-link" id="favoritesLink">Favorites</a>
-                </li>
-            </ul>
-        </nav>
+function navLink({ page, href, label }, active, className) {
+    const current = page === active;
+    const badge =
+        page === "favorites"
+            ? html`<span class="header__badge" data-favorites-count ${countFavorites() ? "" : "hidden"}>${countFavorites()}</span>`
+            : "";
+
+    return html`
+        <a class="${className} ${current ? `${className}--active` : ""}" href="${href}" ${current ? html`aria-current="page"` : ""}>
+            ${label}${badge}
+        </a>
     `;
 }
 
-// **Renderar hamburger menyn**
-function renderHamburgerMenu() {
-    return `
-        <div class="menu">
-            <input
-                type="checkbox"
-                class="menu__checkbox"
-                id="menu-toggle"
-                aria-hidden="true" aria-label="closed"/>
-            <label
-                id="burgerLabel"
-                tabindex="0"
-                class="menu__button"
-                for="menu-toggle"
-                aria-label="Toggle navigation menu">
-                <span
-                    role="button"
-                    class="menu__button-line"
-                    aria-label="Open burger menu (mobile only)"></span>
-            </label>
+export function headerHTML(active) {
+    return html`
+        <header class="header" id="siteHeader">
+            <div class="header__container">
+                <a class="header__logo-link" href="index.html" aria-label="MMDb home">
+                    <img class="header__logo" src="./res/logo.svg" alt="" width="34" height="34" />
+                    <span class="header__brand">MMDb</span>
+                </a>
 
-            <!-- Navigation Burger Menu -->
-            <nav
-                class="menu__navigation d-none"
-                aria-label="Main Navigation on Mobile"
-                aria-expanded="false">
-                <ul class="menu__list">
-                    <!-- Logo -->
-                    <li class="menu__item">
-                        <a
-                            aria-label="Back to home link"
-                            href="index.html">
-                            <img
-                                aria-hidden="true"
-                                class="menu__logo"
-                                src="./res/logo.png"
-                                alt="Website Logo"
-                            />
-                        </a>
-                    </li>
+                ${searchFormHTML({ id: "searchInput" })}
 
-                    <!-- Navigation Links -->
-                    <li class="menu__item">
-                        <a id="homeLink"
-                            class="menu__link"
-                            href="./index.html"
-                            aria-label="Navigate to home page">
-                            Home
-                        </a>
-                    </li>
-                    <li class="menu__item">
-                        <a id="searchLink"
-                            class="menu__link"
-                            href="./search.html"
-                            aria-label="Navigate to search page">
-                            Search
-                        </a>
-                    </li>
-                    <li class="menu__item">
-                        <a id="favoritesLink"
-                            class="menu__link"
-                            href="./favorites.html"
-                            aria-label="Navigate to favorites page">
-                            Favorites
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                <nav class="header__nav" aria-label="Main navigation">
+                    <ul class="header__nav-list">
+                        ${NAV.map(
+                            (item) => html`<li class="header__nav-item">${navLink(item, active, "header__nav-link")}</li>`
+                        )}
+                    </ul>
+                </nav>
+
+                <div class="menu">
+                    <input type="checkbox" class="menu__checkbox" id="menu-toggle" tabindex="-1" aria-hidden="true" />
+                    <label id="burgerLabel" class="menu__button" for="menu-toggle" tabindex="0" role="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+                        <span class="menu__button-line"></span>
+                    </label>
+
+                    <nav id="mobileMenu" class="menu__navigation glass glass--strong" aria-label="Mobile navigation">
+                        ${searchFormHTML({ id: "searchInputMobile", className: "header__form--mobile" })}
+                        <ul class="menu__list">
+                            ${NAV.map(
+                                (item) => html`<li class="menu__item">${navLink(item, active, "menu__link")}</li>`
+                            )}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
     `;
 }
-
-export { createHeader };

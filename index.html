@@ -2,153 +2,63 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>My Movie Database</title>
-        <link rel="stylesheet" href="./styles/style.css" />
-        <script
-            src="https://kit.fontawesome.com/f300007e95.js"
-            crossorigin="anonymous"></script>
-        <script type="module" src="./scripts/script.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://image.tmdb.org; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
+        <title>MMDb · My Movie Database</title>
+        <meta name="description" content="Discover the best movies of all time, watch trailers, search films and people, and keep your favourites in one place." />
+        <meta name="theme-color" content="#05060d" />
+        <meta name="color-scheme" content="dark" />
+        <meta property="og:title" content="MMDb · My Movie Database" />
+        <meta property="og:description" content="Discover the best movies of all time, watch trailers, search films and people, and keep your favourites in one place." />
+        <meta property="og:type" content="website" />
+
+        <link rel="icon" href="./res/icons/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="./res/icons/apple-touch-icon.png" />
+        <link rel="manifest" href="./manifest.webmanifest" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://image.tmdb.org" />
         <link
-            rel="icon"
-            href="./res/icons/4e4d1510-13ea-4b26-8438-928b063febd0.jpg" />
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap" />
+        <link rel="stylesheet" href="./styles/style.css" />
+        <script type="module" src="./scripts/script.js" blocking="render"></script>
     </head>
-    <body>
-        <div class="content-wrapper">
-            <h1 class="landing-page-title">MMDb™</h1>
-            <!-- Trailer Caroussel -->
-            <section class="content-wrapper content-wrapper--trailers">
-                <section class="trailers">
-                    <img
-                        src="./res/icons/arrow-left.svg"
-                        alt="left navigation arrow"
-                        class="trailers__arrow trailers__arrow--left"
-                        data-direction="left" />
-                    <img
-                        src="./res/icons/arrow-right.svg"
-                        alt="right navigation arrow"
-                        class="trailers__arrow trailers__arrow--right"
-                        data-direction="right" />
-                    <section class="trailers__container"></section>
-                </section>
+    <body data-page="home">
+        <main id="main" class="page page--home" tabindex="-1">
+            <noscript><p class="noscript glass">MMDb needs JavaScript to load movies. Please enable it and reload the page.</p></noscript>
+            <section class="hero">
+                <h1 class="landing-page-title">MMDb<span class="landing-page-title__tm">™</span></h1>
+                <p class="hero__tagline">
+                    Discover great films, watch trailers and keep your favourites in one place.
+                </p>
+            </section>
+
+            <!-- Trailer carousel -->
+            <section class="trailers" id="trailers" aria-label="Featured trailers">
+                <div class="trailers__skeleton skeleton" aria-hidden="true"></div>
             </section>
 
             <!-- Our recommended movies section -->
-            <section class="content-wrapper">
-                <h2 class="popular-title">Our recommendations</h2>
+            <section class="section" aria-labelledby="recommendationsTitle">
+                <header class="section__head">
+                    <h2 class="popular-title" id="recommendationsTitle">Our recommendations</h2>
+                    <p class="section__sub">The highest rated movies of all time</p>
+                </header>
                 <div id="podiumContainer" class="podium-section"></div>
-
-                <section class="card-container" id="cardContainer"></section>
-                <section class="movie-list" id="movieList"></section>
+                <section class="card-container" id="cardContainer" aria-label="Rank 4 to 15"></section>
+                <ol class="movie-list" id="movieList" aria-label="Rank 16 to 20"></ol>
             </section>
-        </div>
+
+            <!-- Trending -->
+            <section class="section" id="trendingSection" aria-labelledby="trendingTitle">
+                <header class="section__head">
+                    <h2 id="trendingTitle">Trending this week</h2>
+                    <p class="section__sub">What everybody is watching right now</p>
+                </header>
+                <ul class="rail" id="trendingRail"></ul>
+            </section>
+        </main>
     </body>
-    <footer class="footer">
-        <!-- Contact Info Section -->
-        <section class="footer__contact-info">
-            <h2 class="footer__title">Get in touch</h2>
-            <ul class="footer__contact-list">
-                <li class="footer__contact-item">MMDb Inc</li>
-                <li class="footer__contact-item">Lorem, ipsum.</li>
-                <li class="footer__contact-item">654 60 Karlstad</li>
-                <li class="footer__contact-item">Org.nr 123412-1232</li>
-                <li class="footer__contact-item">
-                    Phone:
-                    <a href="tel:+1234567890" class="footer__contact-link"
-                        >+1234567890</a
-                    >
-                </li>
-                <li class="footer__contact-item">
-                    Email:
-                    <a
-                        href="mailto:contact@yourcompany.com"
-                        class="footer__contact-link"
-                        >contact@mmdb.com</a
-                    >
-                </li>
-                <li class="footer__contact-item">
-                    <ul class="footer__contact-list footer__contact-list--row">
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our Facebook page">
-                                <i
-                                    class="fab fa-facebook footer__social-icon"></i>
-                            </a>
-                        </li>
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our X (previous Twitter) page">
-                                <i
-                                    class="fab fa-twitter footer__social-icon"></i>
-                            </a>
-                        </li>
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our Instagram page">
-                                <i
-                                    class="fab fa-instagram footer__social-icon"></i>
-                            </a>
-                        </li>
-                        <li class="footer__social-item">
-                            <a
-                                href="#"
-                                class="footer__social-link"
-                                aria-label="Visit our Pinterest page">
-                                <i
-                                    class="fab fa-pinterest footer__social-icon"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-
-        <!-- Newsletter Section -->
-        <section class="footer__newsletter">
-            <h2 class="footer__title">Stay updated</h2>
-            <p class="footer__newsletter-description">
-                Sign up to receive the latest movie news and updates.
-            </p>
-
-            <form id="newsletterForm" class="footer__newsletter-form">
-                <label
-                    for="email"
-                    class="d-none booking-widget__label--hidden"
-                    aria-label="Enter your email"
-                    >Enter your email:</label
-                >
-                <input
-                    class="footer__newsletter-input"
-                    aria-label="Enter your email"
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="your.email@example.com" />
-                <button class="footer__button" type="submit">Subscribe</button>
-            </form>
-        </section>
-
-        <!-- Follow Section -->
-        <section class="footer__follow">
-            <h2 class="footer__title footer__title--no-margin">Follow Us</h2>
-            <figure class="footer__follow-img-container">
-                <a
-                    aria-label="Visit our Instagram page"
-                    href="https://instagram.com"
-                    target="_blank">
-                    <img
-                        class="footer__follow-img"
-                        src="./res/icons/2671786c-0d12-40d9-8a2e-22a6940bd268.png"
-                        alt="Instagram Logo" />
-                </a>
-            </figure>
-            <button class="footer__button">FOLLOW US</button>
-        </section>
-    </footer>
 </html>

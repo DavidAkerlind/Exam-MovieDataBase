@@ -1,85 +1,58 @@
-// events/favorites.js
+// One delegated click handler for every favorite button on any page, plus
+// keeping all buttons and the header badge in sync (also across tabs).
+import { toggleFavorite, isFavorite, onFavoritesChange, countFavorites } from "../data/favorites.js";
+import { icons } from "../utils/icons.js";
+import { toast } from "../components/feedback.js";
 
-import {
-    getFavoriteMovies,
-    addMovieToFavorites,
-    removeMovieFromFavorites,
-} from "../data/localStorage.js";
+export function syncFavoriteButton(button, active) {
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
 
-export function initializeFavoriteButtons() {
-    console.log("initializeFavoriteButtons()");
+    const iconSlot = button.querySelector(".fav-btn__icon");
+    if (iconSlot) iconSlot.innerHTML = active ? icons.heartFilled : icons.heart;
 
-    document.addEventListener("DOMContentLoaded", () => {
-        document.addEventListener("click", (event) => {
-            const button = event.target.closest(".movie-card__favorite-btn");
-            if (!button) return;
+    const label = button.querySelector(".fav-btn__label");
+    if (label) label.textContent = active ? "In favorites" : "Add to favorites";
+}
 
-            const imdbID = button.getAttribute("data-imdbid");
-            console.log("Clicked button, imdbID:", imdbID);
+function syncAll() {
+    document.querySelectorAll("[data-fav-id]").forEach((button) => {
+        syncFavoriteButton(button, isFavorite(button.dataset.favId, button.dataset.favAlias));
+    });
 
-            if (!imdbID) return;
-
-            if (
-                window.location.pathname === "/favorites.html" ||
-                window.location.pathname ===
-                    "/Exam-MovieDataBase/favorites.html"
-            ) {
-                removeFromFavorites(imdbID, button);
-            } else {
-                addToFavorites(imdbID, button);
-            }
-        });
-
-        updateFavoriteButtons();
+    const count = countFavorites();
+    document.querySelectorAll("[data-favorites-count]").forEach((badge) => {
+        badge.textContent = count;
+        badge.hidden = count === 0;
     });
 }
 
-export function addToFavorites(imdbID, button) {
-    console.log("addToFavorites()", imdbID);
-    addMovieToFavorites(imdbID);
-    if (
-        button.closest(`.movie-list-item`) ||
-        button.closest(`.movie-info__top`)
-    ) {
-        button.innerHTML = `<i class="fa-solid fa-check"></i>`;
-    } else {
-        button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
-    }
-    button.classList.add("movie-card__favorite-btn--added");
-}
+export function initFavorites() {
+    document.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-fav-id]");
+        if (!button) return;
+        event.preventDefault();
 
-export function removeFromFavorites(imdbID, button) {
-    console.log("removeFromFavorites()", imdbID);
-    removeMovieFromFavorites(imdbID);
+        const { favId, favAlias, title } = button.dataset;
+        const nowFavorite = toggleFavorite(favId, favAlias);
 
-    button.closest(".movie-card").remove();
-}
-
-export function updateFavoriteButtons() {
-    console.log("updateFavoriteButtons()");
-
-    if (
-        window.location.pathname === "/Exam-MovieDataBase/favorites.html" ||
-        window.location.pathname === "/favorites.html"
-    )
-        return;
-    setTimeout(() => {
-        let favorites = getFavoriteMovies();
-
-        document.querySelectorAll("#movieCardBtn").forEach((button) => {
-            let imdbID = button.getAttribute("data-imdbid");
-            if (favorites.includes(imdbID)) {
-                if (
-                    button.closest(`.movie-list-item`) ||
-                    button.closest(`.movie-info__top`)
-                ) {
-                    button.innerHTML = `<i class="fa-solid fa-check"></i>`;
-                } else {
-                    button.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
-                }
-
-                button.classList.add("movie-card__favorite-btn--added");
-            }
+        button.classList.remove("is-pop");
+        void button.offsetWidth; // restart the animation
+        button.classList.add("is-pop");
+        button.addEventListener("animationend", () => button.classList.remove("is-pop"), {
+            once: true,
         });
-    }, 1500);
+
+        if (nowFavorite) {
+            toast(`Added “${title}” to favorites`, { actionLabel: "View", href: "favorites.html" });
+        } else {
+            toast(`Removed “${title}”`, {
+                actionLabel: "Undo",
+                onAction: () => toggleFavorite(favId, favAlias),
+            });
+        }
+    });
+
+    onFavoritesChange(syncAll);
+    syncAll();
 }
