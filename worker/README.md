@@ -64,13 +64,24 @@ under repo **Settings → Secrets and variables → Actions**:
 | `TMDB_API_KEY`          | TMDb settings                                                              |
 | `OMDB_API_KEY`          | OMDb                                                                       |
 
+## Custom domain
+
+`wrangler.toml` attaches the Worker to `mmdb-api.davidakerlind.com` (a Workers *Custom
+Domain*). On `wrangler deploy` Cloudflare creates the proxied DNS record and the
+certificate itself; do not create the DNS record by hand. The domain must be a zone in
+the same Cloudflare account. To use another hostname change `pattern` here, the
+`API_BASE_URL` in `scripts/config.js`, and `ALLOWED_ORIGINS` below. Keep it one level
+under your domain (`mmdb-api.example.com`): that is what the free Universal certificate
+covers. To skip the custom domain, delete the `[[routes]]` block and use the
+`workers.dev` URL.
+
 ## Which sites may call the API
 
 Set in `wrangler.toml`:
 
 ```toml
 [vars]
-ALLOWED_ORIGINS = "https://davidakerlind.github.io"   # comma separated, wildcards like https://*.pages.dev work
+ALLOWED_ORIGINS = "https://mmdb.davidakerlind.com,https://davidakerlind.github.io"   # comma separated, wildcards like https://*.pages.dev work
 ALLOW_LOCALHOST = "true"                              # http://localhost:<any port> for local development
 ```
 

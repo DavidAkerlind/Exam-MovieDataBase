@@ -6,9 +6,16 @@ name = "mmdb-api"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
 
+# Serve the API on your own domain. Cloudflare creates the DNS record and the TLS
+# certificate when you deploy; the zone must be in the same Cloudflare account.
+# The *.workers.dev URL keeps working too.
+[[routes]]
+pattern = "mmdb-api.davidakerlind.com"
+custom_domain = true
+
 [vars]
 # Comma separated list of browser origins that may call the API.
 # "https://*.example.com" style wildcards are supported.
-ALLOWED_ORIGINS = "https://davidakerlind.github.io"
+ALLOWED_ORIGINS = "https://mmdb.davidakerlind.com,https://davidakerlind.github.io"
 # Also allow http://localhost:<any port> and http://127.0.0.1:<any port> (local dev).
 ALLOW_LOCALHOST = "true"
