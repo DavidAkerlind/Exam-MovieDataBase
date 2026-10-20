@@ -1,0 +1,40 @@
+# Deploys the API Worker to Cloudflare whenever worker/ changes on the default branch.
+# One-time setup (repo Settings > Secrets and variables > Actions):
+#   CLOUDFLARE_API_TOKEN  (template "Edit Cloudflare Workers")
+#   CLOUDFLARE_ACCOUNT_ID
+#   TMDB_API_KEY, OMDB_API_KEY  (pushed to the Worker as encrypted secrets)
+# Without the Cloudflare secrets this workflow does nothing.
+name: Deploy Worker
+
+on:
+    push:
+        branches: [dev, main]
+        paths: ["worker/**"]
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        env:
+            CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+            OMDB_API_KEY: ${{ secrets.OMDB_API_KEY }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              if: env.CLOUDFLARE_API_TOKEN != ''
+              with:
+                  node-version: 22
+            - run: npm ci && npm test
+              if: env.CLOUDFLARE_API_TOKEN != ''
+              working-directory: worker
+            - uses: cloudflare/wrangler-action@v3
+              if: env.CLOUDFLARE_API_TOKEN != ''
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  workingDirectory: worker
+                  secrets: |
+                      TMDB_API_KEY
+                      OMDB_API_KEY
