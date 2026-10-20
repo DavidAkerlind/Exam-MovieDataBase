@@ -10,6 +10,10 @@
 name = "mmdb"
 main = "worker/src/index.js"
 compatibility_date = "2025-01-01"
+# Reachable at https://mmdb.<your-account>.workers.dev. No extra per-version preview
+# addresses: every public address should be one you chose.
+workers_dev = true
+preview_urls = false
 
 [assets]
 directory = "./"

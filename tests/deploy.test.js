@@ -76,6 +76,7 @@ test("the single Worker serves the site and answers /api/*", () => {
     assert.ok(existsSync(path.join(root, "worker/src/index.js")));
     assert.match(config, /^directory = "\.\/"$/m);
     assert.match(config, /^run_worker_first = \["\/api\/\*"\]$/m);
+    assert.match(config, /^preview_urls = false$/m);
     // No secret may ever be written into the config file.
     assert.doesNotMatch(config, /(TMDB|OMDB)_API_KEY\s*=/);
 });

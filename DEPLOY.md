@@ -55,8 +55,26 @@ You already have other projects on Cloudflare (`portfolio-page`, `harpaviljongen
 5. If you see a switch for building non-production branches, turn it **off**. Then old branches never build.
 6. Click **Save and Deploy**. Wait until the build says **Success**. This takes one or two minutes.
 
+**Read the build log before you celebrate.** A correct build says
+`Read … files from the assets directory` and then `Found 59 new or modified static assets`
+(about that number). Warning signs that mean it built the **wrong branch**:
+lines starting `+ /.git/…`, a line `Create wrangler.jsonc`, or old file names such as
+`caroussel.js`. If you see those, do not use that Worker: follow "Built the wrong branch?" below.
+
 You now have a first address: **`https://mmdb.david-akerlind.workers.dev`**.
 The pages will load, but they will say the movie data is not ready yet. That is normal. The safe is still empty.
+
+### Built the wrong branch?
+
+Your repo's default branch on GitHub is `dev` (the old page), and Cloudflare can pre-fill that as
+the production branch. If the first build used `dev`, it also published the `.git` folder and
+other private files at a public address. Fix it for good:
+
+1. Open `mmdb` → **Settings**, scroll to the bottom and **Delete** the Worker. It has no keys in it yet,
+   so nothing is lost. This removes every published copy.
+2. Repeat Part 1, and this time open **Advanced settings** and set **Production branch** to `main`
+   *before* you click Deploy. (Or first set GitHub's default branch to `main`: repo → Settings → Branches.)
+3. Read the build log again as described above.
 
 ## Part 2: Put the keys in the safe
 
