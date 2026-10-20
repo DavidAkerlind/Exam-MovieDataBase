@@ -1,0 +1,14 @@
+{
+    "name": "mmdb-api",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
+        "dev:mock": "node test/dev-server.mjs",
+        "test": "node --test \"test/*.test.js\""
+    },
+    "devDependencies": {
+        "wrangler": "^4.0.0"
+    }
+}

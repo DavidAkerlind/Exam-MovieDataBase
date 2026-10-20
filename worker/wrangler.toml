@@ -1,0 +1,14 @@
+# Cloudflare Worker that keeps the TMDb / OMDb API keys off the client.
+# Deploy:  npx wrangler deploy
+# Secrets: npx wrangler secret put TMDB_API_KEY
+#          npx wrangler secret put OMDB_API_KEY
+name = "mmdb-api"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# Comma separated list of browser origins that may call the API.
+# "https://*.example.com" style wildcards are supported.
+ALLOWED_ORIGINS = "https://davidakerlind.github.io"
+# Also allow http://localhost:<any port> and http://127.0.0.1:<any port> (local dev).
+ALLOW_LOCALHOST = "true"

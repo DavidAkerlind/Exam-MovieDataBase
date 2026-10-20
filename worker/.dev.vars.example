@@ -1,0 +1,3 @@
+# Copy to worker/.dev.vars (git-ignored) to run `npm run dev` locally with real keys.
+TMDB_API_KEY=your-tmdb-v3-api-key
+OMDB_API_KEY=your-omdb-api-key
