@@ -33,8 +33,9 @@ const baseUrl = (readLocalOverride() || API_BASE_URL).replace(/\/+$/, "");
 
 export const isApiConfigured = () => !baseUrl.includes("YOUR-SUBDOMAIN");
 
-// Open the connection to the API (DNS + TLS) before the first search needs it.
-if (isApiConfigured() && typeof document !== "undefined") {
+// Open the connection to a separate API host (DNS + TLS) before the first search needs it.
+// With the default same-origin setup (API_BASE_URL = "") the connection is already open.
+if (baseUrl && isApiConfigured() && typeof document !== "undefined") {
     const link = document.createElement("link");
     link.rel = "preconnect";
     link.href = new URL(baseUrl).origin;
@@ -61,7 +62,7 @@ function buildUrl(path, params) {
 async function request(path, params = {}, { signal } = {}) {
     if (!isApiConfigured()) {
         throw new ApiError(
-            "The API URL has not been set up yet. Deploy the Worker and add its URL to scripts/config.js.",
+            "The API URL has not been set up yet. Check API_BASE_URL in scripts/config.js.",
             { code: "not_configured" }
         );
     }

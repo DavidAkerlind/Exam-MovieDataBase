@@ -1,0 +1,14 @@
+# Which files Cloudflare publishes as the website. Allow-list: everything at the top
+# level is private unless it is re-included below, so tests, the Worker source,
+# package files, .dev.vars and friends are never uploaded.
+/*
+!/index.html
+!/movie.html
+!/person.html
+!/search.html
+!/favorites.html
+!/manifest.webmanifest
+!/sw.js
+!/scripts/
+!/styles/
+!/res/

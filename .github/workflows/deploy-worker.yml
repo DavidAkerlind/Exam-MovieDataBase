@@ -1,15 +1,16 @@
-# Deploys the API Worker to Cloudflare whenever worker/ changes on main.
+# Optional: deploy the whole app (website + API, one Worker) with GitHub Actions on every
+# push to main. You do NOT need this if you connected the repo in the Cloudflare
+# dashboard (Workers Builds), which already deploys on every push. Use one or the other.
 # One-time setup (repo Settings > Secrets and variables > Actions):
 #   CLOUDFLARE_API_TOKEN  (template "Edit Cloudflare Workers")
 #   CLOUDFLARE_ACCOUNT_ID
 #   TMDB_API_KEY, OMDB_API_KEY  (pushed to the Worker as encrypted secrets)
 # Without the Cloudflare secrets this workflow does nothing.
-name: Deploy Worker
+name: Deploy to Cloudflare
 
 on:
     push:
         branches: [main]
-        paths: ["worker/**"]
     workflow_dispatch:
 
 jobs:
@@ -26,15 +27,13 @@ jobs:
               if: env.CLOUDFLARE_API_TOKEN != ''
               with:
                   node-version: 22
-            - run: npm ci && npm test
+            - run: npm ci && npm --prefix worker ci && npm test
               if: env.CLOUDFLARE_API_TOKEN != ''
-              working-directory: worker
             - uses: cloudflare/wrangler-action@v3
               if: env.CLOUDFLARE_API_TOKEN != ''
               with:
                   apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-                  workingDirectory: worker
                   secrets: |
                       TMDB_API_KEY
                       OMDB_API_KEY

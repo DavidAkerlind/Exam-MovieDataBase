@@ -10,7 +10,7 @@ import { prefersReducedMotion } from "./format.js";
 
 const KEY = "mmdb:zoom";
 const MAX_AGE = 6000;
-const LINK = 'a[href*="person.html"]';
+const LINK = 'a[href^="person?"], a[href^="person.html?"]';
 
 let departing = false;
 let arrival = null;

@@ -65,7 +65,7 @@ export function errorNotice(error, retry) {
         options.title = "Can't reach the movie service";
     } else if (code === "not_found") {
         options.title = "We couldn't find that";
-        options.action = { label: "Back to home", href: "index.html" };
+        options.action = { label: "Back to home", href: "./" };
     }
     return options;
 }

@@ -5,7 +5,7 @@ on:
     pull_request:
 
 jobs:
-    worker-tests:
+    tests:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -13,10 +13,27 @@ jobs:
               with:
                   node-version: 22
                   cache: npm
-                  cache-dependency-path: worker/package-lock.json
+                  cache-dependency-path: |
+                      package-lock.json
+                      worker/package-lock.json
+            - run: npm ci
             - run: npm ci
               working-directory: worker
-            - run: npm test
+            - name: Worker tests
+              run: npm test
               working-directory: worker
-            - name: Front-end unit tests
+            - name: Front-end and deployment-config tests
               run: node --test "tests/*.test.js"
+
+    wrangler-dry-run:
+        # Proves the Cloudflare config is valid and shows exactly which files would be published.
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+                  cache-dependency-path: package-lock.json
+            - run: npm ci
+            - run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/dry"

@@ -2,13 +2,18 @@
     "name": "mmdb",
     "version": "2.0.0",
     "private": true,
-    "description": "MMDb: a liquid-glass movie database (static site + Cloudflare Worker API).",
+    "description": "MMDb: a liquid-glass movie database (static site + Cloudflare Worker API, deployed as one Worker).",
     "scripts": {
         "start": "npx --yes http-server . -p 5502 -c-1",
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
         "test": "npm --prefix worker test && node --test \"tests/*.test.js\"",
+        "test:frontend": "node --test \"tests/*.test.js\"",
         "worker:dev": "npm --prefix worker run dev",
         "worker:dev:mock": "npm --prefix worker run dev:mock",
-        "worker:deploy": "npm --prefix worker run deploy",
-        "test:frontend": "node --test \"tests/*.test.js\""
+        "worker:deploy": "npm --prefix worker run deploy"
+    },
+    "devDependencies": {
+        "wrangler": "^4.20.0"
     }
 }

@@ -12,6 +12,13 @@ Browser ──► Worker (/api/*) ──► TMDb  (catalogue, search, people, tr
               └─ edge cache + CORS allow-list + input validation
 ```
 
+> **Which setup do I want?** Normally the repository root deploys this Worker
+> *together with the website* as one Cloudflare Worker (`../wrangler.toml`), so the site
+> and `/api/*` share one address and nothing needs connecting. Follow [`../DEPLOY.md`](../DEPLOY.md)
+> for that. The deploy options below are for the **API-only** setup, where the site is
+> hosted somewhere else (for example GitHub Pages): deploy this folder, set `API_BASE_URL`
+> in `scripts/config.js` to the Worker's address and list the site in `ALLOWED_ORIGINS`.
+
 ## What you need
 
 -   A free [Cloudflare account](https://dash.cloudflare.com/sign-up)
@@ -64,16 +71,14 @@ under repo **Settings → Secrets and variables → Actions**:
 | `TMDB_API_KEY`          | TMDb settings                                                              |
 | `OMDB_API_KEY`          | OMDb                                                                       |
 
-## Custom domain
+## Custom domain (API-only setup)
 
-`wrangler.toml` attaches the Worker to `mmdb-api.davidakerlind.com` (a Workers *Custom
-Domain*). On `wrangler deploy` Cloudflare creates the proxied DNS record and the
-certificate itself; do not create the DNS record by hand. The domain must be a zone in
-the same Cloudflare account. To use another hostname change `pattern` here, the
-`API_BASE_URL` in `scripts/config.js`, and `ALLOWED_ORIGINS` below. Keep it one level
-under your domain (`mmdb-api.example.com`): that is what the free Universal certificate
-covers. To skip the custom domain, delete the `[[routes]]` block and use the
-`workers.dev` URL.
+`wrangler.toml` has a commented-out `[[routes]]` block. Uncomment it and set `pattern` to
+a hostname one level under your domain (`mmdb-api.example.com`: that is what the free
+Universal certificate covers). On `wrangler deploy` Cloudflare creates the proxied DNS
+record and the certificate itself, so do not create the record by hand. The domain must
+be a zone in the same Cloudflare account. Then put that address in `API_BASE_URL` in
+`scripts/config.js` and the site's address in `ALLOWED_ORIGINS` below.
 
 ## Which sites may call the API
 

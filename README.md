@@ -5,12 +5,16 @@ search for movies **and** people, rich movie pages (IMDb / Rotten Tomatoes / Met
 cast and filmographies, and a favorites list that lives in your browser.
 
 Plain HTML, CSS and ES modules: **no build step**. API keys never touch the front
-end: they live in a small [Cloudflare Worker](worker/README.md).
+end. The whole app is **one Cloudflare Worker** that serves the website and, under `/api/*`,
+a small API that holds the keys ([worker/README.md](worker/README.md)).
 
 ```
-Browser (static site) ──► Cloudflare Worker /api/* ──► TMDb + OMDb
- GitHub Pages / any host     keys · CORS · cache
+Browser ──► one Cloudflare Worker (mmdb) ──► TMDb + OMDb
+            ├─ /       the website (static files, see .assetsignore)
+            └─ /api/*  keys · cache · validation (worker/src)
 ```
+
+**Putting it online, step by step: [DEPLOY.md](DEPLOY.md).**
 
 ## Features
 
@@ -37,6 +41,21 @@ Browser (static site) ──► Cloudflare Worker /api/* ──► TMDb + OMDb
 
 ## Run it
 
+**Online (Cloudflare):** follow [DEPLOY.md](DEPLOY.md). Connect the repo's `main` branch in the
+Cloudflare dashboard, add the two keys as secrets, done. Every push to `main` redeploys.
+
+**On your computer with real data:** put your keys in a `.dev.vars` file (git-ignored):
+
+```
+TMDB_API_KEY=...
+OMDB_API_KEY=...
+```
+
+```bash
+npm install
+npm run dev                        # site + API together on http://localhost:8787
+```
+
 **Without any keys** (fake catalogue, same Worker code):
 
 ```bash
@@ -45,17 +64,10 @@ npm start                          # site on http://localhost:5502
 # open http://localhost:5502/?api=http://localhost:8787
 ```
 
-**With real data:** deploy the Worker (see [worker/README.md](worker/README.md): it takes about 5 minutes),
-then put its URL in [`scripts/config.js`](scripts/config.js):
-
-```js
-export const API_BASE_URL = "https://mmdb-api.<your-subdomain>.workers.dev";
-```
-
-Deploy the site anywhere static from the `main` branch: GitHub Pages (Settings → Pages → deploy from branch),
-Cloudflare Pages (production branch `main`, no build command, output directory `/`) or Netlify. The `OG` branch
-keeps the original, pre-overhaul page and is not meant to be deployed. If the site's address changes, add it to
-`ALLOWED_ORIGINS` in `worker/wrangler.toml` and redeploy the Worker.
+The site calls the API on its own address (`API_BASE_URL = ""` in
+[`scripts/config.js`](scripts/config.js)). Only if you host the site and the API separately, set
+`API_BASE_URL` to the API's full URL and deploy `worker/` on its own (see [worker/README.md](worker/README.md)).
+The `OG` branch keeps the original, pre-overhaul page and is not meant to be deployed.
 
 ## Project structure
 
@@ -71,21 +83,26 @@ scripts/
   data/                favorites.js (localStorage + migration of old IMDb ids) · recent.js (recent searches)
   utils/               html (auto-escaping template tag) · format · images · icons · motion · effects · zoom
 styles/                tokens · base · glass · header · carousel · podium · movieCard · moviePage · stats · personPage · searchPage · footer · effects
-tests/                 front-end unit tests
-worker/                Cloudflare Worker (src/), unit tests (test/), wrangler.toml
+tests/                 front-end unit tests + deployment-config tests
+worker/                the API (src/), its unit tests (test/); wrangler.toml here = API-only deploy
+wrangler.toml          the deployed Worker: serves the site and /api/* together
+.assetsignore          allow-list of the files Cloudflare publishes as the website
+DEPLOY.md              step-by-step deploy guide
 sw.js · manifest.webmanifest   PWA
 ```
 
 ## Tests
 
 ```bash
-npm test      # 37 Worker tests (CORS, validation, response shapes, failures, caching, secret leakage)
-              # + 11 front-end tests (escaping, formatting, score normalisation, award parsing)
+npm test      # 39 Worker tests (CORS, validation, response shapes, failures, caching, secret leakage)
+              # + 17 front-end tests (escaping, formatting, score normalisation, award parsing)
+              #   and deployment-config tests (only the public site is published, nothing private)
 ```
 
 ## Security notes
 
--   Keys are Worker **secrets**; nothing secret is in this repo. A previous version of this project
+-   Keys are Worker **secrets**; nothing secret is in this repo. Only an allow-list of site files is
+    published (`.assetsignore`), and a test fails if anything private is added to it. A previous version of this project
     committed its TMDb/OMDb keys; they remain in the git history, so **revoke those old keys** at TMDb and OMDb.
 -   The newsletter form and social links in the footer are placeholders; nothing is sent or stored.
 

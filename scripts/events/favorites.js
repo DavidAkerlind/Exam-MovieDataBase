@@ -46,7 +46,7 @@ export function initFavorites() {
 
         if (nowFavorite) {
             celebrateFavorite(button);
-            toast(`Added “${title}” to favorites`, { actionLabel: "View", href: "favorites.html" });
+            toast(`Added “${title}” to favorites`, { actionLabel: "View", href: "favorites" });
         } else {
             toast(`Removed “${title}”`, {
                 actionLabel: "Undo",

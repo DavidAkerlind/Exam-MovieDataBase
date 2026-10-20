@@ -123,7 +123,7 @@ export async function init() {
         showNotice(root, {
             title: "No movie selected",
             text: "Pick a movie from the home page or search for one.",
-            action: { label: "Browse movies", href: "index.html" },
+            action: { label: "Browse movies", href: "./" },
         });
         return;
     }

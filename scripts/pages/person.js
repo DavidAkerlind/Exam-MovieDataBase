@@ -117,7 +117,7 @@ export async function init() {
         showNotice(root, {
             title: "Nobody selected",
             text: "Open a cast member from a movie page.",
-            action: { label: "Browse movies", href: "index.html" },
+            action: { label: "Browse movies", href: "./" },
         });
         return;
     }

@@ -143,7 +143,7 @@ export async function celebrateFavorite(button) {
     burst(button);
     ripple(button);
 
-    const target = [...document.querySelectorAll('.header__nav-link[href="favorites.html"], #burgerLabel')].find(
+    const target = [...document.querySelectorAll('.header__nav-link[href="favorites"], #burgerLabel')].find(
         (element) => element.getClientRects().length > 0
     );
     if (!target) return;

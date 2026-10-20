@@ -67,6 +67,23 @@ test("blocks localhost when ALLOW_LOCALHOST is off", async () => {
     assert.equal(response.headers.get("access-control-allow-origin"), null);
 });
 
+test("always accepts its own origin, so site and API can share one address", async () => {
+    // https://api.test is the origin the Worker itself is served from in these tests.
+    const env = { ...baseEnv(), ALLOWED_ORIGINS: "", ALLOW_LOCALHOST: "false" };
+    const { response } = await call("/api/health", { env, origin: "https://api.test" });
+    assert.equal(response.status, 200);
+
+    const other = await call("/api/health", { env, origin: "https://api.test.evil.example" });
+    assert.equal(other.response.status, 403);
+    assert.equal(other.body.error.code, "forbidden_origin");
+});
+
+test("serves requests without an Origin header (same-origin GET, curl)", async () => {
+    const env = { ...baseEnv(), ALLOWED_ORIGINS: "", ALLOW_LOCALHOST: "false" };
+    const { response } = await call("/api/health", { env, origin: null });
+    assert.equal(response.status, 200);
+});
+
 test("blocks other websites, including look-alike origins", async () => {
     for (const origin of [
         "https://evil.example",

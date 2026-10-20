@@ -1,13 +1,14 @@
 // Service worker: makes MMDb installable and lets pages you've already visited
 // open offline. Strategy is "network first" so a fresh deploy is never hidden
 // behind a stale cache; the cache is only a fallback.
-const VERSION = "mmdb-v1";
+const VERSION = "mmdb-v2";
 const CACHES = {
     pages: `${VERSION}-pages`,
     images: `${VERSION}-images`,
     api: `${VERSION}-api`,
 };
 const MAX_IMAGES = 250;
+const MAX_API = 150;
 
 self.addEventListener("install", () => self.skipWaiting());
 
@@ -26,11 +27,14 @@ self.addEventListener("activate", (event) => {
 const cacheable = (response) =>
     response && (response.ok || response.type === "opaque");
 
-async function networkFirst(cacheName, request) {
+async function networkFirst(cacheName, request, limit) {
     const cache = await caches.open(cacheName);
     try {
         const response = await fetch(request);
-        if (cacheable(response)) cache.put(request, response.clone());
+        if (cacheable(response)) {
+            await cache.put(request, response.clone());
+            if (limit) trim(cache, limit);
+        }
         return response;
     } catch (error) {
         const cached = await cache.match(request, { ignoreSearch: false });
@@ -69,8 +73,9 @@ self.addEventListener("fetch", (event) => {
 
     if (url.hostname === "image.tmdb.org") {
         event.respondWith(staleWhileRevalidate(CACHES.images, request, MAX_IMAGES));
-    } else if (url.pathname.startsWith("/api/") && url.origin !== self.location.origin) {
-        event.respondWith(networkFirst(CACHES.api, request));
+    } else if (url.pathname.startsWith("/api/")) {
+        // The API, same-origin or not: fresh when online, last answer when offline.
+        event.respondWith(networkFirst(CACHES.api, request, MAX_API));
     } else if (url.origin === self.location.origin) {
         event.respondWith(networkFirst(CACHES.pages, request));
     }

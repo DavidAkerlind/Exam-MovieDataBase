@@ -6,12 +6,15 @@ name = "mmdb-api"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
 
-# Serve the API on your own domain. Cloudflare creates the DNS record and the TLS
-# certificate when you deploy; the zone must be in the same Cloudflare account.
-# The *.workers.dev URL keeps working too.
-[[routes]]
-pattern = "mmdb-api.davidakerlind.com"
-custom_domain = true
+# API-ONLY deployment (advanced). Normally you deploy the repo root instead, where one
+# Worker serves the site and this API together (see ../wrangler.toml and ../DEPLOY.md).
+# Use this folder only when the site is hosted elsewhere (e.g. GitHub Pages) and just
+# the API runs on Cloudflare. To give it its own domain, uncomment (the zone must be in
+# the same Cloudflare account; the domain and certificate are created on deploy):
+#
+# [[routes]]
+# pattern = "mmdb-api.example.com"
+# custom_domain = true
 
 [vars]
 # Comma separated list of browser origins that may call the API.

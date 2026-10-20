@@ -4,15 +4,15 @@ import { icon } from "../utils/icons.js";
 import { countFavorites } from "../data/favorites.js";
 
 const NAV = [
-    { page: "home", href: "index.html", label: "Home" },
-    { page: "search", href: "search.html", label: "Search" },
-    { page: "favorites", href: "favorites.html", label: "Favorites" },
+    { page: "home", href: "./", label: "Home" },
+    { page: "search", href: "search", label: "Search" },
+    { page: "favorites", href: "favorites", label: "Favorites" },
 ];
 
 /** The search form used in the header, the mobile menu and on the search page. */
 export function searchFormHTML({ id, className = "", placeholder = "Search movies & people", value = "" }) {
     return html`
-        <form class="search header__form ${className}" data-search-form role="search" action="search.html" method="get">
+        <form class="search header__form ${className}" data-search-form role="search" action="search" method="get">
             <label class="sr-only" for="${id}">Search MMDb</label>
             <span class="search__icon">${icon("search")}</span>
             <input
@@ -56,7 +56,7 @@ export function headerHTML(active) {
     return html`
         <header class="header" id="siteHeader">
             <div class="header__container">
-                <a class="header__logo-link" href="index.html" aria-label="MMDb home">
+                <a class="header__logo-link" href="./" aria-label="MMDb home">
                     <img class="header__logo" src="./res/logo.svg" alt="" width="34" height="34" />
                     <span class="header__brand">MMDb</span>
                 </a>

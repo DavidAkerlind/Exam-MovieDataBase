@@ -41,8 +41,13 @@ export async function handleRequest(request, env = {}, ctx) {
     const origin = request.headers.get("Origin");
 
     try {
+        const url = new URL(request.url);
+        // The site and the API can live on one address; that origin is always welcome.
+        const allowed = (candidate) =>
+            candidate === url.origin || isOriginAllowed(candidate, env);
+
         if (request.method === "OPTIONS") {
-            if (!isOriginAllowed(origin, env)) {
+            if (!allowed(origin)) {
                 throw new HttpError(403, "forbidden_origin", "Origin not allowed.");
             }
             return new Response(null, { status: 204, headers: corsHeaders(origin, env) });
@@ -53,11 +58,10 @@ export async function handleRequest(request, env = {}, ctx) {
             });
         }
         // Browsers always send Origin on cross-site fetches; reject unknown sites.
-        if (origin && !isOriginAllowed(origin, env)) {
+        if (origin && !allowed(origin)) {
             throw new HttpError(403, "forbidden_origin", "Origin not allowed.");
         }
 
-        const url = new URL(request.url);
         const path = url.pathname.replace(/\/+$/, "") || "/";
 
         if (path === "/") {

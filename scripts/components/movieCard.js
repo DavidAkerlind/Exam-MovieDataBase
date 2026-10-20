@@ -5,8 +5,8 @@ import { posterImage } from "../utils/images.js";
 import { isFavorite } from "../data/favorites.js";
 import { reveal, settleImages } from "../utils/motion.js";
 
-export const movieUrl = (id) => `movie.html?id=${encodeURIComponent(id)}`;
-export const personUrl = (id) => `person.html?id=${encodeURIComponent(id)}`;
+export const movieUrl = (id) => `movie?id=${encodeURIComponent(id)}`;
+export const personUrl = (id) => `person?id=${encodeURIComponent(id)}`;
 
 /** srcset/sizes attribute string for a poster, safe to embed with raw(). */
 function posterAttributes(path, sizes) {

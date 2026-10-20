@@ -173,7 +173,7 @@ function entryRecent(text) {
         key: `r:${fold(text)}`,
         option: { kind: "recent", text },
         html: html`
-            <a class="search__option search__option--recent" role="option" aria-selected="false" aria-label="${`Search for ${text}. Press Delete to remove from recent searches.`}" href="search.html?q=${encodeURIComponent(text)}">
+            <a class="search__option search__option--recent" role="option" aria-selected="false" aria-label="${`Search for ${text}. Press Delete to remove from recent searches.`}" href="search?q=${encodeURIComponent(text)}">
                 <span class="search__recent-icon">${icon("clock")}</span>
                 <span class="search__option-text"><span class="search__option-title">${text}</span></span>
                 <span class="search__remove" data-remove aria-hidden="true">${icon("x")}</span>
@@ -187,11 +187,11 @@ function entryAll(query) {
         key: "all",
         option: { kind: "all" },
         update(el) {
-            el.href = `search.html?q=${encodeURIComponent(query)}`;
+            el.href = `search?q=${encodeURIComponent(query)}`;
             el.querySelector("[data-all-query]").textContent = `“${query}”`;
         },
         html: html`
-            <a class="search__option search__option--all" role="option" aria-selected="false" href="search.html?q=${encodeURIComponent(query)}">
+            <a class="search__option search__option--all" role="option" aria-selected="false" href="search?q=${encodeURIComponent(query)}">
                 <span class="search__all-text">See all results for <strong data-all-query>“${query}”</strong></span>
                 ${icon("chevronRight")}
             </a>

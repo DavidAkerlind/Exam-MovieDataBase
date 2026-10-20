@@ -41,7 +41,7 @@ export async function init() {
                 title: "Your favorites list is empty",
                 text: "Tap the heart on any movie to save it here.",
                 iconName: "heart",
-                action: { label: "Go find movies", href: "search.html" },
+                action: { label: "Go find movies", href: "search" },
             })
         );
     }
