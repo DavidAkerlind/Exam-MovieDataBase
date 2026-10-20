@@ -52,8 +52,9 @@ then put its URL in [`scripts/config.js`](scripts/config.js):
 export const API_BASE_URL = "https://mmdb-api.<your-subdomain>.workers.dev";
 ```
 
-Deploy the site anywhere static: GitHub Pages (Settings → Pages → deploy from branch), Cloudflare Pages
-(no build command, output directory `/`) or Netlify. If the site's address changes, add it to
+Deploy the site anywhere static from the `main` branch: GitHub Pages (Settings → Pages → deploy from branch),
+Cloudflare Pages (production branch `main`, no build command, output directory `/`) or Netlify. The `OG` branch
+keeps the original, pre-overhaul page and is not meant to be deployed. If the site's address changes, add it to
 `ALLOWED_ORIGINS` in `worker/wrangler.toml` and redeploy the Worker.
 
 ## Project structure

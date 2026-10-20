@@ -1,4 +1,4 @@
-# Deploys the API Worker to Cloudflare whenever worker/ changes on the default branch.
+# Deploys the API Worker to Cloudflare whenever worker/ changes on main.
 # One-time setup (repo Settings > Secrets and variables > Actions):
 #   CLOUDFLARE_API_TOKEN  (template "Edit Cloudflare Workers")
 #   CLOUDFLARE_ACCOUNT_ID
@@ -8,7 +8,7 @@ name: Deploy Worker
 
 on:
     push:
-        branches: [dev, main]
+        branches: [main]
         paths: ["worker/**"]
     workflow_dispatch:
 
