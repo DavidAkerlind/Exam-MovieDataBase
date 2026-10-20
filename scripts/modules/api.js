@@ -33,6 +33,18 @@ const baseUrl = (readLocalOverride() || API_BASE_URL).replace(/\/+$/, "");
 
 export const isApiConfigured = () => !baseUrl.includes("YOUR-SUBDOMAIN");
 
+// Open the connection to the API (DNS + TLS) before the first search needs it.
+if (isApiConfigured() && typeof document !== "undefined") {
+    const link = document.createElement("link");
+    link.rel = "preconnect";
+    link.href = new URL(baseUrl).origin;
+    link.crossOrigin = "";
+    document.head.append(link);
+}
+
+/** "  The   GODFATHER " -> "the godfather": more cache hits at every layer. */
+export const normalizeQuery = (query) => query.trim().replace(/\s+/g, " ").toLowerCase();
+
 const memo = new Map();
 
 function buildUrl(path, params) {
@@ -103,11 +115,32 @@ export const fetchHome = () => request("/api/home");
 
 /** Movies (+ people on page 1) matching a text query. */
 export const searchAll = (query, { page = 1, signal } = {}) =>
-    request("/api/search", { q: query, page }, { signal });
+    request("/api/search", { q: normalizeQuery(query), page }, { signal });
+
+/** Synchronous cache lookups: let the UI paint results before any await. */
+export function peekSearch(query, page = 1) {
+    const hit = memo.get(buildUrl("/api/search", { q: normalizeQuery(query), page }));
+    return hit && Date.now() - hit.time < CACHE_TTL ? hit.data : null;
+}
 
 /** Lightweight results for the search-as-you-type dropdown. */
 export const suggest = (query, { signal } = {}) =>
-    request("/api/search", { q: query, mode: "suggest" }, { signal });
+    request("/api/search", { q: normalizeQuery(query), mode: "suggest" }, { signal });
+
+export function peekSuggest(query) {
+    const hit = memo.get(buildUrl("/api/search", { q: normalizeQuery(query), mode: "suggest" }));
+    return hit && Date.now() - hit.time < CACHE_TTL ? hit.data : null;
+}
+
+/** Warm the HTTP cache for a page the visitor is about to open. */
+const prefetched = new Set();
+function prefetch(path) {
+    if (prefetched.has(path) || !isApiConfigured()) return;
+    prefetched.add(path);
+    request(path).catch(() => prefetched.delete(path));
+}
+export const prefetchMovie = (id) => prefetch(`/api/movie/${encodeURIComponent(id)}`);
+export const prefetchPerson = (id) => prefetch(`/api/person/${encodeURIComponent(id)}`);
 
 /** Full detail for one movie. Accepts a TMDb id or a legacy IMDb id. */
 export const fetchMovie = (id) => request(`/api/movie/${encodeURIComponent(id)}`);

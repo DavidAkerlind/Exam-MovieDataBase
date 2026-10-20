@@ -3,6 +3,7 @@
 import { toggleFavorite, isFavorite, onFavoritesChange, countFavorites } from "../data/favorites.js";
 import { icons } from "../utils/icons.js";
 import { toast } from "../components/feedback.js";
+import { celebrateFavorite } from "../utils/effects.js";
 
 export function syncFavoriteButton(button, active) {
     button.classList.toggle("is-active", active);
@@ -44,6 +45,7 @@ export function initFavorites() {
         });
 
         if (nowFavorite) {
+            celebrateFavorite(button);
             toast(`Added “${title}” to favorites`, { actionLabel: "View", href: "favorites.html" });
         } else {
             toast(`Removed “${title}”`, {

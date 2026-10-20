@@ -2,61 +2,13 @@
 import { fetchMovie } from "../modules/api.js";
 import { html, mount, raw } from "../utils/html.js";
 import { icon } from "../utils/icons.js";
-import { formatRuntime, compactNumber } from "../utils/format.js";
+import { formatRuntime } from "../utils/format.js";
 import { backdropImage, profileImage } from "../utils/images.js";
 import { setPageTitle, reveal, settleImages } from "../utils/motion.js";
 import { showNotice, errorNotice } from "../components/feedback.js";
 import { openTrailer } from "../components/trailerModal.js";
+import { statsHTML, initStats } from "../components/stats.js";
 import { favoriteButton, personUrl, posterImg, railCardHTML } from "../components/movieCard.js";
-
-function ratingTiles(movie) {
-    const { ratings } = movie;
-    const tiles = [
-        ratings.imdb && {
-            value: ratings.imdb.toFixed(1),
-            unit: "/10",
-            label: "IMDb",
-            sub: ratings.imdbVotes ? `${compactNumber(ratings.imdbVotes)} votes` : "",
-            tone: "gold",
-        },
-        ratings.rottenTomatoes && {
-            value: ratings.rottenTomatoes,
-            unit: "%",
-            label: "Rotten Tomatoes",
-            sub: ratings.rottenTomatoes >= 60 ? "Fresh" : "Rotten",
-            tone: ratings.rottenTomatoes >= 60 ? "good" : "bad",
-        },
-        ratings.metascore && {
-            value: ratings.metascore,
-            unit: "/100",
-            label: "Metascore",
-            sub: "",
-            tone: "violet",
-        },
-        ratings.tmdb && {
-            value: ratings.tmdb.toFixed(1),
-            unit: "/10",
-            label: "TMDB",
-            sub: "User score",
-            tone: "cyan",
-        },
-    ].filter(Boolean);
-
-    if (!tiles.length) return "";
-    return html`
-        <ul class="ratings" aria-label="Ratings">
-            ${tiles.map(
-                (tile) => html`
-                    <li class="rating-tile rating-tile--${tile.tone}">
-                        <span class="rating-tile__value">${tile.value}<small>${tile.unit}</small></span>
-                        <span class="rating-tile__label">${tile.label}</span>
-                        ${tile.sub ? html`<span class="rating-tile__sub">${tile.sub}</span>` : ""}
-                    </li>
-                `
-            )}
-        </ul>
-    `;
-}
 
 function peopleSection(title, people) {
     if (!people.length) return "";
@@ -78,7 +30,7 @@ function castRail(cast) {
                     <li class="rail__item reveal">
                         <a class="person-card glass glass--flat" href="${personUrl(member.id)}">
                             <img class="person-card__photo is-loading" src="${profileImage(member.profile, "w185")}" alt="" width="185" height="278" loading="lazy" decoding="async" data-fallback="./res/icons/missing-profile.svg" />
-                            <span class="person-card__name">${member.name}</span>
+                            <span class="person-card__name" data-zoom-name>${member.name}</span>
                             <span class="person-card__role">${member.character}</span>
                         </a>
                     </li>
@@ -119,8 +71,6 @@ function movieHTML(movie) {
                 ${movie.genres.map((genre) => html`<span class="chip chip--genre">${genre}</span>`)}
             </div>
 
-            ${ratingTiles(movie)}
-
             <div class="movie-info__actions">
                 ${movie.trailer
                     ? html`<button class="btn btn--primary" type="button" data-trailer>${icon("play")} Watch trailer</button>`
@@ -130,6 +80,8 @@ function movieHTML(movie) {
                     ? html`<a class="btn btn--glass" href="https://www.imdb.com/title/${movie.imdbId}/" target="_blank" rel="noopener noreferrer">IMDb ${icon("external")}</a>`
                     : ""}
             </div>
+
+            ${statsHTML(movie)}
 
             <section class="movie-info__plot glass">
                 <h2 class="movie-info__plot-title">Plot</h2>
@@ -204,6 +156,7 @@ export async function init() {
         mount(root, movieHTML(movie));
         root.removeAttribute("aria-busy");
         showBackdrop(movie.backdrop);
+        initStats(root);
 
         root.querySelector("[data-trailer]")?.addEventListener("click", () =>
             openTrailer({ key: movie.trailer.key, title: movie.title })

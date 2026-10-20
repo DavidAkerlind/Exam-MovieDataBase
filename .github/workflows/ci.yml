@@ -18,3 +18,5 @@ jobs:
               working-directory: worker
             - run: npm test
               working-directory: worker
+            - name: Front-end unit tests
+              run: node --test "tests/*.test.js"

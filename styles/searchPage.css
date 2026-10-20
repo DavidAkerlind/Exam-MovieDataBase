@@ -123,3 +123,14 @@
         display: block;
     }
 }
+
+/* Live results: old cards stay put (dimmed) while the next set loads */
+.card-container {
+    transition: opacity var(--dur-3) var(--ease-out), filter var(--dur-3) var(--ease-out);
+}
+
+.card-container.is-loading {
+    opacity: 0.45;
+    filter: blur(2px) saturate(0.8);
+    pointer-events: none;
+}

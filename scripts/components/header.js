@@ -28,10 +28,12 @@ export function searchFormHTML({ id, className = "", placeholder = "Search movie
                 aria-expanded="false"
                 aria-controls="${id}-panel"
                 aria-autocomplete="list" />
+            <kbd class="search__kbd" aria-hidden="true">/</kbd>
             <button class="search__submit header__form-btn" type="submit" aria-label="Search">
                 ${icon("arrowRight")}
             </button>
-            <div class="search__panel glass glass--strong" id="${id}-panel" role="listbox" aria-label="Search suggestions" hidden></div>
+            <div class="search__panel glass glass--strong" id="${id}-panel" role="listbox" aria-label="Search suggestions"></div>
+            <div class="sr-only" role="status" aria-live="polite" data-search-status></div>
         </form>
     `;
 }
@@ -73,6 +75,7 @@ export function headerHTML(active) {
                     <input type="checkbox" class="menu__checkbox" id="menu-toggle" tabindex="-1" aria-hidden="true" />
                     <label id="burgerLabel" class="menu__button" for="menu-toggle" tabindex="0" role="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
                         <span class="menu__button-line"></span>
+                        <span class="menu__badge" data-favorites-count ${countFavorites() ? "" : "hidden"}>${countFavorites()}</span>
                     </label>
 
                     <nav id="mobileMenu" class="menu__navigation glass glass--strong" aria-label="Mobile navigation">

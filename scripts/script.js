@@ -5,6 +5,7 @@ import { initBurgerMenu } from "./events/burgerMenu.js";
 import { initFavorites } from "./events/favorites.js";
 import { initNewsletter } from "./events/newsletter.js";
 import { initPointerGlow, initImageLoading, initScrollState } from "./utils/motion.js";
+import { initZoomTransitions } from "./utils/zoom.js";
 import { fetchMovies } from "./modules/api.js";
 import { legacyFavoriteIds, migrateFavorites } from "./data/favorites.js";
 
@@ -45,6 +46,7 @@ initFavorites();
 initNewsletter();
 initPointerGlow();
 initScrollState();
+initZoomTransitions();
 
 PAGES[page]?.()
     .then((module) => module.init())

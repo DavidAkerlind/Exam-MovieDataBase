@@ -1,0 +1,176 @@
+/* ==========================================================================
+   Effects: favorite celebration (burst, ripple, flying heart) and the
+   zoom-into-name page transition.
+   ========================================================================== */
+
+.fx-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 2500;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fx-particle {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    margin: -0.5rem 0 0 -0.5rem;
+    color: var(--c);
+    animation: fx-burst 0.95s cubic-bezier(0.15, 0.8, 0.3, 1) forwards;
+    will-change: transform, opacity;
+}
+
+.fx-particle .icon {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 6px rgb(255 90 140 / 0.55));
+}
+
+.fx-particle--dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    margin: -0.22rem 0 0 -0.22rem;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: 0 0 10px var(--c);
+}
+
+@keyframes fx-burst {
+    0% {
+        transform: translate(0, 0) scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    18% {
+        transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.3)) scale(var(--s))
+            rotate(calc(var(--rot) * 0.3));
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dx), calc(var(--dy) + 38px)) scale(calc(var(--s) * 0.35))
+            rotate(var(--rot));
+        opacity: 0;
+    }
+}
+
+.fx-ripple {
+    position: absolute;
+    width: var(--size);
+    height: var(--size);
+    margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+    border: 2px solid var(--c);
+    border-radius: 50%;
+    box-shadow: 0 0 24px var(--c), inset 0 0 18px color-mix(in srgb, var(--c) 40%, transparent);
+    animation: fx-ripple 0.85s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes fx-ripple {
+    from {
+        transform: scale(0.3);
+        opacity: 0.95;
+    }
+    to {
+        transform: scale(2.6);
+        opacity: 0;
+    }
+}
+
+.fx-flyer {
+    position: absolute;
+    width: 1.8rem;
+    height: 1.8rem;
+    color: #ff6b95;
+    filter: drop-shadow(0 6px 16px rgb(255 80 130 / 0.85));
+    will-change: transform;
+}
+
+.fx-flyer .icon {
+    width: 100%;
+    height: 100%;
+}
+
+.is-bump {
+    animation: bump 0.65s var(--ease-spring);
+}
+
+@keyframes bump {
+    0% {
+        transform: scale(1);
+    }
+    35% {
+        transform: scale(1.28);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Count dot on the mobile burger button */
+.menu__badge {
+    position: absolute;
+    top: -0.2rem;
+    right: -0.2rem;
+    display: grid;
+    place-items: center;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    padding: 0 0.3rem;
+    border-radius: var(--r-pill);
+    font-size: 0.65rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-ink);
+    background: var(--accent);
+    box-shadow: 0 4px 12px -3px rgb(255 168 30 / 0.8);
+}
+
+html.menu-open .menu__badge {
+    display: none;
+}
+
+/* ------------------------------------------------- zoom into a person's name */
+
+html.is-zooming,
+html.zoom-arrival {
+    overflow: hidden;
+}
+
+html.zoom-arrival main,
+html.zoom-arrival .footer {
+    opacity: 0;
+}
+
+.zoom-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: radial-gradient(ellipse at 50% 42%, rgb(34 28 82 / 0.97), rgb(5 6 13 / 0.99) 72%);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+}
+
+.zoom-veil__name {
+    max-width: min(92vw, 1100px);
+    font-size: clamp(2.6rem, 1.5rem + 5.2vw, 5.6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+    text-align: center;
+    text-wrap: balance;
+    color: #fff;
+    text-shadow: 0 10px 60px rgb(139 123 255 / 0.55);
+    will-change: transform;
+}
+
+.zoom-veil.is-waiting .zoom-veil__name {
+    animation: zoom-wait 1.6s ease-in-out infinite;
+}
+
+@keyframes zoom-wait {
+    50% {
+        opacity: 0.72;
+    }
+}

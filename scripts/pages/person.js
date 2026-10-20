@@ -7,6 +7,7 @@ import { profileImage } from "../utils/images.js";
 import { setPageTitle, reveal, settleImages } from "../utils/motion.js";
 import { showNotice, errorNotice } from "../components/feedback.js";
 import { movieUrl, posterImg } from "../components/movieCard.js";
+import { finishZoomArrival } from "../utils/zoom.js";
 
 const BIO_PREVIEW_LENGTH = 520;
 
@@ -112,6 +113,7 @@ export async function init() {
     const name = params.get("name");
 
     if (!id && !name) {
+        finishZoomArrival(null);
         showNotice(root, {
             title: "Nobody selected",
             text: "Open a cast member from a movie page.",
@@ -142,6 +144,7 @@ export async function init() {
         } catch (error) {
             console.error(error);
             root.removeAttribute("aria-busy");
+            finishZoomArrival(null);
             showNotice(root, errorNotice(error, load));
             return;
         }
@@ -149,6 +152,8 @@ export async function init() {
         setPageTitle(person.name);
         mount(root, personHTML(person));
         root.removeAttribute("aria-busy");
+        // Hand the zoomed-in name from the previous page over to the real title.
+        finishZoomArrival(root.querySelector(".person-info__title"));
 
         root.querySelector("[data-bio-toggle]")?.addEventListener("click", (event) => {
             const button = event.currentTarget;

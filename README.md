@@ -14,13 +14,24 @@ Browser (static site) ──► Cloudflare Worker /api/* ──► TMDb + OMDb
 
 ## Features
 
+-   **Instant search**: results appear as you type, with posters. Known queries render synchronously from cache,
+    new ones are filtered instantly from a local pool while the network answers; an empty field shows
+    *Recent searches* and *Trending now*. Rows glide, enter with a stagger and fade out (keyed FLIP list), the
+    selection highlight slides between rows, and moving onto a result prefetches its page. Full keyboard support
+    (`/` or `Ctrl/Cmd+K` to focus, arrows, Enter, Delete to drop a recent, Esc). On the search page the results
+    grid updates live as you type.
+-   **Movie stats dashboard**: concentric "activity" rings for IMDb / Rotten Tomatoes / Metascore / TMDB with an
+    overall score, animated score bars, a runtime gauge and a wins-vs-nominations pie, all drawn in with count-up numbers
+-   **Zoom into a name**: click a director, writer or actor and the page dollies into the name you clicked;
+    the person's page emerges from that same name
+-   **Favorite celebration**: hearts burst from the button, a heart flies across the page into the header's Favorites
+    item and the badge bumps
 -   **Home**: 3D trailer carousel (autoplay, swipe, keyboard), top-3 podium, ranks 4-20, trending rail
--   **Search**: live suggestions with posters (keyboard friendly combobox), results for movies and people, infinite "load more"
--   **Movie page**: backdrop hero, ratings, trailer in a modal, cast, "more like this", favorite button
+-   **Movie page**: backdrop hero, trailer modal, cast, "more like this", favorite button
 -   **Person page**: portrait, facts, expandable biography, filmography
 -   **Favorites**: saved locally, sortable, animated removal with undo, synced across tabs
 -   **Design system**: tokens (`styles/tokens.css`), liquid-glass primitives (`styles/glass.css`), skeleton loading, toasts, scroll reveals, cross-page view transitions
--   **Accessible**: semantic landmarks, skip link, ARIA combobox / dialog, visible focus, `prefers-reduced-motion` respected
+-   **Accessible**: semantic landmarks, skip link, ARIA combobox / dialog, visible focus, `prefers-reduced-motion` respected (all effects switch off); 0 axe-core violations
 -   **Installable PWA** with offline fallback for pages you've visited
 -   Hardened: all API data is HTML-escaped, strict Content-Security-Policy, CORS allow-list on the API
 
@@ -54,11 +65,12 @@ scripts/
   config.js            public config (the Worker URL)
   modules/             api.js (the only network code) · carousel.js
   pages/               home · movie · person · search · favorites
-  components/          header · footer · layout · movieCard · feedback · trailerModal
-  events/              search combobox · favorites · burger menu · newsletter
-  data/favorites.js    localStorage store (+ migration of old IMDb ids)
-  utils/               html (auto-escaping template tag) · format · images · icons · motion
-styles/                tokens · base · glass · header · carousel · podium · movieCard · moviePage · personPage · searchPage · footer
+  components/          header · footer · layout · movieCard · stats (charts) · feedback · trailerModal
+  events/              search (instant combobox) · favorites · burger menu · newsletter
+  data/                favorites.js (localStorage + migration of old IMDb ids) · recent.js (recent searches)
+  utils/               html (auto-escaping template tag) · format · images · icons · motion · effects · zoom
+styles/                tokens · base · glass · header · carousel · podium · movieCard · moviePage · stats · personPage · searchPage · footer · effects
+tests/                 front-end unit tests
 worker/                Cloudflare Worker (src/), unit tests (test/), wrangler.toml
 sw.js · manifest.webmanifest   PWA
 ```
@@ -66,7 +78,8 @@ sw.js · manifest.webmanifest   PWA
 ## Tests
 
 ```bash
-npm test      # 37 Worker tests: CORS, validation, response shapes, failures, caching, secret leakage
+npm test      # 37 Worker tests (CORS, validation, response shapes, failures, caching, secret leakage)
+              # + 11 front-end tests (escaping, formatting, score normalisation, award parsing)
 ```
 
 ## Security notes
