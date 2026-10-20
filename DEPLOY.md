@@ -36,6 +36,9 @@ You already have other projects on Cloudflare (`portfolio-page`, `harpaviljongen
 
 1. In the dashboard open **Workers & Pages** and click **Create application**.
 2. Choose **Import a repository** (the option that connects to GitHub). Choose **GitHub**.
+   Do **not** pick anything labelled **Pages** / "Connect to Git" under Pages. That makes a Pages
+   project, which cannot run the API. Quick check: the right form has a **Deploy command** field;
+   the Pages form asks for a *Framework preset* and a *Build output directory* instead.
 3. Pick **`DavidAkerlind/Exam-MovieDataBase`** from the list.
    - **Not in the list?** Cloudflare's GitHub app is only allowed to see some repositories. Click
      **Configure** / **Add repositories**, tick `Exam-MovieDataBase`, save, and come back.
